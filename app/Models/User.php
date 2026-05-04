@@ -7,6 +7,8 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -27,6 +29,29 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'puntos_totales' => 'integer',
+            'racha_multiplicador' => 'decimal:2',
         ];
+    }
+
+    public function retosCreados(): HasMany
+    {
+        return $this->hasMany(Reto::class, 'creador_id');
+    }
+
+    public function validacionesRetos(): HasMany
+    {
+        return $this->hasMany(ValidacionReto::class);
+    }
+
+    public function comentarios(): HasMany
+    {
+        return $this->hasMany(Comentario::class);
+    }
+
+    public function logros(): BelongsToMany
+    {
+        return $this->belongsToMany(Logro::class, 'logro_user')
+            ->withPivot('fecha_desbloqueo');
     }
 }
