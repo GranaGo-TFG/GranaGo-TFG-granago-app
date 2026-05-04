@@ -1,86 +1,47 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Granago') }}</title>
-
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=manrope:400,500,600,700,800|fraunces:600,700" rel="stylesheet">
-
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
+    <title>GranaGO!</title>
+    <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
 </head>
-<body class="welcome-page">
-    <div class="welcome-shell">
-        <div class="container">
-            <nav class="welcome-topbar">
-                @auth
-                    <a class="welcome-topbar-link is-primary" href="{{ url('/home') }}">Dashboard</a>
-                @else
-                    @if (Route::has('login'))
-                        <a class="welcome-topbar-link" href="{{ route('login') }}">Log in</a>
-                    @endif
+<body class="granago-page">
+    <main class="welcome-page">
+        <section class="welcome-shell">
+            <div class="welcome-brand">
+                <span class="welcome-brand-badge" aria-hidden="true">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1E293B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="7.5"></circle>
+                        <path d="M12 2.75V5"></path>
+                        <path d="M12 19v2.25"></path>
+                        <path d="M2.75 12H5"></path>
+                        <path d="M19 12h2.25"></path>
+                        <path d="m10 14 2.6-6 3.4 3.4L10 14Z" fill="#D91C4A" stroke="none"></path>
+                    </svg>
+                </span>
+                <div class="welcome-brand-name"><span>Grana</span><span class="welcome-brand-name-accent">GO!</span></div>
+            </div>
 
-                    @if (Route::has('register'))
-                        <a class="welcome-topbar-link is-primary" href="{{ route('register') }}">Register</a>
-                    @endif
-                @endauth
-            </nav>
+            <h1 class="welcome-title">Tu ciudad es el tablero</h1>
+            <p class="welcome-subtitle">Descubre Granada, supera retos urbanos y gana recompensas.</p>
 
-            <main class="welcome-layout">
-                <section class="welcome-main">
-                    <div class="welcome-mark">
-                        <div class="welcome-mark-badge">G</div>
+            <div class="welcome-map-wrap">
+                <img src="{{ asset('images/mapaGranaIlustracion.png') }}" alt="Mapa de Granada" class="welcome-map" />
+            </div>
 
-                        <div class="welcome-mark-text">
-                            <span class="welcome-mark-title">{{ config('app.name', 'Granago') }}</span>
-                            <span class="welcome-mark-subtitle">TFG DAW · prototipo inicial</span>
-                        </div>
-                    </div>
+            <div class="welcome-actions">
+                <a href="{{ route('register') }}" class="welcome-button welcome-button-primary">Empezar la aventura</a>
+                <a href="{{ route('login') }}" class="welcome-button welcome-button-secondary">Ya tengo cuenta</a>
+            </div>
 
-                    <span class="welcome-kicker">Exploracion urbana en Granada</span>
-
-                    <h1 class="welcome-title">
-                        <span class="welcome-title-accent">GranaGO</span>
-                    </h1>
-
-                    <p class="welcome-copy">
-                        Esta es solo una primera bienvenida para el proyecto. La idea es mantener
-                        una portada limpia, cercana a la que trae Laravel al empezar, pero con una
-                        paleta y un tono mas ligados al TFG: ciudad, retos, fotos, recorridos y vida urbana.
-                    </p>
-
-                    <div class="welcome-notes">
-                        <span class="welcome-note">Paleta inicial del proyecto</span>
-                        <span class="welcome-note">Portada todavia sin cerrar</span>
-                        <span class="welcome-note">El resto de pantallas, por definir</span>
-                    </div>
-                </section>
-
-                <aside class="welcome-side">
-                    <div class="welcome-panel">
-                        <h2 class="welcome-panel-title">Ahora mismo</h2>
-
-                        <ul class="welcome-panel-list">
-                            <li>
-                                <span class="welcome-panel-label">Enfoque</span>
-                                <span class="welcome-panel-text">Una app pensada para descubrir lugares y moverse por la ciudad de otra forma.</span>
-                            </li>
-                            <li>
-                                <span class="welcome-panel-label">Estilo</span>
-                                <span class="welcome-panel-text">Rojo granada, azul noche y acentos oro como punto de partida visual.</span>
-                            </li>
-                            <li>
-                                <span class="welcome-panel-label">Estado</span>
-                                <span class="welcome-panel-text">Interfaz inicial, todavia abierta a cambios y sin desarrollar el resto del sistema visual.</span>
-                            </li>
-                        </ul>
-                    </div>
-                </aside>
-            </main>
-        </div>
-    </div>
+            <div class="welcome-footer-links">
+                <a href="{{ route('login') }}">Mas informacion</a>
+                <span>|</span>
+                <a href="{{ route('password.request') }}">Ayuda</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
