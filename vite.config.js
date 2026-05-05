@@ -6,8 +6,6 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
-                'resources/css/pages/welcome.css',
-                'resources/css/pages/auth.css',
                 'resources/sass/app.scss',
                 'resources/js/app.js',
             ],

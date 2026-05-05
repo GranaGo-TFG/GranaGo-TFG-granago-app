@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>GranaGO!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
 </head>
-<body class="granago-page">
-    <main class="welcome-page">
-        <section class="welcome-shell">
-            <div class="welcome-brand">
-                <span class="welcome-brand-badge" aria-hidden="true">
+<body class="granago-welcome-body">
+    <main class="container min-vh-100 d-flex align-items-center justify-content-center py-4">
+        <section class="w-100 text-center" style="max-width: 560px;">
+            <div class="d-inline-flex align-items-center gap-3 mb-4">
+                <span class="granago-brand-badge d-inline-flex align-items-center justify-content-center" aria-hidden="true">
                     <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1E293B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <circle cx="12" cy="12" r="7.5"></circle>
                         <path d="M12 2.75V5"></path>
@@ -21,25 +22,25 @@
                         <path d="m10 14 2.6-6 3.4 3.4L10 14Z" fill="#D91C4A" stroke="none"></path>
                     </svg>
                 </span>
-                <div class="welcome-brand-name"><span>Grana</span><span class="welcome-brand-name-accent">GO!</span></div>
+                <div class="granago-brand-name"><span>Grana</span><span>GO!</span></div>
             </div>
 
-            <h1 class="welcome-title">Tu ciudad es el tablero</h1>
-            <p class="welcome-subtitle">Descubre Granada, supera retos urbanos y gana recompensas.</p>
+            <h1 class="granago-title granago-welcome-title mb-3">Tu ciudad es el tablero</h1>
+            <p class="granago-copy granago-welcome-copy mx-auto mb-0">Descubre Granada, supera retos urbanos y gana recompensas.</p>
 
-            <div class="welcome-map-wrap">
-                <img src="{{ asset('images/mapaGranaIlustracion.png') }}" alt="Mapa de Granada" class="welcome-map" />
+            <div class="my-4 my-md-5">
+                <img src="{{ asset('images/mapaGranaIlustracion.png') }}" alt="Mapa de Granada" class="granago-map mx-auto" />
             </div>
 
-            <div class="welcome-actions">
-                <a href="{{ route('register') }}" class="welcome-button welcome-button-primary">Empezar la aventura</a>
-                <a href="{{ route('login') }}" class="welcome-button welcome-button-secondary">Ya tengo cuenta</a>
+            <div class="d-grid gap-3 mx-auto" style="max-width: 480px;">
+                <a href="{{ route('register') }}" class="btn granago-btn-primary text-white">Empezar la aventura</a>
+                <a href="{{ route('login') }}" class="btn granago-btn-outline">Ya tengo cuenta</a>
             </div>
 
-            <div class="welcome-footer-links">
-                <a href="{{ route('login') }}">Mas informacion</a>
-                <span>|</span>
-                <a href="{{ route('password.request') }}">Ayuda</a>
+            <div class="text-secondary mt-4">
+                <a href="{{ route('login') }}" class="text-decoration-none text-secondary">Mas informacion</a>
+                <span class="mx-2 text-secondary-subtle">|</span>
+                <a href="{{ route('password.request') }}" class="text-decoration-none text-secondary">Ayuda</a>
             </div>
         </section>
     </main>

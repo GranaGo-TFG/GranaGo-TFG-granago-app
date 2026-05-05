@@ -3,245 +3,212 @@
     --grana-text: #1e293b;
     --grana-muted: #64748b;
     --grana-primary: #d91c4a;
+    --grana-primary-dark: #bb183f;
     --grana-gold: #f59e0b;
     --grana-border: #d9e2ec;
-    --grana-shadow: 0 24px 60px rgba(30, 41, 59, 0.1);
-    --grana-shadow-soft: 0 12px 30px rgba(30, 41, 59, 0.08);
-    --grana-ok-bg: #ecfdf5;
-    --grana-ok-border: #a7f3d0;
-    --grana-ok-text: #047857;
 }
 
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    min-height: 100%;
-}
-
-body.granago-page {
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+body.granago-auth-body,
+body.granago-welcome-body {
+    min-height: 100vh;
     color: var(--grana-text);
     background:
         radial-gradient(circle at top center, rgba(217, 28, 74, 0.1), transparent 34%),
         linear-gradient(180deg, #fcfdff 0%, var(--grana-bg) 100%);
 }
 
-body.granago-page.granago-page-register {
+body.granago-register-body {
     background:
         radial-gradient(circle at top center, rgba(217, 28, 74, 0.1), transparent 34%),
         radial-gradient(circle at left 30%, rgba(245, 158, 11, 0.08), transparent 18%),
         linear-gradient(180deg, #fcfdff 0%, var(--grana-bg) 100%);
 }
 
-.granago-page a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.auth-page {
-    min-height: 100vh;
-    padding: 20px 16px 32px;
-}
-
-.auth-shell {
+.granago-shell {
     width: 100%;
-    max-width: 430px;
-    margin: 0 auto;
+    max-width: 30rem;
 }
 
-.auth-back {
-    width: 44px;
-    height: 44px;
-    display: grid;
-    place-items: center;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.94);
+.granago-card {
     border: 1px solid rgba(217, 226, 236, 0.85);
-    box-shadow: var(--grana-shadow-soft);
-}
-
-.auth-card {
-    margin-top: 18px;
+    border-radius: 2rem;
     background: rgba(255, 255, 255, 0.94);
-    border: 1px solid rgba(217, 226, 236, 0.85);
-    border-radius: 32px;
-    padding: 28px 20px;
-    box-shadow: var(--grana-shadow);
+    box-shadow: 0 24px 60px rgba(30, 41, 59, 0.1);
+    backdrop-filter: blur(8px);
 }
 
-.auth-eyebrow {
+.granago-pill {
     display: inline-flex;
-    padding: 10px 14px;
+    align-items: center;
     border-radius: 999px;
+    padding: 0.55rem 0.95rem;
     font-size: 0.85rem;
-    font-weight: 800;
-    margin-bottom: 16px;
+    font-weight: 700;
 }
 
-.auth-eyebrow-primary {
-    background: rgba(217, 28, 74, 0.1);
+.granago-pill-primary {
     color: var(--grana-primary);
+    background: rgba(217, 28, 74, 0.1);
 }
 
-.auth-eyebrow-gold {
-    background: rgba(245, 158, 11, 0.14);
+.granago-pill-gold {
     color: #9a6200;
+    background: rgba(245, 158, 11, 0.14);
 }
 
-.auth-eyebrow-neutral {
-    background: rgba(30, 41, 59, 0.06);
+.granago-pill-neutral {
     color: var(--grana-text);
+    background: rgba(30, 41, 59, 0.06);
 }
 
-.auth-title {
-    margin: 0;
-    font-size: 2rem;
-    line-height: 1.05;
+.granago-title {
     font-weight: 900;
+    line-height: 1.02;
     letter-spacing: -0.04em;
 }
 
-.auth-copy {
-    margin: 14px 0 0;
+.granago-copy {
     color: var(--grana-muted);
-    font-size: 0.98rem;
     line-height: 1.7;
 }
 
-.auth-status {
-    margin-top: 20px;
-    padding: 14px 16px;
-    border-radius: 18px;
-    background: var(--grana-ok-bg);
-    border: 1px solid var(--grana-ok-border);
-    color: var(--grana-ok-text);
+.granago-back {
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(217, 226, 236, 0.85);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 12px 30px rgba(30, 41, 59, 0.08);
+    color: var(--grana-text);
+}
+
+.granago-label {
     font-size: 0.92rem;
     font-weight: 700;
-    line-height: 1.6;
-}
-
-.auth-form {
-    margin-top: 28px;
-    display: grid;
-    gap: 18px;
-}
-
-.auth-form.auth-form-tight {
-    margin-top: 24px;
-}
-
-.auth-field label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 0.92rem;
-    font-weight: 800;
-}
-
-.auth-input-wrap {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 58px;
-    padding: 0 16px;
-    border-radius: 18px;
-    border: 1px solid var(--grana-border);
-    background: #f8fafc;
-    transition: 0.18s ease;
-}
-
-.auth-input-wrap:focus-within {
-    border-color: var(--grana-primary);
-    box-shadow: 0 0 0 4px rgba(217, 28, 74, 0.1);
-}
-
-.auth-input-wrap svg {
-    flex: 0 0 auto;
-    color: #94a3b8;
-}
-
-.auth-input-wrap input {
-    width: 100%;
-    border: 0;
-    outline: 0;
-    background: transparent;
     color: var(--grana-text);
-    font: inherit;
 }
 
-.auth-input-wrap input::placeholder {
+.granago-input-group {
+    border: 1px solid var(--grana-border);
+    border-radius: 1.15rem;
+    background: #f8fafc;
+    overflow: hidden;
+    transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.granago-input-group:focus-within {
+    border-color: var(--grana-primary);
+    box-shadow: 0 0 0 0.25rem rgba(217, 28, 74, 0.1);
+}
+
+.granago-input-group .input-group-text {
+    border: 0;
+    background: transparent;
+    color: #94a3b8;
+    padding-left: 1rem;
+}
+
+.granago-input-group .form-control {
+    border: 0;
+    background: transparent;
+    min-height: 58px;
+    padding-block: 0.95rem;
+    color: var(--grana-text);
+    box-shadow: none;
+}
+
+.granago-input-group .form-control::placeholder {
     color: #94a3b8;
 }
 
-.auth-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-    font-size: 0.92rem;
-}
-
-.auth-remember {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--grana-muted);
-}
-
-.auth-remember input {
-    accent-color: var(--grana-primary);
-}
-
-.auth-link {
-    color: var(--grana-primary);
-    font-weight: 800;
-}
-
-.auth-submit {
-    width: 100%;
+.granago-btn-primary {
     min-height: 58px;
     border: 0;
-    border-radius: 20px;
-    padding: 16px 20px;
+    border-radius: 1.25rem;
     background: linear-gradient(180deg, #e72255 0%, var(--grana-primary) 100%);
-    color: #fff;
-    font: inherit;
-    font-weight: 800;
-    font-size: 1rem;
     box-shadow: 0 18px 40px rgba(217, 28, 74, 0.28);
-    cursor: pointer;
+    font-weight: 700;
 }
 
-.auth-error {
-    margin-top: 8px;
+.granago-btn-primary:hover,
+.granago-btn-primary:focus {
+    background: linear-gradient(180deg, #df204f 0%, var(--grana-primary-dark) 100%);
+    color: #fff;
+}
+
+.granago-link {
+    color: var(--grana-primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.granago-link:hover {
+    color: var(--grana-primary-dark);
+}
+
+.granago-error {
+    margin-top: 0.5rem;
     color: var(--grana-primary);
     font-size: 0.88rem;
     font-weight: 700;
 }
 
-.auth-bottom {
-    margin-top: 22px;
-    text-align: center;
-    color: var(--grana-muted);
-    font-size: 0.95rem;
+.granago-status {
+    border: 1px solid #a7f3d0;
+    border-radius: 1rem;
+    background: #ecfdf5;
+    color: #047857;
+    font-size: 0.92rem;
+    font-weight: 700;
 }
 
-@media (min-width: 768px) {
-    .auth-page {
-        display: grid;
-        place-items: center;
-        padding: 24px;
-    }
+.granago-brand-badge {
+    width: 56px;
+    height: 56px;
+    border: 1px solid rgba(217, 226, 236, 0.85);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 12px 30px rgba(30, 41, 59, 0.08);
+}
 
-    .auth-shell {
-        max-width: 460px;
-    }
+.granago-brand-name {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+}
 
-    .auth-card {
-        padding: 32px 28px;
-    }
+.granago-brand-name span:last-child {
+    color: var(--grana-primary);
+}
+
+.granago-welcome-title {
+    font-size: clamp(2.35rem, 8vw, 3.35rem);
+    line-height: 0.96;
+}
+
+.granago-welcome-copy {
+    max-width: 32rem;
+}
+
+.granago-map {
+    width: 100%;
+    max-width: 48rem;
+    filter: drop-shadow(0 18px 28px rgba(30, 41, 59, 0.14));
+}
+
+.granago-btn-outline {
+    min-height: 58px;
+    border: 2px solid var(--grana-text);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 12px 30px rgba(30, 41, 59, 0.08);
+    color: var(--grana-text);
+    font-weight: 700;
+}
+
+.granago-btn-outline:hover,
+.granago-btn-outline:focus {
+    background: #fff;
+    color: var(--grana-text);
+    border-color: var(--grana-text);
 }
