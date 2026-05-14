@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Logro;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +16,26 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            UserSeeder::class,
+            LogroSeeder::class,
+            RetoSeeder::class,
+            ValidacionRetoSeeder::class,
+            ComentarioSeeder::class,
         ]);
+
+        $logroIds = Logro::query()->pluck('id');
+
+        User::query()->each(function (User $user) use ($logroIds) {
+            $idsAsignados = $logroIds->shuffle()->take(fake()->numberBetween(0, min(3, $logroIds->count())));
+
+            foreach ($idsAsignados as $logroId) {
+                $user->logros()->syncWithoutDetaching([
+                    $logroId => [
+                        'fecha_desbloqueo' => fake()->dateTimeBetween('-30 days', 'now'),
+                    ],
+                ]);
+            }
+        });
     }
 }
