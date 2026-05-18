@@ -652,6 +652,15 @@ body {
     padding: 1rem;
 }
 
+.challenge-meta {
+    display: grid;
+    gap: 0.45rem;
+    margin-top: 0.85rem;
+    color: var(--granago-text-soft);
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
 .challenge-body h2,
 .community-card strong {
     display: block;
@@ -669,6 +678,59 @@ body {
     color: var(--granago-text-soft);
     font-size: 0.94rem;
     line-height: 1.6;
+}
+
+.challenge-detail-btn {
+    margin-top: 1rem;
+    align-self: start;
+}
+
+.challenge-card-empty {
+    grid-column: 1 / -1;
+}
+
+.creator-form-card {
+    padding: 1.5rem;
+}
+
+.creator-form {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.creator-form-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.creator-form-field {
+    display: grid;
+}
+
+.creator-form-field .form-control,
+.creator-form-field .form-select {
+    min-height: 3.2rem;
+    border-color: var(--granago-border);
+    border-radius: 1rem;
+    padding: 0.85rem 1rem;
+    box-shadow: none;
+}
+
+.creator-form-field textarea.form-control {
+    min-height: 9rem;
+}
+
+.creator-form-field .form-control:focus,
+.creator-form-field .form-select:focus {
+    border-color: rgba(217, 28, 74, 0.45);
+    box-shadow: 0 0 0 0.2rem rgba(217, 28, 74, 0.12);
+}
+
+.creator-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: flex-end;
 }
 
 .status-pill {
@@ -1316,6 +1378,10 @@ body {
     .admin-inline-form .home-btn {
         width: 100%;
     }
+
+    .creator-form-actions .home-btn {
+        width: 100%;
+    }
 }
 
 @media (min-width: 768px) {
@@ -1375,6 +1441,14 @@ body {
 
     .admin-row {
         grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .creator-form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .creator-form-field-wide {
+        grid-column: 1 / -1;
     }
 }
 
