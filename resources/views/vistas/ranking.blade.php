@@ -1,22 +1,91 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="screen-page">
+@php
+    $usuariosRanking = \App\Models\User::query()
+        ->select(['id', 'nombre', 'rol', 'puntos_totales'])
+        ->where('rol', 'usuario')
+        ->where('esta_baneado', false)
+        ->orderByDesc('puntos_totales')
+        ->orderBy('nombre')
+        ->get();
+    $liderRanking = $usuariosRanking->first();
+    $topRanking = $usuariosRanking->take(3);
+    $posicionActual = $usuariosRanking->search(fn ($usuario) => $usuario->id === Auth::id());
+    $puntosMaximos = max((int) ($liderRanking->puntos_totales ?? 0), 1);
+@endphp
+
+<div class="screen-page ranking-page">
     <div class="container">
-        <div class="screen-head">
+        <div class="screen-head ranking-head">
             <div>
                 <span class="home-kicker">Ranking</span>
                 <h1>Clasificacion local</h1>
-                <p>Puntos ganados al validar retos. La racha multiplica el progreso del usuario.</p>
+                <p>Usuarios ordenados por los puntos conseguidos al validar retos.</p>
             </div>
         </div>
 
+        <section class="ranking-spotlight">
+            <div>
+                <span class="ranking-label">Va primero</span>
+                <h2>{{ $liderRanking->nombre ?? 'Sin participantes' }}</h2>
+                <p>{{ $liderRanking ? $liderRanking->puntos_totales . ' puntos acumulados' : 'Todavia no hay usuarios con puntos.' }}</p>
+            </div>
+
+            <aside>
+                <span>Tu puesto</span>
+                <strong>{{ $posicionActual === false ? '-' : $posicionActual + 1 }}</strong>
+            </aside>
+        </section>
+
+        <section class="ranking-top">
+            @forelse ($topRanking as $usuario)
+                <article class="ranking-top-card ranking-top-card-{{ $loop->iteration }}">
+                    <span>{{ $loop->iteration }}</span>
+                    <div>
+                        <strong>{{ $usuario->nombre }}</strong>
+                        <em>{{ $usuario->puntos_totales }} pts</em>
+                    </div>
+                </article>
+            @empty
+                <article class="ranking-top-card">
+                    <span>-</span>
+                    <div>
+                        <strong>Sin ranking</strong>
+                        <em>0 pts</em>
+                    </div>
+                </article>
+            @endforelse
+        </section>
+
         <section class="ranking-board">
-            <article class="ranking-row is-top"><span>1</span><strong>GranadaRunner</strong><em>420 pts</em></article>
-            <article class="ranking-row"><span>2</span><strong>AlbaicinGo</strong><em>360 pts</em></article>
-            <article class="ranking-row is-user"><span>3</span><strong>{{ Auth::user()->nombre }}</strong><em>120 pts</em></article>
-            <article class="ranking-row"><span>4</span><strong>RutaCentro</strong><em>90 pts</em></article>
-            <article class="ranking-row"><span>5</span><strong>FotoGranada</strong><em>70 pts</em></article>
+            <div class="ranking-board-title">
+                <div>
+                    <span class="ranking-label">Listado</span>
+                    <h2>Clasificacion completa</h2>
+                </div>
+                <small>{{ $usuariosRanking->count() }} usuarios</small>
+            </div>
+
+            @if ($usuariosRanking->isEmpty())
+                <article class="ranking-row">
+                    <strong>No hay usuarios en el ranking todavia.</strong>
+                    <em>0 pts</em>
+                </article>
+            @endif
+
+            @foreach ($usuariosRanking as $usuario)
+                <article class="ranking-row {{ $loop->first ? 'is-top' : '' }} {{ Auth::id() === $usuario->id ? 'is-user' : '' }}">
+                    <span>{{ $loop->iteration }}</span>
+                    <div>
+                        <strong>{{ $usuario->nombre }}</strong>
+                        <div class="ranking-progress">
+                            <i style="width: {{ max(6, ((int) $usuario->puntos_totales / $puntosMaximos) * 100) }}%"></i>
+                        </div>
+                    </div>
+                    <em>{{ $usuario->puntos_totales }} pts</em>
+                </article>
+            @endforeach
         </section>
     </div>
 </div>

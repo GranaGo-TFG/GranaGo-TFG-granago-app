@@ -16,6 +16,12 @@
             @endif
         </div>
 
+        @if (session('status'))
+            <div class="alert alert-success home-alert" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
+
         <div class="screen-filters">
             <span class="home-chip">Todos</span>
             <span class="home-chip">Cerca</span>

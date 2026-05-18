@@ -730,6 +730,15 @@ body {
     padding: 1rem;
 }
 
+.challenge-meta {
+    display: grid;
+    gap: 0.45rem;
+    margin-top: 0.85rem;
+    color: var(--granago-text-soft);
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
 .challenge-body h2,
 .community-card strong {
     display: block;
@@ -1467,6 +1476,19 @@ body {
 }
 
 @media (min-width: 768px) {
+    .ranking-top {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .ranking-top-card {
+        align-content: start;
+        grid-template-columns: 1fr;
+    }
+
+    .ranking-top-card-1 {
+        transform: translateY(-0.25rem);
+    }
+
     .profile-cover {
         height: 9rem;
     }
