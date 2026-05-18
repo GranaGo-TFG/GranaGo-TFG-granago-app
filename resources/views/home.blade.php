@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+@endpush
+
 @section('content')
 <div class="home-page">
     <section class="home-carousel-wrap" aria-label="Imagenes destacadas de Granada">
@@ -75,56 +79,89 @@
 
                 <div class="home-quick-stats" aria-label="Resumen de actividad">
                     <div>
-                        <strong>3</strong>
+                        <strong>{{ $retosActivos }}</strong>
                         <span>retos activos</span>
                     </div>
                     <div>
-                        <strong>120</strong>
+                        <strong>{{ Auth::user()->puntos_totales }}</strong>
                         <span>puntos</span>
                     </div>
                     <div>
-                        <strong>x1.25</strong>
+                        <strong>x{{ number_format((float) Auth::user()->racha_multiplicador, 2) }}</strong>
                         <span>racha</span>
                     </div>
                 </div>
             </div>
 
             <div class="home-map-card">
-                <img src="{{ asset('images/mapaGranaIlustracion.png') }}" alt="Mapa ilustrado de Granada">
-                <div class="home-map-note">
-                    <span>Siguiente ruta</span>
-                    <strong>Albaicin - Mirador - Centro</strong>
-                </div>
+                <div
+                    id="inicio-retos-map"
+                    class="home-live-map"
+                    data-endpoint="{{ route('retos.mapa.data') }}"
+                    data-initial-lat="{{ $retoDestacado?->latitud ?? 37.1773 }}"
+                    data-initial-lng="{{ $retoDestacado?->longitud ?? -3.5986 }}"
+                    aria-label="Mapa de retos de Granada"
+                ></div>
+                <label class="home-map-toggle" for="buscarLatLon">
+                    <input id="buscarLatLon" type="checkbox" checked>
+                    Actualizar por zona visible
+                </label>
+                <p id="retos-map-status" class="home-map-status" aria-live="polite">Cargando retos...</p>
+                <input type="hidden" id="latMax" value="">
+                <input type="hidden" id="longMax" value="">
+                <input type="hidden" id="latMin" value="">
+                <input type="hidden" id="longMin" value="">
             </div>
         </section>
 
         <section class="home-focus-grid">
             <article class="home-next-challenge">
-                <div>
-                    <span class="home-kicker">Reto recomendado</span>
-                    <h2>Foto en el Mirador de San Nicolas</h2>
-                    <p>Un reto corto para empezar la ruta: encuentra una buena vista de la Alhambra y sube tu prueba.</p>
-                </div>
-                <div class="home-next-meta">
-                    <span>+50 pts</span>
-                    <span>Fotografico</span>
-                    <span>Albaicin</span>
-                </div>
-                <a href="{{ route('vistas.reto-detalle') }}" class="home-small-link">Ver detalle</a>
+                @if ($retoDestacado)
+                    <div>
+                        <span class="home-kicker">Reto recomendado</span>
+                        <h2>{{ $retoDestacado->nombre }}</h2>
+                        <p>{{ \Illuminate\Support\Str::limit($retoDestacado->descripcion, 160) }}</p>
+                    </div>
+                    <div class="home-next-meta">
+                        <span>+{{ $retoDestacado->puntos_recompensa }} pts</span>
+                        <span>{{ ucfirst($retoDestacado->estado) }}</span>
+                        <span>{{ $retoDestacado->ubicacion_referencia ?? 'Granada' }}</span>
+                    </div>
+                    <a href="{{ route('vistas.retos') }}" class="home-small-link">Ver retos</a>
+                @else
+                    <div>
+                        <span class="home-kicker">Reto recomendado</span>
+                        <h2>Aun no hay retos publicados</h2>
+                        <p>Crea un reto o revisa el listado para empezar a poblar el mapa del proyecto.</p>
+                    </div>
+                    <a href="{{ Auth::user()->rol === 'creador' ? route('vistas.crear-reto') : route('vistas.retos') }}" class="home-small-link">Ir a retos</a>
+                @endif
             </article>
 
             <aside class="home-side-panel">
                 <div>
                     <span class="home-kicker">Tu progreso</span>
-                    <h2>Vas 3º esta semana</h2>
-                    <p>Te faltan 30 puntos para alcanzar el segundo puesto.</p>
+                    <h2>Vas {{ $rankingPosicion }}&ordm; en la clasificacion</h2>
+                    @if ($puntosParaSiguiente > 0)
+                        <p>Te faltan {{ $puntosParaSiguiente }} puntos para alcanzar la siguiente posicion.</p>
+                    @else
+                        <p>Estas en el primer puesto. Mantente activo para conservar la posicion.</p>
+                    @endif
                 </div>
                 <div class="home-mini-progress">
-                    <span style="width: 68%"></span>
+                    <span style="width: {{ $progresoRanking }}%"></span>
                 </div>
                 <a href="{{ route('vistas.ranking') }}" class="home-small-link">Ver ranking</a>
+                <div class="home-map-note">
+                    <span>Mapa del proyecto</span>
+                    <strong>{{ $retosConMapa }} retos con coordenadas</strong>
+                </div>
             </aside>
         </section>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+@endpush
