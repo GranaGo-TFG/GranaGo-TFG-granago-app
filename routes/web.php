@@ -25,6 +25,7 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
         Route::get('/retos', [RetoVistaController::class, 'index'])->name('retos');
         Route::get('/retos/crear', [RetoVistaController::class, 'create'])->name('crear-reto');
         Route::post('/retos', [RetoVistaController::class, 'store'])->name('retos.store');
+        Route::get('/retos/{reto}', [RetoVistaController::class, 'show'])->name('reto-detalle');
 
         Route::view('/subir-prueba', 'vistas.subir-prueba')->name('subir-prueba');
         Route::view('/ranking', 'vistas.ranking')->name('ranking');

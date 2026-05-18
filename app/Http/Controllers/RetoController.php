@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class RetoController extends Controller
 {
@@ -120,6 +122,7 @@ class RetoController extends Controller
                 'lg' => (float) $reto->longitud,
                 'inicio' => optional($reto->fecha_inicio)->toDateTimeString(),
                 'fin' => optional($reto->fecha_fin)->toDateTimeString(),
+                'url' => route('vistas.reto-detalle', $reto),
             ];
         })->values();
 
