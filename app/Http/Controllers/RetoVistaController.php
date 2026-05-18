@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reto;
+use App\Models\ValidacionReto;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -53,8 +54,30 @@ class RetoVistaController extends Controller
         $reto = Reto::create($data);
 
         return redirect()
-            ->route('vistas.retos')
+            ->route('vistas.reto-detalle', $reto)
             ->with('status', 'Reto creado correctamente.');
+    }
+
+    public function show(Reto $reto): View
+    {
+        $reto->load('creador:id,nombre');
+        $reto->loadCount([
+            'validaciones',
+            'validaciones as validaciones_verificadas_count' => fn ($query) => $query->where('estado', 'verificado'),
+            'validaciones as validaciones_pendientes_count' => fn ($query) => $query->where('estado', 'pendiente'),
+        ]);
+
+        $validacionesRecientes = ValidacionReto::query()
+            ->with('user:id,nombre')
+            ->where('reto_id', $reto->id)
+            ->latest('fecha_envio')
+            ->limit(3)
+            ->get();
+
+        return view('vistas.reto-detalle', [
+            'reto' => $reto,
+            'validacionesRecientes' => $validacionesRecientes,
+        ]);
     }
 
     private function autorizarCreacion(): void
