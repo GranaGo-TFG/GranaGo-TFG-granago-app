@@ -29,6 +29,7 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
         Route::view('/subir-prueba', 'vistas.subir-prueba')->name('subir-prueba');
         Route::view('/ranking', 'vistas.ranking')->name('ranking');
         Route::view('/comunidad', 'vistas.comunidad')->name('comunidad');
+        Route::view('/tienda', 'vistas.tienda')->name('tienda');
         Route::view('/perfil', 'vistas.perfil')->name('perfil');
 
         Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('editar-perfil');
