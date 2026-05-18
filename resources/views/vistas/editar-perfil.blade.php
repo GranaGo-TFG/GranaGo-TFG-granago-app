@@ -58,7 +58,7 @@
                     <p class="muted-copy">Los cambios se guardan en tu cuenta actual. La contrasena es opcional.</p>
                 </div>
 
-                <form method="POST" action="{{ route('perfil.update') }}" class="edit-profile-form">
+                <form method="POST" action="{{ route('vistas.perfil.update') }}" class="edit-profile-form">
                     @csrf
                     @method('PATCH')
 
