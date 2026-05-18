@@ -9,7 +9,16 @@
                 <h1>Retos disponibles por Granada</h1>
                 <p>Elige una prueba, sal a la calle y sube una foto cuando la completes.</p>
             </div>
+            @if (Auth::user()->rol === 'creador')
+                <a href="{{ route('vistas.crear-reto') }}" class="btn btn-primary home-btn">Crear proyecto</a>
+            @endif
         </div>
+
+        @if (session('status'))
+            <div class="alert alert-success home-alert" role="alert">
+                {{ session('status') }}
+            </div>
+        @endif
 
         <div class="screen-filters">
             <span class="home-chip">Todos</span>
