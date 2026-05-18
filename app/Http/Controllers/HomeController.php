@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'not_banned']);
     }
 
     /**
@@ -23,6 +23,10 @@ class HomeController extends Controller
      */
     public function index()
     {
+        if (auth()->user()?->rol === 'admin') {
+            return redirect()->route('admin.retos.index');
+        }
+
         return view('home');
     }
 }
