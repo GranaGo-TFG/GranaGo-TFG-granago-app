@@ -1,6 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+@php
+    $usuariosRanking = \App\Models\User::query()
+        ->select(['id', 'nombre', 'rol', 'puntos_totales'])
+        ->where('rol', 'usuario')
+        ->where('esta_baneado', false)
+        ->orderByDesc('puntos_totales')
+        ->orderBy('nombre')
+        ->get();
+@endphp
+
 <div class="screen-page">
     <div class="container">
         <div class="screen-head">
@@ -12,11 +22,20 @@
         </div>
 
         <section class="ranking-board">
-            <article class="ranking-row is-top"><span>1</span><strong>GranadaRunner</strong><em>420 pts</em></article>
-            <article class="ranking-row"><span>2</span><strong>AlbaicinGo</strong><em>360 pts</em></article>
-            <article class="ranking-row is-user"><span>3</span><strong>{{ Auth::user()->nombre }}</strong><em>120 pts</em></article>
-            <article class="ranking-row"><span>4</span><strong>RutaCentro</strong><em>90 pts</em></article>
-            <article class="ranking-row"><span>5</span><strong>FotoGranada</strong><em>70 pts</em></article>
+            @if ($usuariosRanking->isEmpty())
+                <article class="ranking-row">
+                    <strong>No hay usuarios en el ranking todavia.</strong>
+                    <em>0 pts</em>
+                </article>
+            @endif
+
+            @foreach ($usuariosRanking as $usuario)
+                <article class="ranking-row {{ $loop->first ? 'is-top' : '' }} {{ Auth::id() === $usuario->id ? 'is-user' : '' }}">
+                    <span>{{ $loop->iteration }}</span>
+                    <strong>{{ $usuario->nombre }}</strong>
+                    <em>{{ $usuario->puntos_totales }} pts</em>
+                </article>
+            @endforeach
         </section>
     </div>
 </div>

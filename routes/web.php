@@ -4,7 +4,6 @@ use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\LogroController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RankingController;
 use App\Http\Controllers\RetoController;
 use App\Http\Controllers\ValidacionRetoController;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +21,7 @@ Route::middleware(['auth', 'not_banned', 'not_admin'])->group(function () {
     Route::view('/vista-retos', 'vistas.retos')->name('vistas.retos');
     Route::view('/vista-reto-detalle', 'vistas.reto-detalle')->name('vistas.reto-detalle');
     Route::view('/vista-subir-prueba', 'vistas.subir-prueba')->name('vistas.subir-prueba');
-    Route::get('/vista-ranking', [RankingController::class, 'index'])->name('vistas.ranking');
+    Route::view('/vista-ranking', 'vistas.ranking')->name('vistas.ranking');
     Route::view('/vista-perfil', 'vistas.perfil')->name('vistas.perfil');
     Route::get('/vista-editar-perfil', [ProfileController::class, 'edit'])->name('vistas.editar-perfil');
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('perfil.update');
