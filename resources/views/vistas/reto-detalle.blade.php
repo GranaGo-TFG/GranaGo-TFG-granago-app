@@ -7,16 +7,36 @@
 @section('content')
 <div class="screen-page">
     <div class="container">
+        @php
+            $statusClass = match ($reto->estado) {
+                'publicado' => 'status-open',
+                'borrador' => 'status-draft',
+                default => 'status-rejected',
+            };
+        @endphp
+
         @if (session('status'))
             <div class="alert alert-success home-alert" role="alert">
                 {{ session('status') }}
             </div>
         @endif
 
-        <section class="home-panel">
-            <span class="home-kicker">Reto {{ ucfirst($reto->estado) }}</span>
-            <h1>{{ $reto->nombre }}</h1>
-            <p class="muted-copy">{{ $reto->descripcion }}</p>
+        <section class="detail-hero">
+            @if ($reto->archivo_multimedia)
+                <img src="{{ $reto->archivo_multimedia }}" alt="Imagen del reto {{ $reto->nombre }}" class="detail-hero-media">
+            @else
+                <div class="detail-hero-media detail-hero-media-fallback" aria-hidden="true"></div>
+            @endif
+
+            <div class="detail-hero-overlay">
+                <span class="home-kicker">Reto:</span>
+                <h1>{{ $reto->nombre }}</h1>
+                <span class="status-pill {{ $statusClass }} detail-status-pill">Estado: {{ ucfirst($reto->estado) }}</span>
+                <p>{{ $reto->descripcion }}</p>
+            </div>
+        </section>
+
+        <section class="home-panel detail-content-panel">
 
             <div class="row g-3 mt-2">
                 <div class="col-lg-8">

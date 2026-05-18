@@ -74,7 +74,6 @@
                 </p>
                 <div class="home-actions">
                     <a href="{{ route('vistas.retos') }}" class="btn btn-primary home-btn">Ver retos</a>
-                    <a href="{{ route('vistas.subir-prueba') }}" class="btn btn-outline-secondary home-btn">Subir prueba</a>
                 </div>
 
                 <div class="home-quick-stats" aria-label="Resumen de actividad">

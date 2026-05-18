@@ -11,8 +11,6 @@
             </div>
             @if (Auth::user()->rol === 'creador')
                 <a href="{{ route('vistas.crear-reto') }}" class="btn btn-primary home-btn">Crear reto</a>
-            @else
-                <a href="{{ route('vistas.subir-prueba') }}" class="btn btn-primary home-btn">Subir prueba</a>
             @endif
         </div>
 
@@ -21,14 +19,6 @@
                 {{ session('status') }}
             </div>
         @endif
-
-        <div class="screen-filters">
-            <span class="home-chip">Todos</span>
-            <span class="home-chip">Cerca</span>
-            <span class="home-chip">Fotografia</span>
-            <span class="home-chip">Cultura</span>
-            <span class="home-chip">Comercio local</span>
-        </div>
 
         <section class="challenge-grid">
             @forelse ($retos as $reto)
