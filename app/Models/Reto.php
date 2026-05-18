@@ -17,11 +17,14 @@ class Reto extends Model
         'creador_id',
         'nombre',
         'descripcion',
+        'ubicacion_referencia',
         'archivo_multimedia',
         'fecha_inicio',
         'fecha_fin',
         'estado',
         'puntos_recompensa',
+        'latitud',
+        'longitud',
     ];
 
     protected function casts(): array
@@ -30,6 +33,8 @@ class Reto extends Model
             'fecha_inicio' => 'datetime',
             'fecha_fin' => 'datetime',
             'puntos_recompensa' => 'integer',
+            'latitud' => 'float',
+            'longitud' => 'float',
         ];
     }
 
