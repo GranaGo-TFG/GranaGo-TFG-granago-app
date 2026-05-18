@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Reto;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class RetoController extends Controller
@@ -12,6 +14,7 @@ class RetoController extends Controller
     public function indexView(): View
     {
         $retos = Reto::query()
+            ->where('estado', '!=', 'borrador')
             ->orderByDesc('fecha_inicio')
             ->orderByDesc('id')
             ->get();
@@ -19,9 +22,42 @@ class RetoController extends Controller
         return view('vistas.retos', compact('retos'));
     }
 
+    public function createView(): View
+    {
+        abort_if(Auth::user()?->rol !== 'creador', 403);
+
+        return view('vistas.crear-reto');
+    }
+
     public function showView(Reto $reto): View
     {
+        abort_if($reto->estado === 'borrador', 404);
+
         return view('vistas.reto-detalle', compact('reto'));
+    }
+
+    public function storeView(Request $request): RedirectResponse
+    {
+        abort_if(Auth::user()?->rol !== 'creador', 403);
+
+        $data = $request->validate([
+            'nombre' => ['required', 'string', 'max:100'],
+            'descripcion' => ['required', 'string'],
+            'archivo_multimedia' => ['nullable', 'string', 'max:255'],
+            'fecha_inicio' => ['required', 'date'],
+            'fecha_fin' => ['required', 'date', 'after_or_equal:fecha_inicio'],
+            'estado' => ['required', 'in:borrador,publicado,caducado'],
+            'puntos_recompensa' => ['required', 'integer', 'min:0'],
+        ]);
+
+        Reto::create([
+            ...$data,
+            'creador_id' => Auth::id(),
+        ]);
+
+        return redirect()
+            ->route('vistas.retos')
+            ->with('status', 'Proyecto creado correctamente.');
     }
 
     public function index(): JsonResponse
