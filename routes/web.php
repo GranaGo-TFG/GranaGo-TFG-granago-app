@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\LogroController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RetoController;
 use App\Http\Controllers\ValidacionRetoController;
 use Illuminate\Support\Facades\Auth;
@@ -21,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::view('/vista-subir-prueba', 'vistas.subir-prueba')->name('vistas.subir-prueba');
     Route::view('/vista-ranking', 'vistas.ranking')->name('vistas.ranking');
     Route::view('/vista-perfil', 'vistas.perfil')->name('vistas.perfil');
+    Route::get('/vista-editar-perfil', [ProfileController::class, 'edit'])->name('vistas.editar-perfil');
+    Route::patch('/perfil', [ProfileController::class, 'update'])->name('perfil.update');
     Route::view('/vista-comunidad', 'vistas.comunidad')->name('vistas.comunidad');
     Route::view('/vista-validaciones', 'vistas.validaciones')->name('vistas.validaciones');
 

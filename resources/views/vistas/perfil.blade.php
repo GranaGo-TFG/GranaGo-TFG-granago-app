@@ -21,7 +21,7 @@
                     </div>
                 </div>
 
-                <a href="#" class="btn btn-outline-secondary profile-edit">Editar perfil</a>
+                <a href="{{ route('vistas.editar-perfil') }}" class="btn btn-outline-secondary profile-edit">Editar perfil</a>
             </div>
         </section>
 
