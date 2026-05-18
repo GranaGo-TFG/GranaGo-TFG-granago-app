@@ -5,9 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Reto;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class RetoController extends Controller
 {
+    public function indexView(): View
+    {
+        $retos = Reto::query()
+            ->orderByDesc('fecha_inicio')
+            ->orderByDesc('id')
+            ->get();
+
+        return view('vistas.retos', compact('retos'));
+    }
+
+    public function showView(Reto $reto): View
+    {
+        return view('vistas.reto-detalle', compact('reto'));
+    }
+
     public function index(): JsonResponse
     {
         $retos = Reto::with('creador:id,nombre,email')

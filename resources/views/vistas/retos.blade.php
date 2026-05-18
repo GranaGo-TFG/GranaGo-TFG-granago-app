@@ -9,7 +9,6 @@
                 <h1>Retos disponibles por Granada</h1>
                 <p>Elige una prueba, sal a la calle y sube una foto cuando la completes.</p>
             </div>
-            <a href="{{ route('vistas.subir-prueba') }}" class="btn btn-primary home-btn">Subir prueba</a>
         </div>
 
         <div class="screen-filters">
@@ -21,41 +20,32 @@
         </div>
 
         <section class="challenge-grid">
-            <article class="challenge-card">
-                <div class="challenge-cover challenge-cover-red">
-                    <span>+50 pts</span>
-                </div>
-                <div class="challenge-body">
-                    <span class="status-pill status-open">Publicado</span>
-                    <h2>Foto en el Mirador de San Nicolas</h2>
-                    <p>Busca una vista reconocible de la Alhambra y sube la prueba desde el mirador.</p>
-                    <a href="{{ route('vistas.reto-detalle') }}" class="home-small-link">Ver reto</a>
-                </div>
-            </article>
-
-            <article class="challenge-card">
-                <div class="challenge-cover challenge-cover-gold">
-                    <span>+35 pts</span>
-                </div>
-                <div class="challenge-body">
-                    <span class="status-pill status-open">Publicado</span>
-                    <h2>Ruta de arte urbano</h2>
-                    <p>Encuentra un mural o grafiti destacado y comparte una foto cuidada.</p>
-                    <a href="{{ route('vistas.reto-detalle') }}" class="home-small-link">Ver reto</a>
-                </div>
-            </article>
-
-            <article class="challenge-card">
-                <div class="challenge-cover challenge-cover-dark">
-                    <span>+25 pts</span>
-                </div>
-                <div class="challenge-body">
-                    <span class="status-pill status-draft">Borrador</span>
-                    <h2>Comercio de barrio</h2>
-                    <p>Una prueba pensada para mover usuarios por zonas menos conocidas.</p>
-                    <a href="{{ route('vistas.reto-detalle') }}" class="home-small-link">Ver reto</a>
-                </div>
-            </article>
+            @forelse ($retos as $reto)
+                <article class="challenge-card">
+                    <div class="challenge-cover {{ $loop->index % 3 === 0 ? 'challenge-cover-red' : ($loop->index % 3 === 1 ? 'challenge-cover-gold' : 'challenge-cover-dark') }}">
+                        <span>+{{ $reto->puntos_recompensa }} pts</span>
+                    </div>
+                    <div class="challenge-body">
+                        <span class="status-pill {{ $reto->estado === 'publicado' ? 'status-open' : ($reto->estado === 'borrador' ? 'status-draft' : 'status-rejected') }}">
+                            {{ ucfirst($reto->estado) }}
+                        </span>
+                        <h2>{{ $reto->nombre }}</h2>
+                        <div class="challenge-meta">
+                            <span>Inicio: {{ optional($reto->fecha_inicio)->format('d/m/Y') ?? 'Sin fecha' }}</span>
+                            <span>Fin: {{ optional($reto->fecha_fin)->format('d/m/Y') ?? 'Sin fecha' }}</span>
+                            <span>Puntuacion: {{ $reto->puntos_recompensa }} pts</span>
+                        </div>
+                        <a href="{{ route('vistas.reto-detalle', $reto) }}" class="btn btn-outline-secondary home-btn challenge-detail-btn">Ver detalles</a>
+                    </div>
+                </article>
+            @empty
+                <article class="challenge-card challenge-card-empty">
+                    <div class="challenge-body">
+                        <h2>No hay proyectos disponibles</h2>
+                        <p>Cuando se publiquen retos nuevos apareceran aqui automaticamente.</p>
+                    </div>
+                </article>
+            @endforelse
         </section>
     </div>
 </div>

@@ -652,6 +652,15 @@ body {
     padding: 1rem;
 }
 
+.challenge-meta {
+    display: grid;
+    gap: 0.45rem;
+    margin-top: 0.85rem;
+    color: var(--granago-text-soft);
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
 .challenge-body h2,
 .community-card strong {
     display: block;
@@ -669,6 +678,15 @@ body {
     color: var(--granago-text-soft);
     font-size: 0.94rem;
     line-height: 1.6;
+}
+
+.challenge-detail-btn {
+    margin-top: 1rem;
+    align-self: start;
+}
+
+.challenge-card-empty {
+    grid-column: 1 / -1;
 }
 
 .status-pill {
