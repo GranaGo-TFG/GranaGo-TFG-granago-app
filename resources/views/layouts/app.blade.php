@@ -31,21 +31,33 @@
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
                         @auth
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home') }}">Inicio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('vistas.retos') }}">Retos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('vistas.ranking') }}">Ranking</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('vistas.perfil') }}">Perfil</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('vistas.comunidad') }}">Comunidad</a>
-                            </li>
+                            @if (Auth::user()->rol === 'admin')
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.retos.index') }}">Proyectos</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.validaciones.index') }}">Validaciones</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.usuarios.index') }}">Usuarios</a>
+                                </li>
+                            @else
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('home') }}">Inicio</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('vistas.retos') }}">Retos</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('vistas.ranking') }}">Ranking</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('vistas.perfil') }}">Perfil</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('vistas.comunidad') }}">Comunidad</a>
+                                </li>
+                            @endif
                         @endauth
                     </ul>
 
@@ -71,9 +83,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('vistas.perfil') }}">
-                                        Perfil
-                                    </a>
+                                    @if (Auth::user()->rol !== 'admin')
+                                        <a class="dropdown-item" href="{{ route('vistas.perfil') }}">
+                                            Perfil
+                                        </a>
+                                    @endif
 
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
