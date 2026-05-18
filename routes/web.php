@@ -16,6 +16,14 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
+    Route::view('/vista-retos', 'vistas.retos')->name('vistas.retos');
+    Route::view('/vista-reto-detalle', 'vistas.reto-detalle')->name('vistas.reto-detalle');
+    Route::view('/vista-subir-prueba', 'vistas.subir-prueba')->name('vistas.subir-prueba');
+    Route::view('/vista-ranking', 'vistas.ranking')->name('vistas.ranking');
+    Route::view('/vista-perfil', 'vistas.perfil')->name('vistas.perfil');
+    Route::view('/vista-comunidad', 'vistas.comunidad')->name('vistas.comunidad');
+    Route::view('/vista-validaciones', 'vistas.validaciones')->name('vistas.validaciones');
+
     Route::apiResource('retos', RetoController::class);
     Route::apiResource('validaciones-reto', ValidacionRetoController::class);
     Route::apiResource('logros', LogroController::class);
