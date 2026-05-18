@@ -52,9 +52,6 @@
                                     <a class="nav-link" href="{{ route('vistas.ranking') }}">Ranking</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('vistas.perfil') }}">Perfil</a>
-                                </li>
-                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('vistas.comunidad') }}">Comunidad</a>
                                 </li>
                             @endif
