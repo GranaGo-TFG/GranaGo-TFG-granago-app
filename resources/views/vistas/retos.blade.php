@@ -59,7 +59,7 @@
                             <span>{{ optional($reto->fecha_fin)->format('d/m/Y') ?? 'Sin fecha fin' }}</span>
                             <span>{{ $reto->validaciones_verificadas_count }} validadas</span>
                         </div>
-                        <span class="home-small-link">Disponible en el mapa</span>
+                        <a href="{{ route('vistas.reto-detalle', $reto) }}" class="home-small-link">Ver detalle</a>
                     </div>
                 </article>
             @empty
