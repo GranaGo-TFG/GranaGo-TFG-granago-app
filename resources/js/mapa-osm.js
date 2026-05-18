@@ -164,6 +164,7 @@ var MapaOSM = {
             "<span>+" + this.escapar(String(reto.pnt || 0)) + ' pts</span>' +
             "<span>" + this.escapar(ref) + '</span>' +
             '</div>' +
+                "<a class='home-small-link' href='" + this.escapar(reto.url || '#') + "'>Ver detalle</a>" +
             '</article>';
     },
 
