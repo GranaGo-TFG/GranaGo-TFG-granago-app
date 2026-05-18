@@ -18,7 +18,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth', 'not_banned', 'not_admin'])->group(function () {
-    Route::view('/vista-retos', 'vistas.retos')->name('vistas.retos');
+    Route::get('/vista-retos', [RetoController::class, 'indexView'])->name('vistas.retos');
     Route::view('/vista-reto-detalle', 'vistas.reto-detalle')->name('vistas.reto-detalle');
     Route::view('/vista-subir-prueba', 'vistas.subir-prueba')->name('vistas.subir-prueba');
     Route::view('/vista-ranking', 'vistas.ranking')->name('vistas.ranking');
