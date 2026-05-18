@@ -127,7 +127,7 @@
                         <span>{{ ucfirst($retoDestacado->estado) }}</span>
                         <span>{{ $retoDestacado->ubicacion_referencia ?? 'Granada' }}</span>
                     </div>
-                    <a href="{{ route('vistas.retos') }}" class="home-small-link">Ver retos</a>
+                    <a href="{{ route('vistas.reto-detalle', $retoDestacado) }}" class="home-small-link">Ver detalle</a>
                 @else
                     <div>
                         <span class="home-kicker">Reto recomendado</span>
