@@ -22,6 +22,7 @@ Route::middleware(['auth', 'not_banned', 'not_admin'])->group(function () {
     Route::view('/vista-reto-detalle', 'vistas.reto-detalle')->name('vistas.reto-detalle');
     Route::view('/vista-subir-prueba', 'vistas.subir-prueba')->name('vistas.subir-prueba');
     Route::view('/vista-ranking', 'vistas.ranking')->name('vistas.ranking');
+    Route::view('/vista-tienda', 'vistas.tienda')->name('vistas.tienda');
     Route::view('/vista-perfil', 'vistas.perfil')->name('vistas.perfil');
     Route::get('/vista-editar-perfil', [ProfileController::class, 'edit'])->name('vistas.editar-perfil');
     Route::patch('/perfil', [ProfileController::class, 'update'])->name('perfil.update');
