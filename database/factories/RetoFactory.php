@@ -38,7 +38,7 @@ class RetoFactory extends Factory
                 'Sacromonte',
                 'Zaidin',
             ]),
-            'archivo_multimedia' => fake()->optional(0.7)->imageUrl(1280, 720, 'city', true, 'reto'),
+            'archivo_multimedia' => 'https://placehold.co/600x400',
             'fecha_inicio' => $fechaInicio,
             'fecha_fin' => $fechaFin,
             'estado' => $estado,

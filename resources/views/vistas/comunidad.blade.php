@@ -5,8 +5,8 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <span class="home-kicker">Comunidad</span>
-                <h1>Actividad de retos</h1>
+                <h1 class="home-kicker">Comunidad</h1>
+                <h2>Actividad de retos</h2>
                 <p>Fotos validadas, comentarios y movimiento reciente de los usuarios.</p>
             </div>
         </div>

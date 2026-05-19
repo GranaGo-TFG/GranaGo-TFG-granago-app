@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reto;
 use App\Models\User;
 use App\Models\ValidacionReto;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -24,7 +25,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index(): View
+    public function index(): View|RedirectResponse
     {
         if (auth()->user()?->rol === 'admin') {
             return redirect()->route('admin.retos.index');

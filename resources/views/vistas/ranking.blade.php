@@ -4,7 +4,7 @@
 @php
     $usuariosRanking = \App\Models\User::query()
         ->select(['id', 'nombre', 'rol', 'puntos_totales'])
-        ->where('rol', 'usuario')
+        ->where('rol', '!=', 'admin')
         ->where('esta_baneado', false)
         ->orderByDesc('puntos_totales')
         ->orderBy('nombre')
@@ -19,8 +19,8 @@
     <div class="container">
         <div class="screen-head ranking-head">
             <div>
-                <span class="home-kicker">Ranking</span>
-                <h1>Clasificacion local</h1>
+                <h1 class="home-kicker">Ranking</h1>
+                <h2>Clasificacion local</h2>
                 <p>Usuarios ordenados por los puntos conseguidos al validar retos.</p>
             </div>
         </div>
@@ -31,11 +31,10 @@
                 <h2>{{ $liderRanking->nombre ?? 'Sin participantes' }}</h2>
                 <p>{{ $liderRanking ? $liderRanking->puntos_totales . ' puntos acumulados' : 'Todavia no hay usuarios con puntos.' }}</p>
             </div>
-
-            <aside>
+            <section class="ranking-spotlight">
                 <span>Tu puesto</span>
-                <strong>{{ $posicionActual === false ? '-' : $posicionActual + 1 }}</strong>
-            </aside>
+                <strong>#{{ $posicionActual === false ? $usuariosRanking->count() : $posicionActual + 1 }}</strong>
+            </section>
         </section>
 
         <section class="ranking-top">
@@ -76,14 +75,14 @@
 
             @foreach ($usuariosRanking as $usuario)
                 <article class="ranking-row {{ $loop->first ? 'is-top' : '' }} {{ Auth::id() === $usuario->id ? 'is-user' : '' }}">
-                    <span>{{ $loop->iteration }}</span>
+                    <span>Posición: {{ $loop->iteration }}</span>
                     <div>
-                        <strong>{{ $usuario->nombre }}</strong>
+                        <strong>Nombre: {{ $usuario->nombre }}</strong>
                         <div class="ranking-progress">
                             <i style="width: {{ max(6, ((int) $usuario->puntos_totales / $puntosMaximos) * 100) }}%"></i>
                         </div>
                     </div>
-                    <em>{{ $usuario->puntos_totales }} pts</em>
+                    <em>Puntos totales: {{ $usuario->puntos_totales }} pts</em>
                 </article>
             @endforeach
         </section>

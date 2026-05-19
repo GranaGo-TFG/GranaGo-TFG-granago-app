@@ -5,8 +5,7 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <span class="home-kicker">Admin</span>
-                <h1>Validaciones de usuarios</h1>
+                <h1 class="home-kicker">Validaciones de usuarios</h1>
                 <p>Revisa cada prueba enviada y decide si queda pendiente, verificada o rechazada.</p>
             </div>
         </div>
