@@ -19,8 +19,8 @@
     <div class="container">
         <div class="screen-head ranking-head">
             <div>
-                <span class="home-kicker">Ranking</span>
-                <h1>Clasificacion local</h1>
+                <h1 class="home-kicker">Ranking</h1>
+                <h2>Clasificacion local</h2>
                 <p>Usuarios ordenados por los puntos conseguidos al validar retos.</p>
             </div>
         </div>
@@ -75,14 +75,14 @@
 
             @foreach ($usuariosRanking as $usuario)
                 <article class="ranking-row {{ $loop->first ? 'is-top' : '' }} {{ Auth::id() === $usuario->id ? 'is-user' : '' }}">
-                    <span>{{ $loop->iteration }}</span>
+                    <span>Posición: {{ $loop->iteration }}</span>
                     <div>
-                        <strong>{{ $usuario->nombre }}</strong>
+                        <strong>Nombre: {{ $usuario->nombre }}</strong>
                         <div class="ranking-progress">
                             <i style="width: {{ max(6, ((int) $usuario->puntos_totales / $puntosMaximos) * 100) }}%"></i>
                         </div>
                     </div>
-                    <em>{{ $usuario->puntos_totales }} pts</em>
+                    <em>Puntos totales: {{ $usuario->puntos_totales }} pts</em>
                 </article>
             @endforeach
         </section>

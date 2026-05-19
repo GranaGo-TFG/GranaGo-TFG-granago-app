@@ -31,13 +31,13 @@
                 </div>
 
                 <div class="profile-info">
-                    <span class="home-kicker">Perfil</span>
-                    <h1>{{ $user->nombre }}</h1>
+                    <h1 class="home-kicker">Perfil</h1>
+                    <h2>{{ $user->nombre }}</h2>
                     <p>Explorador urbano de Granada. Retos, puntos y logros en un mismo sitio.</p>
                     <div class="profile-tags">
                         <span>{{ $user->rol }}</span>
                         <span>Granada</span>
-                        <span>{{ $user->esta_baneado ? 'Cuenta baneada' : 'Cuenta activa' }}</span>
+                        <span>{{ $user->esta_baneado ? 'Baneado' : 'Activo' }}</span>
                     </div>
                 </div>
 
@@ -68,7 +68,7 @@
             <article class="home-panel profile-card">
                 <span class="home-kicker">Progreso</span>
                 <h2>Camino al siguiente objetivo</h2>
-                <p class="muted-copy">Te faltan {{ $puntosRestantes }} puntos para llegar a {{ $siguienteObjetivo }} puntos.</p>
+                <p class="muted-copy">Te faltan {{ $puntosRestantes }} puntos para llegar a el siguiente objetivo de puntos.</p>
                 <div class="profile-progress">
                     <span style="width: {{ $porcentajeProgreso }}%"></span>
                 </div>

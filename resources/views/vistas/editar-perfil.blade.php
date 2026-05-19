@@ -5,8 +5,8 @@
     <div class="container">
         <div class="edit-profile-hero">
             <div class="edit-profile-hero-copy">
-                <span class="home-kicker">Ajustes de cuenta</span>
-                <h1>Editar perfil</h1>
+                <h1 class="home-kicker">Ajustes de cuenta</h1>
+                <h2>Editar perfil</h2>
                 <p>Actualiza tu nombre, tu correo y la contrasena de acceso sin salir del panel de GranaGO!.</p>
             </div>
             <a href="{{ route('vistas.perfil') }}" class="btn btn-outline-secondary profile-edit-back">

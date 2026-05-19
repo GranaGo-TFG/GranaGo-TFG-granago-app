@@ -5,8 +5,8 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <span class="home-kicker">Tienda</span>
-                <h1>Tienda GranaGO!</h1>
+                <h1 class="home-kicker">Tienda</h1>
+                <h2>Tienda GranaGO!</h2>
                 <p>Un espacio reservado para recompensas, canjes y mejoras dentro de la experiencia.</p>
             </div>
         </div>

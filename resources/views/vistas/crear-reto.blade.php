@@ -9,8 +9,8 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <span class="home-kicker">Crear reto</span>
-                <h1>Nuevo reto para los jugadores</h1>
+                <h1 class="home-kicker">Crear reto</h1>
+                <h2>Nuevo reto para los jugadores</h2>
                 <p>Define nombre, fechas, puntos y coordenadas para que el reto aparezca en el mapa de inicio.</p>
             </div>
             <a href="{{ route('vistas.retos') }}" class="btn btn-outline-secondary home-btn">Volver a retos</a>

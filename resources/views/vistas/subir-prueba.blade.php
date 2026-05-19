@@ -5,8 +5,8 @@
     <div class="container">
         <div class="detail-layout">
             <section class="home-panel detail-main">
-                <span class="home-kicker">Validacion</span>
-                <h1>Subir prueba del reto</h1>
+                <h1 class="home-kicker">Validacion</h1>
+                <h2>Subir prueba del reto</h2>
                 <p class="detail-copy">Anade la foto del reto para que pueda revisarse y contar en tu progreso.</p>
 
                 <div class="upload-box">

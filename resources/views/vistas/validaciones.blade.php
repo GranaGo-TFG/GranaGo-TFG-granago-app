@@ -5,8 +5,8 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <span class="home-kicker">Revision</span>
-                <h1>Validaciones pendientes</h1>
+                <h1 class="home-kicker">Revision</h1>
+                <h2>Validaciones pendientes</h2>
                 <p>Revisa las pruebas enviadas y decide si suman puntos al usuario.</p>
             </div>
         </div>

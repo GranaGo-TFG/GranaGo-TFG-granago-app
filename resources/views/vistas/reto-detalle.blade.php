@@ -20,7 +20,14 @@
                 {{ session('status') }}
             </div>
         @endif
-
+        
+        <div class="screen-head">
+            <div>
+                <h1 class="home-kicker">Detalles reto</h1>
+                <h2>Reto: {{ $reto->nombre }}</h2>
+            </div>
+            <a href="{{ route('vistas.retos') }}" class="btn btn-outline-secondary home-btn">Volver a retos</a>
+        </div>
         <section class="detail-hero">
             @if ($reto->archivo_multimedia)
                 <img src="{{ $reto->archivo_multimedia }}" alt="Imagen del reto {{ $reto->nombre }}" class="detail-hero-media">
@@ -29,9 +36,8 @@
             @endif
 
             <div class="detail-hero-overlay">
-                <span class="home-kicker">Reto:</span>
-                <h1>{{ $reto->nombre }}</h1>
                 <span class="status-pill {{ $statusClass }} detail-status-pill">Estado: {{ ucfirst($reto->estado) }}</span>
+                <h1>Descripcion</h1>
                 <p>{{ $reto->descripcion }}</p>
             </div>
         </section>
