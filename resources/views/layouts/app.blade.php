@@ -58,6 +58,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('vistas.tienda') }}">Tienda</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('vistas.planes') }}">Planes</a>
+                                </li>
                             @endif
                         @endauth
                     </ul>
