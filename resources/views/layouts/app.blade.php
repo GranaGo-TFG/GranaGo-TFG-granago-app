@@ -35,6 +35,20 @@
                 <a class="navbar-brand" href="{{ auth()->check() ? route('home') : url('/') }}">
                     GranaGO!
                 </a>
+                <div class="navbar-mobile-actions">
+                    <button
+                        type="button"
+                        class="theme-toggle"
+                        aria-label="Cambiar modo oscuro"
+                        aria-pressed="false"
+                    >
+                        <span class="theme-toggle-track">
+                            <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">☀</span>
+                            <span class="theme-toggle-thumb"></span>
+                            <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">☾</span>
+                        </span>
+                    </button>
+                </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
