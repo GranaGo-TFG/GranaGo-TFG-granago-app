@@ -13,6 +13,7 @@
                 'borrador' => 'status-draft',
                 default => 'status-rejected',
             };
+            $puedeSubirPrueba = $reto->estado !== 'caducado';
         @endphp
 
         @if (session('status'))
@@ -76,7 +77,11 @@
                             </ul>
                         </div>
 
-                        <a href="{{ route('vistas.subir-prueba') }}" class="btn btn-primary home-btn w-100">Subir prueba</a>
+                        @if ($puedeSubirPrueba)
+                            <a href="{{ route('vistas.subir-prueba', $reto) }}" class="btn btn-primary home-btn w-100">Subir prueba</a>
+                        @else
+                            <button type="button" class="btn btn-primary home-btn w-100" disabled aria-disabled="true">Subir prueba</button>
+                        @endif
                     </div>
                 </div>
             </div>
