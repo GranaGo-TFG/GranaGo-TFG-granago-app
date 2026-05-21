@@ -13,6 +13,35 @@
     --granago-text-soft: #64748b;
     --granago-surface: rgba(255, 255, 255, 0.78);
     --granago-border: rgba(30, 41, 59, 0.1);
+    --granago-surface-strong: rgba(255, 255, 255, 0.9);
+    --granago-navbar: rgba(15, 23, 42, 0.94);
+    --granago-navbar-border: rgba(255, 255, 255, 0.08);
+    --granago-card-shadow: 0 14px 36px rgba(30, 41, 59, 0.06);
+    --granago-input-background: rgba(255, 255, 255, 0.92);
+    --granago-input-text: #1e293b;
+    --granago-muted-surface: rgba(248, 250, 252, 0.9);
+    --granago-toggle-track: rgba(255, 255, 255, 0.16);
+    --granago-toggle-thumb: #ffffff;
+}
+
+:root[data-theme='dark'] {
+    --granago-secondary: #e2e8f0;
+    --granago-background: #020617;
+    --granago-text-soft: #b8c5d6;
+    --granago-surface: rgba(15, 23, 42, 0.82);
+    --granago-surface-strong: rgba(15, 23, 42, 0.92);
+    --granago-border: rgba(148, 163, 184, 0.16);
+    --granago-navbar: rgba(2, 6, 23, 0.9);
+    --granago-navbar-border: rgba(148, 163, 184, 0.12);
+    --granago-card-shadow: 0 20px 44px rgba(2, 6, 23, 0.36);
+    --granago-input-background: rgba(15, 23, 42, 0.92);
+    --granago-input-text: #e2e8f0;
+    --granago-muted-surface: rgba(30, 41, 59, 0.72);
+    --granago-toggle-track: rgba(71, 85, 105, 0.54);
+    --granago-toggle-thumb: #f8fafc;
+    --granago-capsule-background: rgba(217, 28, 74, 0.14);
+    --granago-capsule-border: rgba(217, 28, 74, 0.16);
+    --granago-capsule-text: #ff4d73;
 }
 
 body {
@@ -20,6 +49,108 @@ body {
     background:
         radial-gradient(circle at top left, rgba(217, 28, 74, 0.1), transparent 24rem),
         linear-gradient(180deg, #fbfdff 0%, var(--granago-background) 100%);
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+:root[data-theme='dark'] body {
+    background:
+        radial-gradient(circle at top left, rgba(217, 28, 74, 0.18), transparent 24rem),
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.12), transparent 20rem),
+        linear-gradient(180deg, #020617 0%, var(--granago-background) 100%);
+}
+
+a,
+.btn,
+.form-control,
+.form-select,
+.dropdown-menu,
+.navbar,
+.home-panel,
+.home-summary-card,
+.home-next-challenge,
+.home-side-panel,
+.challenge-card,
+.community-card {
+    transition:
+        background-color 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.navbar {
+    background: var(--granago-navbar) !important;
+    border-bottom: 1px solid var(--granago-navbar-border);
+    backdrop-filter: blur(14px);
+}
+
+.navbar .nav-link,
+.navbar .navbar-brand,
+.navbar .dropdown-toggle {
+    color: #f8fafc !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus,
+.navbar .navbar-brand:hover,
+.navbar .navbar-brand:focus {
+    color: #ffffff !important;
+}
+
+.dropdown-menu {
+    border: 1px solid var(--granago-border);
+    background: var(--granago-surface-strong);
+    box-shadow: var(--granago-card-shadow);
+    backdrop-filter: blur(12px);
+}
+
+.dropdown-item {
+    color: var(--granago-secondary);
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background: rgba(217, 28, 74, 0.1);
+    color: var(--granago-secondary);
+}
+
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+}
+
+.theme-toggle-track {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.28rem 0.45rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    background: var(--granago-toggle-track);
+    backdrop-filter: blur(10px);
+}
+
+.theme-toggle-icon {
+    color: #f8fafc;
+    font-size: 0.85rem;
+    line-height: 1;
+    opacity: 0.78;
+}
+
+.theme-toggle-thumb {
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 999px;
+    background: var(--granago-toggle-thumb);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.24);
+}
+
+:root[data-theme='dark'] .theme-toggle-track {
+    flex-direction: row-reverse;
 }
 
 .navbar-brand {
@@ -139,6 +270,14 @@ body {
     position: relative;
 }
 
+:root[data-theme='dark'] .home-hero {
+    background:
+        radial-gradient(circle at 82% 12%, rgba(245, 158, 11, 0.12), transparent 16rem),
+        radial-gradient(circle at 0% 0%, rgba(217, 28, 74, 0.14), transparent 20rem),
+        linear-gradient(145deg, rgba(15, 23, 42, 0.97) 0%, rgba(17, 24, 39, 0.95) 100%);
+    box-shadow: 0 28px 70px rgba(2, 6, 23, 0.48);
+}
+
 .home-hero::after {
     content: "";
     position: absolute;
@@ -148,6 +287,10 @@ body {
     border-radius: 999px;
     background: rgba(217, 28, 74, 0.08);
     pointer-events: none;
+}
+
+:root[data-theme='dark'] .home-hero::after {
+    background: rgba(217, 28, 74, 0.12);
 }
 
 .home-kicker {
@@ -168,6 +311,17 @@ body {
     font-weight: 700;
     line-height: 0.98;
     letter-spacing: -0.04em;
+}
+
+:root[data-theme='dark'] .home-hero h1,
+:root[data-theme='dark'] .home-next-challenge h2,
+:root[data-theme='dark'] .home-side-panel h2,
+:root[data-theme='dark'] .screen-head h1,
+:root[data-theme='dark'] .screen-head h2,
+:root[data-theme='dark'] .detail-main h1,
+:root[data-theme='dark'] .profile-header h1 {
+    color: #f8fafc;
+    text-shadow: 0 8px 28px rgba(2, 6, 23, 0.3);
 }
 
 .home-hero p,
@@ -235,6 +389,13 @@ body {
     box-shadow: 0 14px 36px rgba(30, 41, 59, 0.08);
 }
 
+:root[data-theme='dark'] .home-map-note,
+:root[data-theme='dark'] .home-quick-stats div {
+    border-color: rgba(148, 163, 184, 0.14);
+    background: rgba(30, 41, 59, 0.82);
+    box-shadow: 0 14px 30px rgba(2, 6, 23, 0.24);
+}
+
 .home-quick-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -258,6 +419,11 @@ body {
     line-height: 1;
 }
 
+:root[data-theme='dark'] .home-quick-stats strong,
+:root[data-theme='dark'] .home-map-note strong {
+    color: #f8fafc;
+}
+
 .home-quick-stats span {
     display: block;
     margin-top: 0.35rem;
@@ -276,6 +442,33 @@ body {
 .home-map-note strong {
     display: block;
     margin-top: 0.2rem;
+}
+
+:root[data-theme='dark'] .home-hero p,
+:root[data-theme='dark'] .home-next-step p,
+:root[data-theme='dark'] .home-next-challenge p,
+:root[data-theme='dark'] .home-side-panel p,
+:root[data-theme='dark'] .screen-head p,
+:root[data-theme='dark'] .detail-copy,
+:root[data-theme='dark'] .muted-copy,
+:root[data-theme='dark'] .home-quick-stats span,
+:root[data-theme='dark'] .home-map-note span,
+:root[data-theme='dark'] .home-map-toggle,
+:root[data-theme='dark'] .home-map-status,
+:root[data-theme='dark'] .text-muted {
+    color: #cbd5e1 !important;
+}
+
+:root[data-theme='dark'] .home-kicker {
+    color: #fb7185;
+}
+
+:root[data-theme='dark'] .home-small-link {
+    color: #fda4af;
+}
+
+:root[data-theme='dark'] .home-mini-progress {
+    background: rgba(148, 163, 184, 0.18);
 }
 
 .map-popup-card h3 {
@@ -347,8 +540,8 @@ body {
 .home-panel {
     border: 1px solid var(--granago-border);
     border-radius: 1.25rem;
-    background: rgba(255, 255, 255, 0.82);
-    box-shadow: 0 14px 36px rgba(30, 41, 59, 0.06);
+    background: var(--granago-surface);
+    box-shadow: var(--granago-card-shadow);
 }
 
 .home-summary-card {
@@ -389,8 +582,8 @@ body {
 .home-side-panel {
     border: 1px solid var(--granago-border);
     border-radius: 1.25rem;
-    background: rgba(255, 255, 255, 0.86);
-    box-shadow: 0 14px 36px rgba(30, 41, 59, 0.06);
+    background: var(--granago-surface-strong);
+    box-shadow: var(--granago-card-shadow);
 }
 
 .home-next-challenge {
@@ -501,7 +694,7 @@ body {
     padding: 1rem;
     border: 1px solid rgba(30, 41, 59, 0.08);
     border-radius: 1rem;
-    background: #fff;
+    background: var(--granago-surface-strong);
 }
 
 .home-challenge-points {
@@ -549,7 +742,7 @@ body {
 .home-feed article {
     padding: 0.9rem;
     border-radius: 0.9rem;
-    background: rgba(248, 250, 252, 0.9);
+    background: var(--granago-muted-surface);
 }
 
 .home-ranking li {
@@ -573,8 +766,45 @@ body {
     padding: 0.9rem;
     border: 1px solid rgba(30, 41, 59, 0.08);
     border-radius: 0.9rem;
-    background: rgba(248, 250, 252, 0.9);
+    background: var(--granago-muted-surface);
     opacity: 0.68;
+}
+
+.form-control,
+.form-select {
+    border-color: var(--granago-border);
+    background-color: var(--granago-input-background);
+    color: var(--granago-input-text);
+}
+
+.form-control::placeholder {
+    color: var(--granago-text-soft);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: rgba(217, 28, 74, 0.5);
+    background-color: var(--granago-input-background);
+    color: var(--granago-input-text);
+    box-shadow: 0 0 0 0.2rem rgba(217, 28, 74, 0.15);
+}
+
+.table,
+.table > :not(caption) > * > * {
+    color: var(--granago-secondary);
+}
+
+.border,
+.rounded-4.bg-white,
+.bg-white {
+    border-color: var(--granago-border) !important;
+    background: var(--granago-surface-strong) !important;
+    color: var(--granago-secondary);
+}
+
+.text-muted,
+.muted-copy {
+    color: var(--granago-text-soft) !important;
 }
 
 .home-achievement.is-unlocked {
@@ -2100,6 +2330,202 @@ body {
 .admin-inline-form .form-select:focus {
     border-color: rgba(217, 28, 74, 0.45);
     box-shadow: 0 0 0 0.2rem rgba(217, 28, 74, 0.12);
+}
+
+:root[data-theme='dark'] .pricing-page::before {
+    background:
+        radial-gradient(circle at 12% 18%, rgba(245, 158, 11, 0.1), transparent 18rem),
+        radial-gradient(circle at 88% 8%, rgba(217, 28, 74, 0.12), transparent 20rem);
+}
+
+:root[data-theme='dark'] .pricing-hero,
+:root[data-theme='dark'] .pricing-card,
+:root[data-theme='dark'] .pricing-mini-card,
+:root[data-theme='dark'] .pricing-faq-card,
+:root[data-theme='dark'] .pricing-compare-row,
+:root[data-theme='dark'] .ranking-spotlight,
+:root[data-theme='dark'] .ranking-top-card,
+:root[data-theme='dark'] .ranking-board,
+:root[data-theme='dark'] .profile-hero,
+:root[data-theme='dark'] .profile-stats article,
+:root[data-theme='dark'] .profile-achievement,
+:root[data-theme='dark'] .profile-timeline div,
+:root[data-theme='dark'] .profile-details div,
+:root[data-theme='dark'] .edit-profile-summary-item,
+:root[data-theme='dark'] .challenge-form-map-panel,
+:root[data-theme='dark'] .admin-inline-form,
+:root[data-theme='dark'] .admin-nav,
+:root[data-theme='dark'] .admin-content,
+:root[data-theme='dark'] .admin-row,
+:root[data-theme='dark'] .challenge-card,
+:root[data-theme='dark'] .community-card,
+:root[data-theme='dark'] .ranking-row,
+:root[data-theme='dark'] .validation-row,
+:root[data-theme='dark'] .profile-grid article,
+:root[data-theme='dark'] .validation-proof,
+:root[data-theme='dark'] .fake-photo,
+:root[data-theme='dark'] .upload-box,
+:root[data-theme='dark'] .prototype-input {
+    border-color: rgba(148, 163, 184, 0.14);
+    background: rgba(15, 23, 42, 0.88);
+    box-shadow: 0 18px 34px rgba(2, 6, 23, 0.22);
+}
+
+:root[data-theme='dark'] .pricing-hero,
+:root[data-theme='dark'] .ranking-spotlight,
+:root[data-theme='dark'] .profile-hero,
+:root[data-theme='dark'] .detail-content-panel,
+:root[data-theme='dark'] .ranking-board,
+:root[data-theme='dark'] .challenge-card,
+:root[data-theme='dark'] .community-card,
+:root[data-theme='dark'] .admin-row,
+:root[data-theme='dark'] .admin-content,
+:root[data-theme='dark'] .admin-nav,
+:root[data-theme='dark'] .home-panel,
+:root[data-theme='dark'] .home-summary-card,
+:root[data-theme='dark'] .home-next-challenge,
+:root[data-theme='dark'] .home-side-panel {
+    background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9)),
+        rgba(15, 23, 42, 0.92);
+}
+
+:root[data-theme='dark'] .ranking-spotlight,
+:root[data-theme='dark'] .ranking-top-card-1 {
+    background:
+        radial-gradient(circle at top right, rgba(217, 28, 74, 0.12), transparent 12rem),
+        linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.9));
+}
+
+:root[data-theme='dark'] .pricing-card.is-featured,
+:root[data-theme='dark'] .ranking-row.is-user {
+    background:
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.08), transparent 10rem),
+        linear-gradient(180deg, rgba(30, 41, 59, 0.96), rgba(15, 23, 42, 0.92));
+}
+
+:root[data-theme='dark'] .pricing-hero h1,
+:root[data-theme='dark'] .pricing-section-head h2,
+:root[data-theme='dark'] .pricing-card-top h2,
+:root[data-theme='dark'] .pricing-mini-card h2,
+:root[data-theme='dark'] .pricing-faq-card h3,
+:root[data-theme='dark'] .pricing-compare h2,
+:root[data-theme='dark'] .challenge-body h2,
+:root[data-theme='dark'] .community-card strong,
+:root[data-theme='dark'] .ranking-spotlight h2,
+:root[data-theme='dark'] .ranking-top-card strong,
+:root[data-theme='dark'] .ranking-board-title h2,
+:root[data-theme='dark'] .profile-info h1,
+:root[data-theme='dark'] .profile-stats strong,
+:root[data-theme='dark'] .profile-achievement strong,
+:root[data-theme='dark'] .profile-timeline strong,
+:root[data-theme='dark'] .profile-details dd,
+:root[data-theme='dark'] .edit-profile-hero h1,
+:root[data-theme='dark'] .edit-profile-section-head h2,
+:root[data-theme='dark'] .edit-profile-card-head h2,
+:root[data-theme='dark'] .challenge-form-map-panel h2,
+:root[data-theme='dark'] .admin-row h2 {
+    color: #f8fafc;
+}
+
+:root[data-theme='dark'] .pricing-hero p,
+:root[data-theme='dark'] .pricing-panel-tag,
+:root[data-theme='dark'] .pricing-card p,
+:root[data-theme='dark'] .pricing-faq-card p,
+:root[data-theme='dark'] .pricing-value span,
+:root[data-theme='dark'] .pricing-compare-row span:not(:first-child),
+:root[data-theme='dark'] .challenge-meta,
+:root[data-theme='dark'] .challenge-body p,
+:root[data-theme='dark'] .community-card p,
+:root[data-theme='dark'] .ranking-spotlight p,
+:root[data-theme='dark'] .ranking-spotlight aside span,
+:root[data-theme='dark'] .ranking-top-card em,
+:root[data-theme='dark'] .ranking-board-title small,
+:root[data-theme='dark'] .profile-info p,
+:root[data-theme='dark'] .profile-stats span,
+:root[data-theme='dark'] .profile-achievement span,
+:root[data-theme='dark'] .profile-details dt,
+:root[data-theme='dark'] .profile-timeline p,
+:root[data-theme='dark'] .profile-progress-label,
+:root[data-theme='dark'] .edit-profile-hero p,
+:root[data-theme='dark'] .edit-profile-section-head p,
+:root[data-theme='dark'] .edit-profile-card-head p,
+:root[data-theme='dark'] .edit-profile-summary-label,
+:root[data-theme='dark'] .admin-row p,
+:root[data-theme='dark'] .admin-row-meta,
+:root[data-theme='dark'] .admin-row-meta-wrap span,
+:root[data-theme='dark'] .validation-row p {
+    color: #cbd5e1 !important;
+}
+
+:root[data-theme='dark'] .profile-tags span,
+:root[data-theme='dark'] .ranking-spotlight aside,
+:root[data-theme='dark'] .ranking-top-card span,
+:root[data-theme='dark'] .profile-progress,
+:root[data-theme='dark'] .ranking-progress,
+:root[data-theme='dark'] .admin-inline-form,
+:root[data-theme='dark'] .challenge-form-map-panel,
+:root[data-theme='dark'] .edit-profile-summary-item {
+    border-color: rgba(148, 163, 184, 0.16);
+    background: rgba(30, 41, 59, 0.78);
+}
+
+:root[data-theme='dark'] .home-next-meta span,
+:root[data-theme='dark'] .home-chip,
+:root[data-theme='dark'] .pricing-hero-badges span,
+:root[data-theme='dark'] .pricing-badge,
+:root[data-theme='dark'] .profile-tags span,
+:root[data-theme='dark'] .map-popup-meta span,
+:root[data-theme='dark'] .welcome-note {
+    border: 1px solid var(--granago-capsule-border);
+    background: var(--granago-capsule-background);
+    color: var(--granago-capsule-text) !important;
+    box-shadow: none;
+}
+
+:root[data-theme='dark'] .profile-tags span,
+:root[data-theme='dark'] .ranking-top-card span,
+:root[data-theme='dark'] .edit-profile-summary-value,
+:root[data-theme='dark'] .profile-grid strong,
+:root[data-theme='dark'] .admin-nav a,
+:root[data-theme='dark'] .validation-proof {
+    color: #e2e8f0;
+}
+
+:root[data-theme='dark'] .admin-nav a.is-active,
+:root[data-theme='dark'] .admin-nav a:hover,
+:root[data-theme='dark'] .home-small-link.status-pill {
+    background: rgba(217, 28, 74, 0.16);
+    color: #fda4af;
+}
+
+:root[data-theme='dark'] .detail-hero {
+    border-color: rgba(148, 163, 184, 0.16);
+    box-shadow: 0 20px 44px rgba(2, 6, 23, 0.38);
+}
+
+:root[data-theme='dark'] .detail-hero-overlay {
+    background:
+        linear-gradient(180deg, rgba(2, 6, 23, 0.22) 0%, rgba(2, 6, 23, 0.86) 100%);
+}
+
+:root[data-theme='dark'] .detail-status-pill {
+    background: rgba(15, 23, 42, 0.88);
+    color: #f8fafc;
+    border-color: rgba(148, 163, 184, 0.16);
+}
+
+:root[data-theme='dark'] .status-open {
+    color: #6ee7b7;
+}
+
+:root[data-theme='dark'] .status-draft,
+:root[data-theme='dark'] .status-pending {
+    color: #fbbf24;
+}
+
+:root[data-theme='dark'] .status-rejected {
+    color: #fca5a5;
 }
 
 .admin-empty {
