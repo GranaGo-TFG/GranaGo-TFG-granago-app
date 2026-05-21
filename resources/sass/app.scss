@@ -855,6 +855,18 @@ a,
     color: var(--granago-text-soft) !important;
 }
 
+.btn-outline-secondary {
+    border-color: var(--granago-border);
+    color: var(--granago-secondary);
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus {
+    border-color: rgba(217, 28, 74, 0.35);
+    background: var(--granago-dropdown-hover);
+    color: var(--granago-secondary);
+}
+
 .home-achievement.is-unlocked {
     border-color: rgba(245, 158, 11, 0.28);
     background: rgba(245, 158, 11, 0.1);
@@ -2391,6 +2403,11 @@ a,
 :root[data-theme='dark'] .pricing-mini-card,
 :root[data-theme='dark'] .pricing-faq-card,
 :root[data-theme='dark'] .pricing-compare-row,
+:root[data-theme='dark'] .home-map-card,
+:root[data-theme='dark'] .home-achievement,
+:root[data-theme='dark'] .home-challenge-card,
+:root[data-theme='dark'] .home-ranking li,
+:root[data-theme='dark'] .home-feed article,
 :root[data-theme='dark'] .ranking-spotlight,
 :root[data-theme='dark'] .ranking-top-card,
 :root[data-theme='dark'] .ranking-board,
@@ -2399,7 +2416,10 @@ a,
 :root[data-theme='dark'] .profile-achievement,
 :root[data-theme='dark'] .profile-timeline div,
 :root[data-theme='dark'] .profile-details div,
+:root[data-theme='dark'] .edit-profile-card,
 :root[data-theme='dark'] .edit-profile-summary-item,
+:root[data-theme='dark'] .edit-profile-form-card,
+:root[data-theme='dark'] .challenge-form-card,
 :root[data-theme='dark'] .challenge-form-map-panel,
 :root[data-theme='dark'] .admin-inline-form,
 :root[data-theme='dark'] .admin-nav,
@@ -2420,6 +2440,7 @@ a,
 }
 
 :root[data-theme='dark'] .pricing-hero,
+:root[data-theme='dark'] .home-map-card,
 :root[data-theme='dark'] .ranking-spotlight,
 :root[data-theme='dark'] .profile-hero,
 :root[data-theme='dark'] .detail-content-panel,
@@ -2432,7 +2453,11 @@ a,
 :root[data-theme='dark'] .home-panel,
 :root[data-theme='dark'] .home-summary-card,
 :root[data-theme='dark'] .home-next-challenge,
-:root[data-theme='dark'] .home-side-panel {
+:root[data-theme='dark'] .home-side-panel,
+:root[data-theme='dark'] .home-challenge-card,
+:root[data-theme='dark'] .edit-profile-card,
+:root[data-theme='dark'] .edit-profile-form-card,
+:root[data-theme='dark'] .challenge-form-card {
     background:
         linear-gradient(180deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.9)),
         rgba(15, 23, 42, 0.92);
@@ -2459,6 +2484,8 @@ a,
 :root[data-theme='dark'] .pricing-faq-card h3,
 :root[data-theme='dark'] .pricing-compare h2,
 :root[data-theme='dark'] .challenge-body h2,
+:root[data-theme='dark'] .home-panel h2,
+:root[data-theme='dark'] .home-challenge-card h3,
 :root[data-theme='dark'] .community-card strong,
 :root[data-theme='dark'] .ranking-spotlight h2,
 :root[data-theme='dark'] .ranking-top-card strong,
@@ -2471,6 +2498,9 @@ a,
 :root[data-theme='dark'] .edit-profile-hero h1,
 :root[data-theme='dark'] .edit-profile-section-head h2,
 :root[data-theme='dark'] .edit-profile-card-head h2,
+:root[data-theme='dark'] .edit-profile-summary-value,
+:root[data-theme='dark'] .edit-profile-field label,
+:root[data-theme='dark'] .challenge-form-field label,
 :root[data-theme='dark'] .challenge-form-map-panel h2,
 :root[data-theme='dark'] .admin-row h2 {
     color: #f8fafc;
@@ -2484,6 +2514,9 @@ a,
 :root[data-theme='dark'] .pricing-compare-row span:not(:first-child),
 :root[data-theme='dark'] .challenge-meta,
 :root[data-theme='dark'] .challenge-body p,
+:root[data-theme='dark'] .home-summary-label,
+:root[data-theme='dark'] .home-challenge-card p,
+:root[data-theme='dark'] .home-feed p,
 :root[data-theme='dark'] .community-card p,
 :root[data-theme='dark'] .ranking-spotlight p,
 :root[data-theme='dark'] .ranking-spotlight aside span,
@@ -2499,6 +2532,7 @@ a,
 :root[data-theme='dark'] .edit-profile-section-head p,
 :root[data-theme='dark'] .edit-profile-card-head p,
 :root[data-theme='dark'] .edit-profile-summary-label,
+:root[data-theme='dark'] .form-text,
 :root[data-theme='dark'] .admin-row p,
 :root[data-theme='dark'] .admin-row-meta,
 :root[data-theme='dark'] .admin-row-meta-wrap span,
@@ -2511,6 +2545,10 @@ a,
 :root[data-theme='dark'] .ranking-top-card span,
 :root[data-theme='dark'] .profile-progress,
 :root[data-theme='dark'] .ranking-progress,
+:root[data-theme='dark'] .home-mini-progress,
+:root[data-theme='dark'] .home-achievement,
+:root[data-theme='dark'] .home-ranking li,
+:root[data-theme='dark'] .home-feed article,
 :root[data-theme='dark'] .admin-inline-form,
 :root[data-theme='dark'] .challenge-form-map-panel,
 :root[data-theme='dark'] .edit-profile-summary-item {
@@ -2574,6 +2612,31 @@ a,
 
 :root[data-theme='dark'] .status-rejected {
     color: #fca5a5;
+}
+
+:root[data-theme='dark'] .btn-outline-secondary {
+    border-color: rgba(148, 163, 184, 0.28);
+    color: #e2e8f0;
+}
+
+:root[data-theme='dark'] .btn-outline-secondary:hover,
+:root[data-theme='dark'] .btn-outline-secondary:focus {
+    border-color: rgba(217, 28, 74, 0.45);
+    background: rgba(217, 28, 74, 0.16);
+    color: #f8fafc;
+}
+
+:root[data-theme='dark'] .alert-success,
+:root[data-theme='dark'] .home-alert {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(6, 78, 59, 0.38);
+    color: #a7f3d0;
+}
+
+:root[data-theme='dark'] .alert-danger {
+    border-color: rgba(239, 68, 68, 0.32);
+    background: rgba(127, 29, 29, 0.42);
+    color: #fecaca;
 }
 
 :root[data-theme='dark'] .dropdown-menu {
