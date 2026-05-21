@@ -7,16 +7,43 @@
 @section('content')
 <div class="screen-page">
     <div class="container">
+        @php
+            $statusClass = match ($reto->estado) {
+                'publicado' => 'status-open',
+                'borrador' => 'status-draft',
+                default => 'status-rejected',
+            };
+            $puedeSubirPrueba = $reto->estado !== 'caducado';
+        @endphp
+
         @if (session('status'))
             <div class="alert alert-success home-alert" role="alert">
                 {{ session('status') }}
             </div>
         @endif
+        
+        <div class="screen-head">
+            <div>
+                <h1 class="home-kicker">Detalles reto</h1>
+                <h2>Reto: {{ $reto->nombre }}</h2>
+            </div>
+            <a href="{{ route('vistas.retos') }}" class="btn btn-outline-secondary home-btn">Volver a retos</a>
+        </div>
+        <section class="detail-hero">
+            @if ($reto->archivo_multimedia)
+                <img src="{{ $reto->archivo_multimedia }}" alt="Imagen del reto {{ $reto->nombre }}" class="detail-hero-media">
+            @else
+                <div class="detail-hero-media detail-hero-media-fallback" aria-hidden="true"></div>
+            @endif
 
-        <section class="home-panel">
-            <span class="home-kicker">Reto {{ ucfirst($reto->estado) }}</span>
-            <h1>{{ $reto->nombre }}</h1>
-            <p class="muted-copy">{{ $reto->descripcion }}</p>
+            <div class="detail-hero-overlay">
+                <span class="status-pill {{ $statusClass }} detail-status-pill">Estado: {{ ucfirst($reto->estado) }}</span>
+                <h1>Descripcion</h1>
+                <p>{{ $reto->descripcion }}</p>
+            </div>
+        </section>
+
+        <section class="home-panel detail-content-panel">
 
             <div class="row g-3 mt-2">
                 <div class="col-lg-8">
@@ -50,7 +77,11 @@
                             </ul>
                         </div>
 
-                        <a href="{{ route('vistas.subir-prueba') }}" class="btn btn-primary home-btn w-100">Subir prueba</a>
+                        @if ($puedeSubirPrueba)
+                            <a href="{{ route('vistas.subir-prueba', $reto) }}" class="btn btn-primary home-btn w-100">Subir prueba</a>
+                        @else
+                            <button type="button" class="btn btn-primary home-btn w-100" disabled aria-disabled="true">Subir prueba</button>
+                        @endif
                     </div>
                 </div>
             </div>

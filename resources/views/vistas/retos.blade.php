@@ -5,14 +5,12 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <span class="home-kicker">Retos</span>
-                <h1>Retos disponibles por Granada</h1>
+                <h1 class="home-kicker">Retos</h1>
+                <h2>Retos disponibles por Granada</h2>
                 <p>Elige una prueba, sal a la calle y sube una foto cuando la completes.</p>
             </div>
             @if (Auth::user()->rol === 'creador')
                 <a href="{{ route('vistas.crear-reto') }}" class="btn btn-primary home-btn">Crear reto</a>
-            @else
-                <a href="{{ route('vistas.subir-prueba') }}" class="btn btn-primary home-btn">Subir prueba</a>
             @endif
         </div>
 
@@ -22,23 +20,9 @@
             </div>
         @endif
 
-        <div class="screen-filters">
-            <span class="home-chip">Todos</span>
-            <span class="home-chip">Cerca</span>
-            <span class="home-chip">Fotografia</span>
-            <span class="home-chip">Cultura</span>
-            <span class="home-chip">Comercio local</span>
-        </div>
-
         <section class="challenge-grid">
-            @forelse ($retos as $reto)
+                @forelse ($retos as $reto)
                 @php
-                    $coverClass = match ($reto->estado) {
-                        'publicado' => 'challenge-cover-red',
-                        'borrador' => 'challenge-cover-gold',
-                        default => 'challenge-cover-dark',
-                    };
-
                     $statusClass = match ($reto->estado) {
                         'publicado' => 'status-open',
                         'borrador' => 'status-draft',
@@ -47,19 +31,25 @@
                 @endphp
 
                 <article class="challenge-card">
-                    <div class="challenge-cover {{ $coverClass }}">
-                        <span>+{{ $reto->puntos_recompensa }} pts</span>
-                    </div>
+                    @if ($reto->archivo_multimedia)
+                        <img
+                            src="{{ $reto->archivo_multimedia }}"
+                            alt="Imagen del reto {{ $reto->nombre }}"
+                            class="detail-hero-media"
+                            style="position: static; display: block; width: 100%; min-height: 9rem; max-height: 12rem;"
+                        >
+                    @endif
                     <div class="challenge-body">
+                        <span class="home-kicker">+{{ $reto->puntos_recompensa }} pts</span>
                         <span class="status-pill {{ $statusClass }}">{{ ucfirst($reto->estado) }}</span>
                         <h2>{{ $reto->nombre }}</h2>
                         <p>{{ \Illuminate\Support\Str::limit($reto->descripcion, 125) }}</p>
                         <div class="challenge-card-meta">
-                            <span>{{ $reto->ubicacion_referencia ?? 'Ubicacion pendiente' }}</span>
-                            <span>{{ optional($reto->fecha_fin)->format('d/m/Y') ?? 'Sin fecha fin' }}</span>
-                            <span>{{ $reto->validaciones_verificadas_count }} validadas</span>
+                            <span class="d-block">{{ $reto->ubicacion_referencia ?? 'Ubicacion pendiente' }}</span>
+                            <span class="d-block">{{ optional($reto->fecha_fin)->format('d/m/Y') ?? 'Sin fecha fin' }}</span>
+                            <span class="d-block">{{ $reto->validaciones_verificadas_count }} validadas</span>
                         </div>
-                        <a href="{{ route('vistas.reto-detalle', $reto) }}" class="home-small-link">Ver detalle</a>
+                        <a href="{{ route('vistas.reto-detalle', $reto) }}" class="status-pill home-small-link">Ver detalle</a>
                     </div>
                 </article>
             @empty

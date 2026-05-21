@@ -483,6 +483,13 @@ body {
     text-decoration: none;
 }
 
+.home-small-link.status-pill {
+    display: inline-flex;
+    background: var(--granago-primary);
+    border-color: var(--granago-primary);
+    color: #fff;
+}
+
 .home-challenge-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -643,6 +650,293 @@ body {
     padding: 1.5rem 0 3rem;
 }
 
+.pricing-page {
+    position: relative;
+}
+
+.pricing-page::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 26rem;
+    background:
+        radial-gradient(circle at 12% 18%, rgba(245, 158, 11, 0.18), transparent 18rem),
+        radial-gradient(circle at 88% 8%, rgba(217, 28, 74, 0.16), transparent 20rem);
+    pointer-events: none;
+}
+
+.pricing-hero,
+.pricing-layout {
+    display: grid;
+    gap: 1rem;
+}
+
+.pricing-hero {
+    position: relative;
+    padding: clamp(1.4rem, 3vw, 2.4rem);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.8rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.78) 100%);
+    box-shadow: 0 24px 60px rgba(30, 41, 59, 0.08);
+    overflow: hidden;
+}
+
+.pricing-hero::after {
+    content: "";
+    position: absolute;
+    right: -4rem;
+    bottom: -4rem;
+    width: 14rem;
+    height: 14rem;
+    border-radius: 999px;
+    background: rgba(217, 28, 74, 0.08);
+}
+
+.pricing-hero-copy,
+.pricing-side-stack,
+.pricing-card,
+.pricing-mini-card,
+.pricing-faq-card {
+    position: relative;
+    z-index: 1;
+}
+
+.pricing-hero h1,
+.pricing-section-head h2 {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+.pricing-hero p,
+.pricing-panel-tag,
+.pricing-card p,
+.pricing-faq-card p {
+    color: var(--granago-text-soft);
+    line-height: 1.75;
+}
+
+.pricing-hero-copy p {
+    max-width: 40rem;
+    margin: 1rem 0 0;
+}
+
+.pricing-hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-top: 1.5rem;
+}
+
+.pricing-hero-badges span,
+.pricing-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.8);
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.pricing-hero-panel {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+    padding: 1.25rem;
+    border: 1px solid rgba(217, 28, 74, 0.16);
+    border-radius: 1.35rem;
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.96) 0%, rgba(71, 85, 105, 0.96) 100%);
+    box-shadow: 0 18px 44px rgba(30, 41, 59, 0.14);
+    color: #fff;
+}
+
+.pricing-panel-tag {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.pricing-hero-panel strong {
+    font-family: 'Fraunces', serif;
+    font-size: 2.3rem;
+    line-height: 1;
+}
+
+.pricing-hero-panel p,
+.pricing-hero-panel small {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.78);
+}
+
+.pricing-panel-price {
+    display: inline-block;
+    margin-right: 0.35rem;
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+}
+
+.pricing-card-grid,
+.pricing-faq-grid {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.pricing-card {
+    display: grid;
+    gap: 1.15rem;
+    padding: 1.35rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 16px 38px rgba(30, 41, 59, 0.06);
+}
+
+.pricing-card.is-featured {
+    border-color: rgba(217, 28, 74, 0.26);
+    background:
+        radial-gradient(circle at top right, rgba(245, 158, 11, 0.15), transparent 11rem),
+        rgba(255, 255, 255, 0.94);
+    box-shadow: 0 22px 52px rgba(217, 28, 74, 0.12);
+    transform: translateY(-0.35rem);
+}
+
+.pricing-card-top h2,
+.pricing-mini-card h2,
+.pricing-faq-card h3,
+.pricing-compare h2 {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+}
+
+.pricing-card-top p,
+.pricing-mini-card p,
+.pricing-faq-card p {
+    margin: 0;
+}
+
+.pricing-value {
+    display: flex;
+    align-items: end;
+    gap: 0.45rem;
+}
+
+.pricing-value strong {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.pricing-value span {
+    color: var(--granago-text-soft);
+    font-weight: 700;
+}
+
+.pricing-feature-list {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pricing-feature-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    color: var(--granago-secondary);
+    line-height: 1.6;
+}
+
+.pricing-feature-list li::before {
+    content: "";
+    position: absolute;
+    top: 0.55rem;
+    left: 0;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--granago-primary), #fb7185);
+    box-shadow: 0 0 0 0.2rem rgba(217, 28, 74, 0.12);
+}
+
+.pricing-section-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pricing-section-head h2 {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+.pricing-compare-table {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.pricing-compare-row {
+    display: grid;
+    grid-template-columns: 1.35fr repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.14);
+    border-radius: 1rem;
+    background: rgba(248, 250, 252, 0.84);
+}
+
+.pricing-compare-row span {
+    font-weight: 700;
+}
+
+.pricing-compare-row span:not(:first-child) {
+    color: var(--granago-text-soft);
+}
+
+.pricing-compare-head {
+    background: rgba(30, 41, 59, 0.96);
+}
+
+.pricing-compare-head span {
+    color: #fff !important;
+}
+
+.pricing-side-stack {
+    display: grid;
+    gap: 1rem;
+}
+
+.pricing-mini-card-dark {
+    background: linear-gradient(145deg, rgba(30, 41, 59, 0.96) 0%, rgba(51, 65, 85, 0.96) 100%);
+    color: #fff;
+}
+
+.pricing-mini-card-dark .home-kicker,
+.pricing-mini-card-dark p,
+.pricing-mini-card-dark h2 {
+    color: #fff;
+}
+
+.pricing-faq {
+    margin-top: 1rem;
+}
+
+.pricing-faq-card {
+    min-height: 100%;
+}
+
 .screen-head {
     display: flex;
     align-items: end;
@@ -757,8 +1051,43 @@ body {
     line-height: 1.6;
 }
 
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 0.42rem 0.8rem;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.status-open {
+    background: rgba(16, 185, 129, 0.14);
+    border-color: rgba(16, 185, 129, 0.28);
+    color: #047857;
+}
+
+.status-draft,
+.status-pending {
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.28);
+    color: #b45309;
+}
+
+.status-rejected {
+    background: rgba(239, 68, 68, 0.14);
+    border-color: rgba(239, 68, 68, 0.28);
+    color: #b91c1c;
+}
+
 .challenge-card-meta {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     flex-wrap: wrap;
     gap: 0.45rem;
     margin: 0.75rem 0;
@@ -1068,6 +1397,346 @@ body {
     font-weight: 700;
 }
 
+.detail-hero {
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(18rem, 40vw, 25rem);
+    margin-bottom: 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.75rem;
+    background: linear-gradient(135deg, #7f1d1d 0%, #d91c4a 55%, #fb7185 100%);
+    box-shadow: 0 20px 44px rgba(30, 41, 59, 0.1);
+}
+
+.detail-hero-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detail-hero-media-fallback {
+    background:
+        radial-gradient(circle at top left, rgba(245, 158, 11, 0.45), transparent 32%),
+        linear-gradient(135deg, #7f1d1d 0%, #d91c4a 55%, #fb7185 100%);
+}
+
+.detail-hero-overlay {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-content: end;
+    min-height: inherit;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    background:
+        linear-gradient(180deg, rgba(15, 23, 42, 0.14) 0%, rgba(15, 23, 42, 0.74) 100%);
+}
+
+.detail-hero-overlay .home-kicker {
+    color: rgba(255, 255, 255, 0.86);
+}
+
+.detail-hero-overlay h1 {
+    margin: 0.4rem 0 0.65rem;
+    color: #fff;
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.15rem, 4.8vw, 3.6rem);
+    line-height: 0.98;
+}
+
+.detail-hero-overlay p {
+    max-width: 44rem;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.88);
+    line-height: 1.7;
+}
+
+.detail-status-pill {
+    margin: 0 0 0.85rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--granago-secondary);
+    backdrop-filter: blur(6px);
+}
+
+.detail-content-panel {
+    border-radius: 1.5rem;
+}
+
+.ranking-page {
+    display: grid;
+    gap: 1rem;
+}
+
+.ranking-head {
+    margin-bottom: 0;
+}
+
+.ranking-spotlights {
+    display: grid;
+    gap: 1rem;
+}
+
+.ranking-spotlight {
+    display: grid;
+    gap: 1rem;
+    padding: 1.35rem;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 1.5rem;
+    background:
+        linear-gradient(135deg, rgba(217, 28, 74, 0.1), rgba(245, 158, 11, 0.08)),
+        rgba(255, 255, 255, 0.88);
+    box-shadow: 0 18px 40px rgba(30, 41, 59, 0.08);
+}
+
+.ranking-spotlight h2 {
+    margin: 0.35rem 0 0.45rem;
+    color: var(--granago-secondary);
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.8rem, 3vw, 2.45rem);
+}
+
+.ranking-spotlight p,
+.ranking-spotlight aside span {
+    margin: 0;
+    color: var(--granago-text-soft);
+}
+
+.ranking-spotlight aside {
+    display: grid;
+    gap: 0.35rem;
+    align-content: center;
+    justify-items: center;
+    text-align: center;
+    padding: 1rem 1.1rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.15rem;
+    background: rgba(255, 255, 255, 0.72);
+}
+
+.ranking-spotlight aside strong {
+    color: var(--granago-primary);
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    line-height: 1;
+}
+
+.ranking-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--granago-primary);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.ranking-top {
+    display: grid;
+    gap: 1rem;
+}
+
+.ranking-top-card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 1rem;
+    align-items: center;
+    padding: 1.15rem 1.2rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 14px 30px rgba(30, 41, 59, 0.06);
+}
+
+.ranking-top-card span {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 1rem;
+    background: rgba(30, 41, 59, 0.08);
+    color: var(--granago-secondary);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.ranking-top-card strong,
+.ranking-board-title h2 {
+    margin: 0;
+    color: var(--granago-secondary);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+}
+
+.ranking-top-card strong {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.ranking-top-card em {
+    color: var(--granago-text-soft);
+    font-style: normal;
+    font-weight: 700;
+}
+
+.ranking-top-card-1 {
+    background:
+        linear-gradient(180deg, rgba(245, 158, 11, 0.14), rgba(255, 255, 255, 0.88)),
+        rgba(255, 255, 255, 0.88);
+}
+
+.ranking-top-card-1 span {
+    background: rgba(245, 158, 11, 0.18);
+    color: #92400e;
+}
+
+.ranking-top-card-2 span {
+    background: rgba(148, 163, 184, 0.18);
+}
+
+.ranking-top-card-3 span {
+    background: rgba(217, 119, 6, 0.16);
+    color: #9a3412;
+}
+
+.ranking-board {
+    display: grid;
+    gap: 0.9rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 16px 36px rgba(30, 41, 59, 0.06);
+}
+
+.ranking-board-title {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.ranking-board-title small {
+    color: var(--granago-text-soft);
+    font-weight: 700;
+}
+
+.ranking-progress {
+    height: 0.5rem;
+    overflow: hidden;
+    margin-top: 0.6rem;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.22);
+}
+
+.ranking-progress i {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--granago-primary), #fb7185);
+}
+
+.profile-hero {
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.75rem;
+    background: rgba(255, 255, 255, 0.86);
+    box-shadow: 0 18px 42px rgba(30, 41, 59, 0.08);
+}
+
+.profile-cover {
+    background:
+        radial-gradient(circle at top left, rgba(245, 158, 11, 0.4), transparent 45%),
+        linear-gradient(135deg, #7f1d1d 0%, #d91c4a 52%, #fb7185 100%);
+}
+
+.profile-main {
+    display: grid;
+    gap: 1rem;
+    padding: 0 1rem 1rem;
+}
+
+.profile-info {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.profile-info h1 {
+    margin: 0;
+    color: var(--granago-primary);
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1;
+}
+
+.profile-info p {
+    margin: 0;
+    color: var(--granago-text-soft);
+    line-height: 1.7;
+}
+
+.profile-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.35rem;
+}
+
+.profile-tags span {
+    padding: 0.45rem 0.8rem;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    border-radius: 999px;
+    background: rgba(248, 250, 252, 0.85);
+    color: var(--granago-text-soft);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.profile-edit {
+    justify-self: start;
+    align-self: center;
+}
+
+.profile-stats {
+    display: grid;
+    gap: 0.9rem;
+    margin-top: 1rem;
+}
+
+.profile-stats article {
+    display: grid;
+    gap: 0.2rem;
+    padding: 1rem;
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    border-radius: 1.15rem;
+    background: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 12px 28px rgba(30, 41, 59, 0.05);
+}
+
+.profile-stats strong {
+    color: var(--granago-secondary);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.profile-stats span {
+    color: var(--granago-text-soft);
+    font-weight: 700;
+}
+
+.profile-layout {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.profile-card {
+    border-radius: 1.5rem;
+}
+
 .profile-progress {
     height: 0.65rem;
     overflow: hidden;
@@ -1159,7 +1828,7 @@ body {
 
 .edit-profile-hero h1 {
     margin: 0;
-    color: var(--granago-secondary);
+    color: var(--granago-primary);
     font-family: 'Poppins', sans-serif;
     font-size: clamp(2.1rem, 4vw, 2.9rem);
     font-weight: 700;
@@ -1461,6 +2130,11 @@ body {
         text-align: left;
     }
 
+    .ranking-board-title {
+        align-items: start;
+        flex-direction: column;
+    }
+
     .edit-profile-actions .home-btn {
         width: 100%;
     }
@@ -1476,6 +2150,14 @@ body {
 }
 
 @media (min-width: 768px) {
+    .ranking-spotlights {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ranking-spotlight {
+        min-height: 100%;
+    }
+
     .ranking-top {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
@@ -1749,6 +2431,46 @@ body {
     color: var(--granago-text-soft);
     font-size: 0.94rem;
     line-height: 1.6;
+}
+
+@media (min-width: 768px) {
+    .pricing-hero {
+        grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.85fr);
+        align-items: center;
+    }
+
+    .pricing-card-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pricing-faq-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pricing-layout {
+        grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.8fr);
+        align-items: start;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .pricing-section-head,
+    .pricing-compare-row {
+        grid-template-columns: 1fr;
+    }
+
+    .pricing-section-head {
+        display: grid;
+        align-items: start;
+    }
+
+    .pricing-compare-row {
+        gap: 0.3rem;
+    }
+
+    .pricing-card.is-featured {
+        transform: none;
+    }
 }
 
 @media (max-width: 991.98px) {

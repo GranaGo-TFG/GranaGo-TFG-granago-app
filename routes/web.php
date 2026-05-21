@@ -26,11 +26,12 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
         Route::get('/retos/crear', [RetoVistaController::class, 'create'])->name('crear-reto');
         Route::post('/retos', [RetoVistaController::class, 'store'])->name('retos.store');
         Route::get('/retos/{reto}', [RetoVistaController::class, 'show'])->name('reto-detalle');
-
-        Route::view('/subir-prueba', 'vistas.subir-prueba')->name('subir-prueba');
+        Route::get('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'create'])->name('subir-prueba');
+        Route::post('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'storeFromView'])->name('subir-prueba.store');
         Route::view('/ranking', 'vistas.ranking')->name('ranking');
         Route::view('/comunidad', 'vistas.comunidad')->name('comunidad');
         Route::view('/tienda', 'vistas.tienda')->name('tienda');
+        Route::view('/planes', 'vistas.planes')->name('planes');
         Route::view('/perfil', 'vistas.perfil')->name('perfil');
 
         Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('editar-perfil');

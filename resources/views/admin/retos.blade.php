@@ -5,8 +5,7 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <span class="home-kicker">Admin</span>
-                <h1>Gestion de proyectos</h1>
+                <h1 class="home-kicker">Gestion de proyectos</h1>
                 <p>Cambia el estado de los retos activos, borradores o proyectos ya cerrados.</p>
             </div>
         </div>

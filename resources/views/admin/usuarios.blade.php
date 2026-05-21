@@ -5,8 +5,7 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <span class="home-kicker">Admin</span>
-                <h1>Control de usuarios</h1>
+                <h1 class="home-kicker">Control de usuarios</h1>
                 <p>Bloquea o reactiva cuentas de usuarios desde un unico panel de administracion.</p>
             </div>
         </div>

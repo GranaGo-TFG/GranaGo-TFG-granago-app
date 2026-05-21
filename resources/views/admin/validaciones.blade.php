@@ -5,8 +5,7 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <span class="home-kicker">Admin</span>
-                <h1>Validaciones de usuarios</h1>
+                <h1 class="home-kicker">Validaciones de usuarios</h1>
                 <p>Revisa cada prueba enviada y decide si queda pendiente, verificada o rechazada.</p>
             </div>
         </div>
@@ -27,6 +26,13 @@
             @forelse ($validaciones as $validacion)
                 <div class="home-panel admin-row">
                     <div class="admin-row-main">
+                        @php
+                            $fotoPrueba = $validacion->foto_prueba;
+                            $fotoPruebaUrl = filter_var($fotoPrueba, FILTER_VALIDATE_URL)
+                                ? $fotoPrueba
+                                : \Illuminate\Support\Facades\Storage::url($fotoPrueba);
+                        @endphp
+
                         <div class="admin-row-top">
                             <span class="status-pill status-{{ $validacion->estado === 'verificado' ? 'open' : ($validacion->estado === 'rechazado' ? 'rejected' : 'pending') }}">
                                 {{ ucfirst($validacion->estado) }}
@@ -40,8 +46,17 @@
                         <div class="admin-row-meta-wrap">
                             <span>Email: {{ $validacion->user->email ?? 'No disponible' }}</span>
                             <span>Estado del proyecto: {{ $validacion->reto->estado ?? 'No disponible' }}</span>
-                            <span>Prueba: {{ $validacion->foto_prueba }}</span>
+                            <span>
+                                Prueba:
+                                <a href="{{ $fotoPruebaUrl }}" target="_blank" rel="noopener noreferrer">ver imagen</a>
+                            </span>
                         </div>
+                        <img
+                            src="{{ $fotoPruebaUrl }}"
+                            alt="Prueba enviada para {{ $validacion->reto->nombre ?? 'el reto' }}"
+                            class="mt-3 rounded-4 border"
+                            style="width:min(100%, 16rem); aspect-ratio:1; object-fit:cover;"
+                        >
                     </div>
 
                     <form method="POST" action="{{ route('admin.validaciones.update', $validacion) }}" class="admin-inline-form">
