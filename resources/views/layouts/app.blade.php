@@ -78,22 +78,6 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item d-flex align-items-center me-2">
-                            <button
-                                type="button"
-                                class="theme-toggle"
-                                id="theme-toggle"
-                                aria-label="Cambiar modo oscuro"
-                                aria-pressed="false"
-                            >
-                                <span class="theme-toggle-track">
-                                    <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">☀</span>
-                                    <span class="theme-toggle-thumb"></span>
-                                    <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">☾</span>
-                                </span>
-                            </button>
-                        </li>
-
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -132,6 +116,22 @@
                                 </div>
                             </li>
                         @endguest
+
+                        <li class="nav-item d-flex align-items-center theme-toggle-nav">
+                            <button
+                                type="button"
+                                class="theme-toggle"
+                                id="theme-toggle"
+                                aria-label="Cambiar modo oscuro"
+                                aria-pressed="false"
+                            >
+                                <span class="theme-toggle-track">
+                                    <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">☀</span>
+                                    <span class="theme-toggle-thumb"></span>
+                                    <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">☾</span>
+                                </span>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>
