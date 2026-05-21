@@ -5,10 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>GranaGO!</title>
+    <script src="{{ asset('js/auth-theme.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
 </head>
 <body class="granago-welcome-body">
+    <button type="button" class="auth-theme-toggle" id="auth-theme-toggle" aria-label="Cambiar modo oscuro" aria-pressed="false">
+        <span class="auth-theme-toggle-track">
+            <span class="auth-theme-toggle-icon" aria-hidden="true">☀</span>
+            <span class="auth-theme-toggle-thumb"></span>
+            <span class="auth-theme-toggle-icon" aria-hidden="true">☾</span>
+        </span>
+    </button>
+
     <main class="container min-vh-100 d-flex align-items-center justify-content-center py-4">
         <section class="w-100 text-center" style="max-width: 560px;">
             <div class="d-inline-flex align-items-center gap-3 mb-4">
