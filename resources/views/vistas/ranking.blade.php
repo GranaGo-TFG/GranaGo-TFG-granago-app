@@ -11,6 +11,7 @@
         ->get();
     $liderRanking = $usuariosRanking->first();
     $topRanking = $usuariosRanking->take(3);
+    $usuarioActual = $usuariosRanking->firstWhere('id', Auth::id());
     $posicionActual = $usuariosRanking->search(fn ($usuario) => $usuario->id === Auth::id());
     $puntosMaximos = max((int) ($liderRanking->puntos_totales ?? 0), 1);
 @endphp
@@ -24,19 +25,21 @@
                 <p>Usuarios ordenados por los puntos conseguidos al validar retos.</p>
             </div>
         </div>
-
-        <section class="ranking-spotlight">
-            <div>
-                <span class="ranking-label">Va primero</span>
-                <h2>{{ $liderRanking->nombre ?? 'Sin participantes' }}</h2>
-                <p>{{ $liderRanking ? $liderRanking->puntos_totales . ' puntos acumulados' : 'Todavia no hay usuarios con puntos.' }}</p>
-            </div>
-            <section class="ranking-spotlight">
-                <span>Tu puesto</span>
-                <strong>#{{ $posicionActual === false ? $usuariosRanking->count() : $posicionActual + 1 }}</strong>
-            </section>
+        <br>
+        <section class="ranking-spotlights">
+            
         </section>
-
+        <section class="ranking-spotlights">
+            <article class="ranking-spotlight ranking-spotlight-user">
+                <div>
+                    <span class="ranking-label">Tu puesto</span>
+                    <h2>{{ $posicionActual === false ? $usuariosRanking->count() : $posicionActual + 1 }}</h2>
+                    <p>Posicion actual dentro de la clasificacion general.</p>
+                    <em>Tienes {{ $usuarioActual->puntos_totales ?? 0 }} pts</em>
+                </div>
+            </article>
+        </section>
+        <br>
         <section class="ranking-top">
             @forelse ($topRanking as $usuario)
                 <article class="ranking-top-card ranking-top-card-{{ $loop->iteration }}">
@@ -56,7 +59,7 @@
                 </article>
             @endforelse
         </section>
-
+        <br>
         <section class="ranking-board">
             <div class="ranking-board-title">
                 <div>

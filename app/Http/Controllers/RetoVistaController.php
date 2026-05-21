@@ -18,6 +18,7 @@ class RetoVistaController extends Controller
                 'validaciones',
                 'validaciones as validaciones_verificadas_count' => fn ($query) => $query->where('estado', 'verificado'),
             ])
+            ->where('estado', '!=', 'borrador')
             ->orderByRaw("CASE estado WHEN 'publicado' THEN 0 WHEN 'borrador' THEN 1 ELSE 2 END")
             ->orderByDesc('fecha_inicio')
             ->get();
