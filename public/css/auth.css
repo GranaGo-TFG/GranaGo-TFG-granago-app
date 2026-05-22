@@ -1,11 +1,33 @@
 :root {
     --grana-bg: #f8fafc;
+    --grana-bg-start: #fcfdff;
     --grana-text: #1e293b;
     --grana-muted: #64748b;
     --grana-primary: #d91c4a;
     --grana-primary-dark: #bb183f;
     --grana-gold: #f59e0b;
     --grana-border: #d9e2ec;
+    --grana-card: rgba(255, 255, 255, 0.94);
+    --grana-input: #f8fafc;
+    --grana-input-icon: #94a3b8;
+    --grana-shadow: 0 24px 60px rgba(30, 41, 59, 0.1);
+    --grana-focus-ring: rgba(217, 28, 74, 0.1);
+    color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+    --grana-bg: #020617;
+    --grana-bg-start: #020617;
+    --grana-text: #e2e8f0;
+    --grana-muted: #b8c5d6;
+    --grana-primary-dark: #fb7185;
+    --grana-border: rgba(148, 163, 184, 0.18);
+    --grana-card: rgba(15, 23, 42, 0.9);
+    --grana-input: rgba(30, 41, 59, 0.72);
+    --grana-input-icon: #cbd5e1;
+    --grana-shadow: 0 24px 60px rgba(2, 6, 23, 0.38);
+    --grana-focus-ring: rgba(217, 28, 74, 0.22);
+    color-scheme: dark;
 }
 
 body.granago-auth-body,
@@ -14,14 +36,14 @@ body.granago-welcome-body {
     color: var(--grana-text);
     background:
         radial-gradient(circle at top center, rgba(217, 28, 74, 0.1), transparent 34%),
-        linear-gradient(180deg, #fcfdff 0%, var(--grana-bg) 100%);
+        linear-gradient(180deg, var(--grana-bg-start) 0%, var(--grana-bg) 100%);
 }
 
 body.granago-register-body {
     background:
         radial-gradient(circle at top center, rgba(217, 28, 74, 0.1), transparent 34%),
         radial-gradient(circle at left 30%, rgba(245, 158, 11, 0.08), transparent 18%),
-        linear-gradient(180deg, #fcfdff 0%, var(--grana-bg) 100%);
+        linear-gradient(180deg, var(--grana-bg-start) 0%, var(--grana-bg) 100%);
 }
 
 .granago-shell {
@@ -29,11 +51,95 @@ body.granago-register-body {
     max-width: 30rem;
 }
 
+.auth-theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1.35rem;
+    z-index: 20;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+}
+
+.auth-theme-toggle-track {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    align-items: center;
+    width: 2.3rem;
+    height: 2.3rem;
+    padding: 0;
+    border: 1px solid rgba(30, 41, 59, 0.14);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow:
+        0 14px 28px rgba(30, 41, 59, 0.22),
+        0 3px 8px rgba(30, 41, 59, 0.1);
+    backdrop-filter: blur(14px);
+    transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.auth-theme-toggle:hover .auth-theme-toggle-track,
+.auth-theme-toggle:focus-visible .auth-theme-toggle-track {
+    transform: translateY(-1px);
+    border-color: rgba(217, 28, 74, 0.28);
+}
+
+.auth-theme-toggle-icon {
+    grid-area: 1 / 1;
+    color: var(--grana-primary);
+    font-size: 0.9rem;
+    line-height: 1;
+    opacity: 0;
+    transform: scale(0.78) rotate(-12deg);
+    transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.auth-theme-toggle-icon:last-child {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+}
+
+.auth-theme-toggle-thumb {
+    position: absolute;
+    right: 0.38rem;
+    bottom: 0.38rem;
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 999px;
+    background: var(--grana-primary);
+    box-shadow: 0 0 0 0.22rem rgba(217, 28, 74, 0.12);
+}
+
+:root[data-theme='dark'] .auth-theme-toggle-track {
+    border-color: var(--grana-border);
+    background: rgba(15, 23, 42, 0.72);
+}
+
+:root[data-theme='dark'] .auth-theme-toggle-icon:first-child {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+}
+
+:root[data-theme='dark'] .auth-theme-toggle-icon:last-child {
+    opacity: 0;
+    transform: scale(0.78) rotate(12deg);
+}
+
+:root[data-theme='dark'] .auth-theme-toggle-thumb {
+    background: #fbbf24;
+    box-shadow: 0 0 0 0.22rem rgba(251, 191, 36, 0.12);
+}
+
 .granago-card {
     border: 1px solid rgba(217, 226, 236, 0.85);
     border-radius: 2rem;
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 24px 60px rgba(30, 41, 59, 0.1);
+    background: var(--grana-card);
+    box-shadow: var(--grana-shadow);
     backdrop-filter: blur(8px);
 }
 
@@ -75,10 +181,10 @@ body.granago-register-body {
 .granago-back {
     width: 44px;
     height: 44px;
-    border: 1px solid rgba(217, 226, 236, 0.85);
+    border: 1px solid var(--grana-border);
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 12px 30px rgba(30, 41, 59, 0.08);
+    background: var(--grana-card);
+    box-shadow: var(--grana-shadow);
     color: var(--grana-text);
 }
 
@@ -91,20 +197,20 @@ body.granago-register-body {
 .granago-input-group {
     border: 1px solid var(--grana-border);
     border-radius: 1.15rem;
-    background: #f8fafc;
+    background: var(--grana-input);
     overflow: hidden;
     transition: box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
 .granago-input-group:focus-within {
     border-color: var(--grana-primary);
-    box-shadow: 0 0 0 0.25rem rgba(217, 28, 74, 0.1);
+    box-shadow: 0 0 0 0.25rem var(--grana-focus-ring);
 }
 
 .granago-input-group .input-group-text {
     border: 0;
     background: transparent;
-    color: #94a3b8;
+    color: var(--grana-input-icon);
     padding-left: 1rem;
 }
 
@@ -118,10 +224,13 @@ body.granago-register-body {
 }
 
 .granago-input-group .form-control::placeholder {
-    color: #94a3b8;
+    color: var(--grana-input-icon);
 }
 
 .granago-btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 58px;
     border: 0;
     border-radius: 1.25rem;
@@ -197,6 +306,9 @@ body.granago-register-body {
 }
 
 .granago-btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     min-height: 58px;
     border: 2px solid var(--grana-text);
     border-radius: 999px;
@@ -211,4 +323,82 @@ body.granago-register-body {
     background: #fff;
     color: var(--grana-text);
     border-color: var(--grana-text);
+}
+
+:root[data-theme='dark'] body.granago-auth-body,
+:root[data-theme='dark'] body.granago-welcome-body {
+    background:
+        radial-gradient(circle at top center, rgba(217, 28, 74, 0.18), transparent 34%),
+        radial-gradient(circle at right 20%, rgba(245, 158, 11, 0.1), transparent 20%),
+        linear-gradient(180deg, #020617 0%, var(--grana-bg) 100%);
+}
+
+:root[data-theme='dark'] body.granago-register-body {
+    background:
+        radial-gradient(circle at top center, rgba(217, 28, 74, 0.18), transparent 34%),
+        radial-gradient(circle at left 30%, rgba(245, 158, 11, 0.1), transparent 18%),
+        linear-gradient(180deg, #020617 0%, var(--grana-bg) 100%);
+}
+
+:root[data-theme='dark'] .granago-card,
+:root[data-theme='dark'] .granago-back {
+    border-color: var(--grana-border);
+}
+
+:root[data-theme='dark'] .granago-title,
+:root[data-theme='dark'] .granago-label,
+:root[data-theme='dark'] .text-secondary {
+    color: var(--grana-text) !important;
+}
+
+:root[data-theme='dark'] .granago-copy {
+    color: var(--grana-muted);
+}
+
+:root[data-theme='dark'] .granago-pill-primary {
+    color: #ff7a98;
+    background: rgba(217, 28, 74, 0.16);
+}
+
+:root[data-theme='dark'] .granago-pill-gold {
+    color: #fcd34d;
+    background: rgba(245, 158, 11, 0.16);
+}
+
+:root[data-theme='dark'] .granago-pill-neutral {
+    color: #e2e8f0;
+    background: rgba(148, 163, 184, 0.12);
+}
+
+:root[data-theme='dark'] .granago-input-group .form-control {
+    color: var(--grana-text);
+}
+
+:root[data-theme='dark'] .form-check-input {
+    border-color: rgba(148, 163, 184, 0.4);
+    background-color: rgba(15, 23, 42, 0.72);
+}
+
+:root[data-theme='dark'] .form-check-input:checked {
+    border-color: var(--grana-primary);
+    background-color: var(--grana-primary);
+}
+
+:root[data-theme='dark'] .granago-status {
+    border-color: rgba(16, 185, 129, 0.32);
+    background: rgba(6, 78, 59, 0.36);
+    color: #a7f3d0;
+}
+
+:root[data-theme='dark'] .granago-btn-outline {
+    border-color: rgba(226, 232, 240, 0.7);
+    background: rgba(15, 23, 42, 0.74);
+    color: #f8fafc;
+}
+
+:root[data-theme='dark'] .granago-btn-outline:hover,
+:root[data-theme='dark'] .granago-btn-outline:focus {
+    border-color: var(--grana-primary);
+    background: rgba(217, 28, 74, 0.16);
+    color: #fff;
 }

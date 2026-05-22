@@ -2,9 +2,9 @@ import 'bootstrap';
 import './mapa-osm';
 
 document.addEventListener('DOMContentLoaded', function () {
-    var themeToggle = document.getElementById('theme-toggle');
+    var themeToggles = document.querySelectorAll('.theme-toggle');
 
-    if (!themeToggle) {
+    if (!themeToggles.length) {
         return;
     }
 
@@ -13,20 +13,25 @@ document.addEventListener('DOMContentLoaded', function () {
     var applyTheme = function (theme) {
         root.setAttribute('data-theme', theme);
         root.style.colorScheme = theme;
-        themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
-        themeToggle.setAttribute(
-            'aria-label',
-            theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'
-        );
+
+        themeToggles.forEach(function (themeToggle) {
+            themeToggle.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+            themeToggle.setAttribute(
+                'aria-label',
+                theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'
+            );
+        });
     };
 
     var currentTheme = root.getAttribute('data-theme') || 'light';
     applyTheme(currentTheme);
 
-    themeToggle.addEventListener('click', function () {
-        var nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    themeToggles.forEach(function (themeToggle) {
+        themeToggle.addEventListener('click', function () {
+            var nextTheme = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
 
-        localStorage.setItem('granago-theme', nextTheme);
-        applyTheme(nextTheme);
+            localStorage.setItem('granago-theme', nextTheme);
+            applyTheme(nextTheme);
+        });
     });
 });
