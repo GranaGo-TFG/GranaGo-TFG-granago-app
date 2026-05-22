@@ -126,14 +126,14 @@
                         <span>{{ ucfirst($retoDestacado->estado) }}</span>
                         <span>{{ $retoDestacado->ubicacion_referencia ?? 'Granada' }}</span>
                     </div>
-                    <a href="{{ route('vistas.reto-detalle', $retoDestacado) }}" class="home-small-link">Ver detalle</a>
+                    <a href="{{ route('vistas.reto-detalle', $retoDestacado) }}" class="btn btn-primary home-btn">Ver detalle</a>
                 @else
                     <div>
                         <span class="home-kicker">Reto recomendado</span>
                         <h2>Aun no hay retos publicados</h2>
                         <p>Crea un reto o revisa el listado para empezar a poblar el mapa del proyecto.</p>
                     </div>
-                    <a href="{{ Auth::user()->rol === 'creador' ? route('vistas.crear-reto') : route('vistas.retos') }}" class="home-small-link">Ir a retos</a>
+                    <a href="{{ Auth::user()->rol === 'creador' ? route('vistas.crear-reto') : route('vistas.retos') }}" class="btn btn-primary home-btn">Ir a retos</a>
                 @endif
             </article>
 
@@ -150,7 +150,7 @@
                 <div class="home-mini-progress">
                     <span style="width: {{ $progresoRanking }}%"></span>
                 </div>
-                <a href="{{ route('vistas.ranking') }}" class="home-small-link">Ver ranking</a>
+                <a href="{{ route('vistas.ranking') }}" class="btn btn-primary home-btn">Ver ranking</a>
                 <div class="home-map-note">
                     <span>Mapa del proyecto</span>
                     <strong>{{ $retosConMapa }} retos con coordenadas</strong>

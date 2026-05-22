@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/Logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/Logo.png') }}">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -33,7 +35,8 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ auth()->check() ? route('home') : url('/') }}">
-                    GranaGO!
+                    <img src="{{ asset('images/Logo_fondo_blanco.png') }}" alt="Logo de GranaGO!" class="navbar-brand-logo">
+                    <span>GranaGO!</span>
                 </a>
                 <div class="navbar-mobile-actions">
                     <button
