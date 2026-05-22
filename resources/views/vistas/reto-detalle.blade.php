@@ -27,7 +27,7 @@
                 <h1 class="home-kicker">Detalles reto</h1>
                 <h2>Reto: {{ $reto->nombre }}</h2>
             </div>
-            <a href="{{ route('vistas.retos') }}" class="btn btn-outline-secondary home-btn">Volver a retos</a>
+            <a href="{{ route('vistas.retos') }}" class="btn btn-primary home-btn">Volver a retos</a>
         </div>
         <section class="detail-hero">
             @if ($reto->archivo_multimedia)
@@ -117,7 +117,7 @@
                             <p class="mb-0 muted-copy">
                                 Estado: {{ ucfirst($validacion->estado) }}
                                 @if ($validacion->fecha_envio)
-                                    · {{ optional($validacion->fecha_envio)->format('d/m/Y H:i') }}
+                                    · Hora de envio: {{ optional($validacion->fecha_envio)->format('d/m/Y H:i') }}
                                 @endif
                             </p>
                         </article>
@@ -130,7 +130,7 @@
                 </div>
             </div>
 
-            <a href="{{ route('vistas.retos') }}" class="home-small-link d-inline-block mt-3">Volver a retos</a>
+            <a href="{{ route('vistas.retos') }}" class="btn btn-primary home-btn mt-3">Volver a retos</a>
         </section>
     </div>
 </div>
