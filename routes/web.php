@@ -30,15 +30,22 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
         Route::get('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'create'])->name('subir-prueba');
         Route::post('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'storeFromView'])->name('subir-prueba.store');
         Route::view('/ranking', 'vistas.ranking')->name('ranking');
-        Route::get('/comunidad', [ComunidadController::class, 'index'])->name('comunidad');
-        Route::post('/comunidad/publicaciones', [ComunidadController::class, 'storePublicacion'])->name('comunidad.publicaciones.store');
-        Route::post('/comunidad/publicaciones/{publicacion}/comentarios', [ComunidadController::class, 'storeComentario'])->name('comunidad.comentarios.store');
         Route::view('/tienda', 'vistas.tienda')->name('tienda');
         Route::view('/planes', 'vistas.planes')->name('planes');
         Route::view('/perfil', 'vistas.perfil')->name('perfil');
 
         Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('editar-perfil');
         Route::patch('/perfil', [ProfileController::class, 'update'])->name('perfil.update');
+    });
+
+    Route::prefix('vistas')->name('vistas.')->group(function () {
+        Route::get('/comunidad', [ComunidadController::class, 'index'])->name('comunidad');
+        Route::post('/comunidad/publicaciones', [ComunidadController::class, 'storePublicacion'])->name('comunidad.publicaciones.store');
+        Route::patch('/comunidad/publicaciones/{publicacion}', [ComunidadController::class, 'updatePublicacion'])->name('comunidad.publicaciones.update');
+        Route::delete('/comunidad/publicaciones/{publicacion}', [ComunidadController::class, 'destroyPublicacion'])->name('comunidad.publicaciones.destroy');
+        Route::post('/comunidad/publicaciones/{publicacion}/me-gusta', [ComunidadController::class, 'toggleMeGusta'])->name('comunidad.publicaciones.toggle-like');
+        Route::post('/comunidad/publicaciones/{publicacion}/comentarios', [ComunidadController::class, 'storeComentario'])->name('comunidad.comentarios.store');
+        Route::delete('/comunidad/comentarios/{comentario}', [ComunidadController::class, 'destroyComentario'])->name('comunidad.comentarios.destroy');
     });
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
