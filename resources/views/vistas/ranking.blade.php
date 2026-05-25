@@ -78,7 +78,9 @@
 
             @foreach ($usuariosRanking as $usuario)
                 <article class="ranking-row {{ $loop->first ? 'is-top' : '' }} {{ Auth::id() === $usuario->id ? 'is-user' : '' }}">
-                    <span>Posición: {{ $loop->iteration }}</span>
+                    <span title="Posicion {{ $loop->iteration }}" aria-label="Posicion {{ $loop->iteration }}">
+                        {{ $loop->iteration }}
+                    </span>
                     <div>
                         <strong>Nombre: {{ $usuario->nombre }}</strong>
                         <div class="ranking-progress">

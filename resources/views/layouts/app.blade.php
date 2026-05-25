@@ -8,6 +8,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/Logo.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/Logo.png') }}">
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
@@ -33,8 +35,23 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ auth()->check() ? route('home') : url('/') }}">
-                    GranaGO!
+                    <img src="{{ asset('images/Logo_fondo_blanco.png') }}" alt="Logo de GranaGO!" class="navbar-brand-logo">
+                    <span>GranaGO!</span>
                 </a>
+                <div class="navbar-mobile-actions">
+                    <button
+                        type="button"
+                        class="theme-toggle"
+                        aria-label="Cambiar modo oscuro"
+                        aria-pressed="false"
+                    >
+                        <span class="theme-toggle-track">
+                            <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">☀</span>
+                            <span class="theme-toggle-thumb"></span>
+                            <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">☾</span>
+                        </span>
+                    </button>
+                </div>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -78,22 +95,6 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item d-flex align-items-center me-2">
-                            <button
-                                type="button"
-                                class="theme-toggle"
-                                id="theme-toggle"
-                                aria-label="Cambiar modo oscuro"
-                                aria-pressed="false"
-                            >
-                                <span class="theme-toggle-track">
-                                    <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">☀</span>
-                                    <span class="theme-toggle-thumb"></span>
-                                    <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">☾</span>
-                                </span>
-                            </button>
-                        </li>
-
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))
@@ -132,6 +133,22 @@
                                 </div>
                             </li>
                         @endguest
+
+                        <li class="nav-item d-flex align-items-center theme-toggle-nav">
+                            <button
+                                type="button"
+                                class="theme-toggle"
+                                id="theme-toggle"
+                                aria-label="Cambiar modo oscuro"
+                                aria-pressed="false"
+                            >
+                                <span class="theme-toggle-track">
+                                    <span class="theme-toggle-icon theme-toggle-icon-sun" aria-hidden="true">☀</span>
+                                    <span class="theme-toggle-thumb"></span>
+                                    <span class="theme-toggle-icon theme-toggle-icon-moon" aria-hidden="true">☾</span>
+                                </span>
+                            </button>
+                        </li>
                     </ul>
                 </div>
             </div>

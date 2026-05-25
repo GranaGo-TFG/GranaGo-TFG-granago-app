@@ -31,14 +31,17 @@
                 @endphp
 
                 <article class="challenge-card">
-                    @if ($reto->archivo_multimedia)
-                        <img
-                            src="{{ $reto->archivo_multimedia }}"
-                            alt="Imagen del reto {{ $reto->nombre }}"
-                            class="detail-hero-media"
-                            style="position: static; display: block; width: 100%; min-height: 9rem; max-height: 12rem;"
-                        >
-                    @endif
+                    <div class="challenge-card-media">
+                        @if ($reto->archivo_multimedia)
+                            <img
+                                src="{{ $reto->archivo_multimedia }}"
+                                alt="Imagen del reto {{ $reto->nombre }}"
+                                class="challenge-card-media-image"
+                            >
+                        @else
+                            <div class="challenge-card-media-fallback" aria-hidden="true"></div>
+                        @endif
+                    </div>
                     <div class="challenge-body">
                         <span class="home-kicker">+{{ $reto->puntos_recompensa }} pts</span>
                         <span class="status-pill {{ $statusClass }}">{{ ucfirst($reto->estado) }}</span>
