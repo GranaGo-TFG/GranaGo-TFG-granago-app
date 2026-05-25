@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ComunidadController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogroController;
@@ -29,7 +30,9 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
         Route::get('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'create'])->name('subir-prueba');
         Route::post('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'storeFromView'])->name('subir-prueba.store');
         Route::view('/ranking', 'vistas.ranking')->name('ranking');
-        Route::view('/comunidad', 'vistas.comunidad')->name('comunidad');
+        Route::get('/comunidad', [ComunidadController::class, 'index'])->name('comunidad');
+        Route::post('/comunidad/publicaciones', [ComunidadController::class, 'storePublicacion'])->name('comunidad.publicaciones.store');
+        Route::post('/comunidad/publicaciones/{publicacion}/comentarios', [ComunidadController::class, 'storeComentario'])->name('comunidad.comentarios.store');
         Route::view('/tienda', 'vistas.tienda')->name('tienda');
         Route::view('/planes', 'vistas.planes')->name('planes');
         Route::view('/perfil', 'vistas.perfil')->name('perfil');
