@@ -50,6 +50,16 @@ class User extends Authenticatable
         return $this->hasMany(Comentario::class);
     }
 
+    public function publicacionesComunidad(): HasMany
+    {
+        return $this->hasMany(PublicacionComunidad::class, 'user_id');
+    }
+
+    public function comentariosComunidad(): HasMany
+    {
+        return $this->hasMany(ComentarioComunidad::class, 'user_id');
+    }
+
     public function logros(): BelongsToMany
     {
         return $this->belongsToMany(Logro::class, 'logro_user')
