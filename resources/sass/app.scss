@@ -4543,8 +4543,8 @@ a,
 
 .store-payment-option {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: start;
+    grid-template-columns: auto 2.4rem minmax(0, 1fr);
+    align-items: center;
     gap: 0.65rem;
     padding: 0.72rem;
     border: 1px solid rgba(148, 163, 184, 0.2);
@@ -4560,27 +4560,46 @@ a,
 .store-payment-option input {
     width: 1rem;
     height: 1rem;
-    margin-top: 0.25rem;
+    margin-top: 0;
     accent-color: var(--granago-primary);
 }
 
-.store-payment-option span {
+.store-payment-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    padding: 0.25rem;
+    border: 1px solid rgba(148, 163, 184, 0.24);
+    border-radius: 0.7rem;
+    background: rgba(241, 245, 249, 0.84);
+}
+
+.store-payment-logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.store-payment-copy {
     display: grid;
     gap: 0.2rem;
 }
 
-.store-payment-option strong {
+.store-payment-copy strong {
     color: var(--granago-secondary);
     font-size: 0.95rem;
     line-height: 1.25;
 }
 
-.store-payment-option small {
+.store-payment-copy small {
     color: var(--granago-text-soft);
     line-height: 1.45;
 }
 
-.store-payment-option input:checked + span strong {
+.store-payment-option input:checked ~ .store-payment-copy strong {
     color: var(--granago-primary);
 }
 
@@ -4696,7 +4715,12 @@ a,
     color: var(--granago-capsule-text);
 }
 
-:root[data-theme='dark'] .store-payment-option input:checked + span strong {
+:root[data-theme='dark'] .store-payment-logo-wrap {
+    border-color: rgba(148, 163, 184, 0.24);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+:root[data-theme='dark'] .store-payment-option input:checked ~ .store-payment-copy strong {
     color: #ff8ea8;
 }
 
