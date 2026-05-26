@@ -71,6 +71,9 @@
                                     <a class="nav-link" href="{{ route('admin.usuarios.index') }}">Usuarios</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.productos.index') }}">Tienda</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('vistas.comunidad') }}">Comunidad</a>
                                 </li>
                             @else
