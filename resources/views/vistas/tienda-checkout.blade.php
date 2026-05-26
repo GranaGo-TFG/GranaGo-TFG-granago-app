@@ -49,7 +49,7 @@
                                 >
                                 <span class="store-payment-logo-wrap" aria-hidden="true">
                                     <img
-                                        src="{{ asset('images/payment-methods/' . $codigo . '.svg') }}"
+                                        src="{{ asset('images/metodos-pago/' . $codigo . '.svg') }}"
                                         alt=""
                                         class="store-payment-logo"
                                         loading="lazy"
