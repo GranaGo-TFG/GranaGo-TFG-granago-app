@@ -8,6 +8,7 @@ use App\Http\Controllers\LogroController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RetoController;
 use App\Http\Controllers\RetoVistaController;
+use App\Http\Controllers\TiendaController;
 use App\Http\Controllers\ValidacionRetoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -30,7 +31,10 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
         Route::get('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'create'])->name('subir-prueba');
         Route::post('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'storeFromView'])->name('subir-prueba.store');
         Route::view('/ranking', 'vistas.ranking')->name('ranking');
-        Route::view('/tienda', 'vistas.tienda')->name('tienda');
+        Route::get('/tienda', [TiendaController::class, 'index'])->name('tienda');
+        Route::get('/tienda/productos/{producto}', [TiendaController::class, 'show'])->name('tienda.producto');
+        Route::get('/tienda/productos/{producto}/pago', [TiendaController::class, 'pago'])->name('tienda.pago');
+        Route::post('/tienda/productos/{producto}/pago', [TiendaController::class, 'procesarPago'])->name('tienda.pago.store');
         Route::view('/planes', 'vistas.planes')->name('planes');
         Route::view('/perfil', 'vistas.perfil')->name('perfil');
 
@@ -49,6 +53,13 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
     });
 
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/productos', [AdminController::class, 'productos'])->name('productos.index');
+        Route::get('/productos/crear', [AdminController::class, 'createProducto'])->name('productos.create');
+        Route::post('/productos', [AdminController::class, 'storeProducto'])->name('productos.store');
+        Route::get('/productos/{producto}', [AdminController::class, 'showProducto'])->name('productos.show');
+        Route::patch('/productos/{producto}', [AdminController::class, 'updateProducto'])->name('productos.update');
+        Route::delete('/productos/{producto}', [AdminController::class, 'destroyProducto'])->name('productos.destroy');
+
         Route::get('/retos', [AdminController::class, 'retos'])->name('retos.index');
         Route::patch('/retos/{reto}', [AdminController::class, 'actualizarEstadoReto'])->name('retos.update');
 
