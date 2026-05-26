@@ -54,7 +54,7 @@ class TiendaController extends Controller
         ]);
     }
 
-    public function checkout(Producto $producto): View
+    public function pago(Producto $producto): View
     {
         // Evita compras de productos retirados desde rutas directas.
         abort_unless($producto->activo, 404);
@@ -67,7 +67,7 @@ class TiendaController extends Controller
         ]);
     }
 
-    public function processCheckout(Request $request, Producto $producto): RedirectResponse
+    public function procesarPago(Request $request, Producto $producto): RedirectResponse
     {
         // Seguridad en servidor: un producto retirado nunca se procesa para usuarios.
         abort_unless($producto->activo, 404);
