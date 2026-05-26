@@ -120,7 +120,7 @@
                         <p class="store-purchase-note">Pulsa comprar para completar los datos de pago en el siguiente paso.</p>
 
                         @if ($producto->stock > 0)
-                            <a href="{{ route('vistas.tienda.checkout', $producto) }}" class="btn btn-primary home-btn w-100">Comprar</a>
+                            <a href="{{ route('vistas.tienda.pago', $producto) }}" class="btn btn-primary home-btn w-100">Comprar</a>
                         @else
                             <button type="button" class="btn btn-primary home-btn w-100" disabled aria-disabled="true">Comprar</button>
                             <p class="store-out-of-stock mb-0">Producto agotado temporalmente.</p>
