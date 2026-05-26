@@ -47,7 +47,15 @@
                                     value="{{ $codigo }}"
                                     {{ $metodoSeleccionado === $codigo ? 'checked' : '' }}
                                 >
-                                <span>
+                                <span class="store-payment-logo-wrap" aria-hidden="true">
+                                    <img
+                                        src="{{ asset('images/payment-methods/' . $codigo . '.svg') }}"
+                                        alt=""
+                                        class="store-payment-logo"
+                                        loading="lazy"
+                                    >
+                                </span>
+                                <span class="store-payment-copy">
                                     <strong>{{ $metodo['nombre'] }}</strong>
                                     <small>{{ $metodo['descripcion'] }}</small>
                                 </span>
