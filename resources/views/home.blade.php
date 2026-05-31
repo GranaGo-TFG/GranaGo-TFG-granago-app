@@ -5,6 +5,7 @@
 @endpush
 
 @section('content')
+@php($user = Auth::user())
 <div class="home-page">
     <section class="home-carousel-wrap" aria-label="Imagenes destacadas de Granada">
         <div id="granadaHomeCarousel" class="carousel slide home-carousel" data-bs-ride="carousel">
@@ -67,13 +68,16 @@
         <section class="home-hero home-hero-featured">
             <div class="home-hero-copy">
                 <span class="home-kicker">GranaGO!</span>
-                <h1>Granada te espera, {{ Auth::user()->nombre }}</h1>
+                <h1>{{ $user ? 'Granada te espera, ' . $user->nombre : 'Granada te espera' }}</h1>
                 <p>
                     Sal a explorar, completa retos fotograficos y suma puntos mientras descubres
                     sitios que normalmente pasan de largo.
                 </p>
                 <div class="home-actions">
                     <a href="{{ route('vistas.retos') }}" class="btn btn-primary home-btn">Ver retos</a>
+                    @guest
+                        <a href="{{ route('register') }}" class="btn btn-outline-secondary home-btn">Crear cuenta</a>
+                    @endguest
                 </div>
 
                 <div class="home-quick-stats" aria-label="Resumen de actividad">
@@ -82,12 +86,12 @@
                         <span>retos activos</span>
                     </div>
                     <div>
-                        <strong>{{ Auth::user()->puntos_totales }}</strong>
-                        <span>puntos</span>
+                        <strong>{{ $user?->puntos_totales ?? 0 }}</strong>
+                        <span>{{ $user ? 'puntos' : 'puntos al empezar' }}</span>
                     </div>
                     <div>
-                        <strong>x{{ number_format((float) Auth::user()->racha_multiplicador, 2) }}</strong>
-                        <span>racha</span>
+                        <strong>x{{ number_format((float) ($user?->racha_multiplicador ?? 1), 2) }}</strong>
+                        <span>{{ $user ? 'racha' : 'multiplicador base' }}</span>
                     </div>
                 </div>
             </div>
@@ -126,31 +130,36 @@
                         <span>{{ ucfirst($retoDestacado->estado) }}</span>
                         <span>{{ $retoDestacado->ubicacion_referencia ?? 'Granada' }}</span>
                     </div>
-                    <a href="{{ route('vistas.reto-detalle', $retoDestacado) }}" class="btn btn-primary home-btn">Ver detalle</a>
+                    <a href="{{ $user ? route('vistas.reto-detalle', $retoDestacado) : route('login') }}" class="btn btn-primary home-btn">Ver detalle</a>
                 @else
                     <div>
                         <span class="home-kicker">Reto recomendado</span>
                         <h2>Aun no hay retos publicados</h2>
                         <p>Crea un reto o revisa el listado para empezar a poblar el mapa del proyecto.</p>
                     </div>
-                    <a href="{{ Auth::user()->rol === 'creador' ? route('vistas.crear-reto') : route('vistas.retos') }}" class="btn btn-primary home-btn">Ir a retos</a>
+                    <a href="{{ $user && $user->rol === 'creador' ? route('vistas.crear-reto') : route('vistas.retos') }}" class="btn btn-primary home-btn">Ir a retos</a>
                 @endif
             </article>
 
             <aside class="home-side-panel">
                 <div>
                     <span class="home-kicker">Tu progreso</span>
-                    <h2>Vas {{ $rankingPosicion }}&ordm; en la clasificacion</h2>
-                    @if ($puntosParaSiguiente > 0)
-                        <p>Te faltan {{ $puntosParaSiguiente }} puntos para alcanzar la siguiente posicion.</p>
+                    @auth
+                        <h2>Vas {{ $rankingPosicion }}&ordm; en la clasificacion</h2>
+                        @if ($puntosParaSiguiente > 0)
+                            <p>Te faltan {{ $puntosParaSiguiente }} puntos para alcanzar la siguiente posicion.</p>
+                        @else
+                            <p>Estas en el primer puesto. Mantente activo para conservar la posicion.</p>
+                        @endif
                     @else
-                        <p>Estas en el primer puesto. Mantente activo para conservar la posicion.</p>
-                    @endif
+                        <h2>Inicia sesion para seguir tu progreso</h2>
+                        <p>Podras guardar tus puntos, ver tu posicion en el ranking y enviar validaciones en cada reto.</p>
+                    @endauth
                 </div>
                 <div class="home-mini-progress">
-                    <span style="width: {{ $progresoRanking }}%"></span>
+                    <span style="width: {{ $user ? $progresoRanking : 22 }}%"></span>
                 </div>
-                <a href="{{ route('vistas.ranking') }}" class="btn btn-primary home-btn">Ver ranking</a>
+                <a href="{{ $user ? route('vistas.ranking') : route('login') }}" class="btn btn-primary home-btn">{{ $user ? 'Ver ranking' : 'Entrar para jugar' }}</a>
                 <div class="home-map-note">
                     <span>Mapa del proyecto</span>
                     <strong>{{ $retosConMapa }} retos con coordenadas</strong>

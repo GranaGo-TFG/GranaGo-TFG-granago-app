@@ -9,7 +9,7 @@
                 <h2>Retos disponibles por Granada</h2>
                 <p>Elige una prueba, sal a la calle y sube una foto cuando la completes.</p>
             </div>
-            @if (Auth::user()->rol === 'creador')
+            @if (Auth::check() && Auth::user()->rol === 'creador')
                 <a href="{{ route('vistas.crear-reto') }}" class="btn btn-primary home-btn">Crear reto</a>
             @endif
         </div>
@@ -52,12 +52,12 @@
                             <span class="d-block">{{ optional($reto->fecha_fin)->format('d/m/Y') ?? 'Sin fecha fin' }}</span>
                             <span class="d-block">{{ $reto->validaciones_verificadas_count }} validadas</span>
                         </div>
-                        <a href="{{ route('vistas.reto-detalle', $reto) }}" class="status-pill home-small-link">Ver detalle</a>
+                        <a href="{{ Auth::check() ? route('vistas.reto-detalle', $reto) : route('login') }}" class="status-pill home-small-link">Ver detalle</a>
                     </div>
                 </article>
             @empty
                 <div class="home-panel admin-empty">
-                    No hay retos todavia. @if (Auth::user()->rol === 'creador') Puedes crear el primero desde "Crear reto". @endif
+                    No hay retos todavia. @if (Auth::check() && Auth::user()->rol === 'creador') Puedes crear el primero desde "Crear reto". @endif
                 </div>
             @endforelse
         </section>

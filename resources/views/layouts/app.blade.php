@@ -96,6 +96,13 @@
                                     <a class="nav-link" href="{{ route('vistas.planes') }}">Planes</a>
                                 </li>
                             @endif
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('home') }}">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('vistas.retos') }}">Retos</a>
+                            </li>
                         @endauth
                     </ul>
 
