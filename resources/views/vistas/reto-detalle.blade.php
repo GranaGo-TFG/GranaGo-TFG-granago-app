@@ -14,6 +14,7 @@
                 default => 'status-rejected',
             };
             $puedeSubirPrueba = $reto->estado !== 'caducado';
+            $esCreador = Auth::check() && Auth::user()->rol === 'creador';
         @endphp
 
         @if (session('status'))
@@ -77,8 +78,10 @@
                             </ul>
                         </div>
 
-                        @if ($puedeSubirPrueba)
+                        @if ($puedeSubirPrueba && ! $esCreador)
                             <a href="{{ route('vistas.subir-prueba', $reto) }}" class="btn btn-primary home-btn w-100">Subir prueba</a>
+                        @elseif ($esCreador)
+                            <button type="button" class="btn btn-primary home-btn w-100" disabled aria-disabled="true">Los creadores no pueden participar</button>
                         @else
                             <button type="button" class="btn btn-primary home-btn w-100" disabled aria-disabled="true">Subir prueba</button>
                         @endif
