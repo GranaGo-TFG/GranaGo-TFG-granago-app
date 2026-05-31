@@ -62,7 +62,7 @@
                         @auth
                             @if (Auth::user()->rol === 'admin')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.retos.index') }}">Proyectos</a>
+                                    <a class="nav-link" href="{{ route('admin.retos.index') }}">Retos</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.validaciones.index') }}">Validaciones</a>
