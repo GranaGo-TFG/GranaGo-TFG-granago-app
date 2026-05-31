@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Producto;
 use App\Models\Reto;
 use App\Models\User;
 use App\Models\ValidacionReto;
@@ -9,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class AdminController extends Controller
@@ -85,6 +87,105 @@ class AdminController extends Controller
         return view('admin.usuarios', compact('usuarios'));
     }
 
+    public function productos(): View
+    {
+        $productos = Producto::query()
+            ->orderByDesc('created_at')
+            ->paginate(12);
+
+        $masVendidos = Producto::query()
+            ->orderByDesc('vendidos_total')
+            ->orderBy('nombre')
+            ->limit(5)
+            ->get();
+
+        if ($masVendidos->isEmpty()) {
+            $masVendidos = $productos->getCollection()->take(5);
+        }
+
+        return view('vistas.tienda', [
+            'productos' => $productos,
+            'masVendidos' => $masVendidos,
+            'modoAdmin' => true,
+            'detalleRouteName' => 'admin.productos.show',
+            'crearRouteName' => 'admin.productos.create',
+        ]);
+    }
+
+    public function createProducto(): View
+    {
+        return view('admin.productos-crear');
+    }
+
+    public function showProducto(Producto $producto): View
+    {
+        $relacionados = Producto::query()
+            ->whereKeyNot($producto->id)
+            ->where('categoria', $producto->categoria)
+            ->orderByDesc('vendidos_total')
+            ->limit(3)
+            ->get();
+
+        return view('vistas.tienda-producto', [
+            'producto' => $producto,
+            'relacionados' => $relacionados,
+            'modoAdmin' => true,
+            'detalleRouteName' => 'admin.productos.show',
+            'backRouteName' => 'admin.productos.index',
+        ]);
+    }
+
+    public function storeProducto(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'nombre' => ['required', 'string', 'max:120'],
+            'categoria' => ['required', 'string', 'max:80'],
+            'descripcion_corta' => ['required', 'string', 'max:180'],
+            'descripcion' => ['required', 'string'],
+            'precio' => ['required', 'numeric', 'min:0', 'max:25'],
+            'precio_puntos' => ['required', 'integer', 'min:100', 'max:999999'],
+            'stock' => ['required', 'integer', 'min:0', 'max:99999'],
+            'imagen_url' => ['nullable', 'url', 'max:255'],
+            'activo' => ['required', 'boolean'],
+        ]);
+
+        $data['slug'] = $this->generarSlugUnico($data['nombre']);
+
+        $producto = Producto::query()->create($data);
+
+        return redirect()->route('admin.productos.show', $producto);
+    }
+
+    public function updateProducto(Request $request, Producto $producto): RedirectResponse
+    {
+        $data = $request->validate([
+            'nombre' => ['required', 'string', 'max:120'],
+            'categoria' => ['required', 'string', 'max:80'],
+            'descripcion_corta' => ['required', 'string', 'max:180'],
+            'descripcion' => ['required', 'string'],
+            'precio' => ['required', 'numeric', 'min:0', 'max:25'],
+            'precio_puntos' => ['required', 'integer', 'min:100', 'max:999999'],
+            'stock' => ['required', 'integer', 'min:0', 'max:99999'],
+            'imagen_url' => ['nullable', 'url', 'max:255'],
+            'activo' => ['required', 'boolean'],
+        ]);
+
+        if ($producto->nombre !== $data['nombre']) {
+            $data['slug'] = $this->generarSlugUnico($data['nombre'], $producto->id);
+        }
+
+        $producto->update($data);
+
+        return back();
+    }
+
+    public function destroyProducto(Producto $producto): RedirectResponse
+    {
+        $producto->delete();
+
+        return redirect()->route('admin.productos.index');
+    }
+
     public function actualizarBaneoUsuario(Request $request, User $user): RedirectResponse
     {
         $data = $request->validate([
@@ -132,6 +233,29 @@ class AdminController extends Controller
 
         if ($puntosGanados > 0) {
             $user->increment('puntos_totales', $puntosGanados);
+        }
+    }
+
+    private function generarSlugUnico(string $nombre, ?int $exceptoProductoId = null): string
+    {
+        $base = Str::slug($nombre);
+        $base = $base !== '' ? $base : 'producto';
+        $slug = $base;
+        $intento = 2;
+
+        while (true) {
+            $query = Producto::query()->where('slug', $slug);
+
+            if (! is_null($exceptoProductoId)) {
+                $query->where('id', '!=', $exceptoProductoId);
+            }
+
+            if (! $query->exists()) {
+                return $slug;
+            }
+
+            $slug = $base . '-' . $intento;
+            $intento++;
         }
     }
 }

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             RetoSeeder::class,
             ValidacionRetoSeeder::class,
             ComentarioSeeder::class,
+            ProductoSeeder::class,
         ]);
 
         $logroIds = Logro::query()->pluck('id');
