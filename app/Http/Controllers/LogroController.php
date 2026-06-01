@@ -12,6 +12,8 @@ class LogroController extends Controller
 {
     public function index(): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $logros = Logro::orderByDesc('id')->get();
 
         return response()->json($logros);
@@ -19,6 +21,8 @@ class LogroController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $data = $request->validate([
             'nombre_logro' => ['required', 'string', 'max:100'],
             'descripcion' => ['required', 'string'],
@@ -32,6 +36,8 @@ class LogroController extends Controller
 
     public function show(Logro $logro): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $logro->load('usuarios:id,nombre,email');
 
         return response()->json($logro);
@@ -39,6 +45,8 @@ class LogroController extends Controller
 
     public function update(Request $request, Logro $logro): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $data = $request->validate([
             'nombre_logro' => ['sometimes', 'string', 'max:100'],
             'descripcion' => ['sometimes', 'string'],
@@ -52,6 +60,8 @@ class LogroController extends Controller
 
     public function destroy(Logro $logro): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $logro->delete();
 
         return response()->json(null, 204);
@@ -59,6 +69,8 @@ class LogroController extends Controller
 
     public function asignarUsuario(Request $request, Logro $logro): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $data = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
             'fecha_desbloqueo' => ['nullable', 'date'],
@@ -77,10 +89,17 @@ class LogroController extends Controller
 
     public function retirarUsuario(Logro $logro, User $user): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $logro->usuarios()->detach($user->id);
 
         return response()->json([
             'message' => 'Logro retirado correctamente.',
         ]);
+    }
+
+    private function asegurarAdministrador(): void
+    {
+        abort_if(auth()->user()?->rol !== 'admin', 403);
     }
 }

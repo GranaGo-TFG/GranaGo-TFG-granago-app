@@ -63,6 +63,8 @@ class RetoController extends Controller
 
     public function index(): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $retos = Reto::with('creador:id,nombre,email')
             ->orderByDesc('id')
             ->get();
@@ -131,6 +133,8 @@ class RetoController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $data = $request->validate([
             'creador_id' => ['required', 'exists:users,id'],
             'nombre' => ['required', 'string', 'max:100'],
@@ -152,6 +156,8 @@ class RetoController extends Controller
 
     public function show(Reto $reto): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $reto->load([
             'creador:id,nombre,email',
             'validaciones.user:id,nombre,email',
@@ -162,6 +168,8 @@ class RetoController extends Controller
 
     public function update(Request $request, Reto $reto): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $data = $request->validate([
             'creador_id' => ['sometimes', 'exists:users,id'],
             'nombre' => ['sometimes', 'string', 'max:100'],
@@ -192,8 +200,15 @@ class RetoController extends Controller
 
     public function destroy(Reto $reto): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $reto->delete();
 
         return response()->json(null, 204);
+    }
+
+    private function asegurarAdministrador(): void
+    {
+        abort_if(Auth::user()?->rol !== 'admin', 403);
     }
 }
