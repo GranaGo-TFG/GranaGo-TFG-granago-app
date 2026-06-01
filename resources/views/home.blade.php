@@ -135,7 +135,7 @@
                     <div>
                         <span class="home-kicker">Reto recomendado</span>
                         <h2>Aun no hay retos publicados</h2>
-                        <p>Crea un reto o revisa el listado para empezar a poblar el mapa del proyecto.</p>
+                        <p>Crea un reto o revisa el listado para empezar a poblar el mapa del reto.</p>
                     </div>
                     <a href="{{ $user && $user->rol === 'creador' ? route('vistas.crear-reto') : route('vistas.retos') }}" class="btn btn-primary home-btn">Ir a retos</a>
                 @endif
@@ -161,7 +161,7 @@
                 </div>
                 <a href="{{ $user ? route('vistas.ranking') : route('login') }}" class="btn btn-primary home-btn">{{ $user ? 'Ver ranking' : 'Entrar para jugar' }}</a>
                 <div class="home-map-note">
-                    <span>Mapa del proyecto</span>
+                    <span>Mapa del reto</span>
                     <strong>{{ $retosConMapa }} retos con coordenadas</strong>
                 </div>
             </aside>

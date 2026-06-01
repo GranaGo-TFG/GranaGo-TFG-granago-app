@@ -45,7 +45,7 @@
                         <p>{{ $validacion->user->nombre ?? 'Usuario eliminado' }} envio esta prueba para revision.</p>
                         <div class="admin-row-meta-wrap">
                             <span>Email: {{ $validacion->user->email ?? 'No disponible' }}</span>
-                            <span>Estado del proyecto: {{ $validacion->reto->estado ?? 'No disponible' }}</span>
+                            <span>Estado del reto: {{ $validacion->reto->estado ?? 'No disponible' }}</span>
                             <span>
                                 Prueba:
                                 <a href="{{ $fotoPruebaUrl }}" target="_blank" rel="noopener noreferrer">ver imagen</a>

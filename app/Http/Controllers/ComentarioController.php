@@ -11,6 +11,8 @@ class ComentarioController extends Controller
 {
     public function index(): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $comentarios = Comentario::with([
             'user:id,nombre,email',
             'validacion:id,reto_id,estado',
@@ -21,6 +23,8 @@ class ComentarioController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $data = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
             'validacion_id' => ['required', 'exists:validaciones_retos,id'],
@@ -37,6 +41,8 @@ class ComentarioController extends Controller
 
     public function show(Comentario $comentario): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $comentario->load([
             'user:id,nombre,email',
             'validacion.reto:id,nombre',
@@ -47,6 +53,8 @@ class ComentarioController extends Controller
 
     public function update(Request $request, Comentario $comentario): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $data = $request->validate([
             'texto' => ['sometimes', 'string'],
             'fecha' => ['sometimes', 'date'],
@@ -59,8 +67,15 @@ class ComentarioController extends Controller
 
     public function destroy(Comentario $comentario): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $comentario->delete();
 
         return response()->json(null, 204);
+    }
+
+    private function asegurarAdministrador(): void
+    {
+        abort_if(auth()->user()?->rol !== 'admin', 403);
     }
 }
