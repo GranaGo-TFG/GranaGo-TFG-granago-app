@@ -27,7 +27,7 @@ class AdminController extends Controller
     public function actualizarEstadoReto(Request $request, Reto $reto): RedirectResponse
     {
         $data = $request->validate([
-            'estado' => ['required', 'in:borrador,publicado,caducado'],
+            'estado' => ['required', 'in:borrador,publicado,caducado,rechazado'],
         ]);
 
         $reto->update($data);

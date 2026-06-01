@@ -11,9 +11,11 @@
             $statusClass = match ($reto->estado) {
                 'publicado' => 'status-open',
                 'borrador' => 'status-draft',
+                'rechazado', 'caducado' => 'status-rejected',
                 default => 'status-rejected',
             };
-            $puedeSubirPrueba = $reto->estado !== 'caducado';
+            $puedeSubirPrueba = ! in_array($reto->estado, ['caducado', 'rechazado'], true);
+            $esCreador = Auth::check() && Auth::user()->rol === 'creador';
         @endphp
 
         @if (session('status'))

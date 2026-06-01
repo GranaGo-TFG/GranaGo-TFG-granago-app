@@ -5,8 +5,8 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <h1 class="home-kicker">Gestion de proyectos</h1>
-                <p>Cambia el estado de los retos activos, borradores o proyectos ya cerrados.</p>
+                <h1 class="home-kicker">Gestion de retos</h1>
+                <p>Cambia el estado de los retos activos, borradores, rechazados o retos ya cerrados.</p>
             </div>
         </div>
 
@@ -27,7 +27,7 @@
                 <div class="home-panel admin-row">
                     <div class="admin-row-main">
                         <div class="admin-row-top">
-                            <span class="status-pill status-{{ $reto->estado === 'publicado' ? 'open' : ($reto->estado === 'caducado' ? 'rejected' : 'pending') }}">
+                            <span class="status-pill status-{{ $reto->estado === 'publicado' ? 'open' : (in_array($reto->estado, ['caducado', 'rechazado'], true) ? 'rejected' : 'pending') }}">
                                 {{ ucfirst($reto->estado) }}
                             </span>
                             <span class="admin-row-meta">{{ $reto->puntos_recompensa }} pts</span>
@@ -46,7 +46,7 @@
                         @method('PATCH')
                         <label for="estado-reto-{{ $reto->id }}" class="form-label">Estado</label>
                         <select id="estado-reto-{{ $reto->id }}" name="estado" class="form-select">
-                            @foreach (['borrador', 'publicado', 'caducado'] as $estado)
+                            @foreach (['borrador', 'publicado', 'caducado', 'rechazado'] as $estado)
                                 <option value="{{ $estado }}" @selected($reto->estado === $estado)>{{ ucfirst($estado) }}</option>
                             @endforeach
                         </select>
