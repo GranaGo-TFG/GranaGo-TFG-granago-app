@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('archivo_multimedia')->nullable();
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_fin');
-            $table->enum('estado', ['borrador', 'publicado', 'caducado'])->default('borrador');
+            $table->enum('estado', ['borrador', 'publicado', 'caducado', 'rechazado'])->default('borrador');
             $table->integer('puntos_recompensa');
         });
     }
