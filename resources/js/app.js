@@ -1,5 +1,7 @@
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
 import './mapa-osm';
+
+window.bootstrap = bootstrap;
 
 document.addEventListener('DOMContentLoaded', function () {
     var themeToggles = document.querySelectorAll('.theme-toggle');
