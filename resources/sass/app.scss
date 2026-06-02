@@ -2554,6 +2554,17 @@ a,
     grid-column: 1 / -1;
 }
 
+.challenge-story-head {
+    margin-top: 0.35rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.challenge-story-head h2 {
+    margin: 0.2rem 0 0.25rem;
+    font-size: 1.15rem;
+}
+
 .challenge-form-field .form-control,
 .challenge-form-field .form-select {
     min-height: 3rem;
