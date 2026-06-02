@@ -11,7 +11,7 @@
             <div>
                 <h1 class="home-kicker">Crear reto</h1>
                 <h2>Nuevo reto para los jugadores</h2>
-                <p>Define nombre, fechas, puntos y coordenadas para que el reto aparezca en el mapa de inicio.</p>
+                <p>Define los datos del reto, su ubicacion y la historia que descubriran los jugadores.</p>
             </div>
             <a href="{{ route('vistas.retos') }}" class="btn btn-outline-secondary home-btn">Volver a retos</a>
         </div>
@@ -60,6 +60,32 @@
                     <div class="challenge-form-field">
                         <label for="puntos_recompensa" class="form-label">Puntos recompensa</label>
                         <input id="puntos_recompensa" type="number" name="puntos_recompensa" min="0" class="form-control" value="{{ old('puntos_recompensa', 50) }}" required>
+                    </div>
+
+                    <div class="challenge-form-field challenge-form-field-full challenge-story-head">
+                        <span class="home-kicker">Eco de Granada</span>
+                        <h2>Historia del lugar</h2>
+                        <p class="muted-copy mb-0">Este contenido aparecera al pulsar el icono de historia en los detalles del reto.</p>
+                    </div>
+
+                    <div class="challenge-form-field challenge-form-field-full">
+                        <label for="titulo_relato" class="form-label">Titulo del relato (opcional)</label>
+                        <input id="titulo_relato" type="text" name="titulo_relato" class="form-control" maxlength="255" value="{{ old('titulo_relato') }}">
+                    </div>
+
+                    <div class="challenge-form-field challenge-form-field-full">
+                        <label for="leyenda_relato" class="form-label">Introduccion o leyenda (opcional)</label>
+                        <textarea id="leyenda_relato" name="leyenda_relato" rows="3" class="form-control">{{ old('leyenda_relato') }}</textarea>
+                    </div>
+
+                    <div class="challenge-form-field challenge-form-field-full">
+                        <label for="contenido_relato" class="form-label">Historia (opcional)</label>
+                        <textarea id="contenido_relato" name="contenido_relato" rows="5" class="form-control">{{ old('contenido_relato') }}</textarea>
+                    </div>
+
+                    <div class="challenge-form-field challenge-form-field-full">
+                        <label for="cierre_relato" class="form-label">Cierre de la cronica (opcional)</label>
+                        <textarea id="cierre_relato" name="cierre_relato" rows="3" class="form-control">{{ old('cierre_relato') }}</textarea>
                     </div>
                 </div>
 
