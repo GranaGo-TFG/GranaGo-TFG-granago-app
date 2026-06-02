@@ -1852,7 +1852,7 @@ a,
     display: grid;
     align-content: end;
     min-height: inherit;
-    padding: clamp(1.25rem, 3vw, 2rem);
+    padding: clamp(1.25rem, 3vw, 2rem) clamp(5.5rem, 9vw, 7rem) clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 3vw, 2rem);
     background:
         linear-gradient(180deg, rgba(15, 23, 42, 0.14) 0%, rgba(15, 23, 42, 0.74) 100%);
 }
@@ -1885,6 +1885,37 @@ a,
 
 .detail-content-panel {
     border-radius: 1.5rem;
+}
+
+.secret-discovery {
+    position: absolute;
+    right: clamp(1.25rem, 3vw, 2rem);
+    bottom: clamp(1.25rem, 3vw, 2rem);
+    display: grid;
+    place-items: center;
+    width: 3.25rem;
+    height: 3.25rem;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 50%;
+    background: rgba(15, 23, 42, 0.58);
+    color: #fff;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.22);
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.secret-discovery:hover {
+    border-color: #fff;
+    background: var(--granago-primary);
+    transform: translateY(-2px);
+}
+
+.secret-discovery-mark {
+    color: #fff;
+    font-family: 'Fraunces', serif;
+    font-size: 1.55rem;
+    font-weight: 700;
 }
 
 .secret-modal .modal-dialog {
@@ -2728,6 +2759,16 @@ a,
     background:
         radial-gradient(circle at top right, rgba(245, 158, 11, 0.12), transparent 12rem),
         linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.92));
+}
+
+:root[data-theme='dark'] .secret-discovery {
+    border-color: rgba(255, 255, 255, 0.68);
+    background: rgba(15, 23, 42, 0.7);
+}
+
+:root[data-theme='dark'] .secret-discovery:hover {
+    border-color: #fff;
+    background: var(--granago-primary);
 }
 
 :root[data-theme='dark'] .secret-modal h2 {

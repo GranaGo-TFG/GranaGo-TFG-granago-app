@@ -41,6 +41,18 @@
                 <span class="status-pill {{ $statusClass }} detail-status-pill">Estado: {{ ucfirst($reto->estado) }}</span>
                 <h1>Descripcion</h1>
                 <p>{{ $reto->descripcion }}</p>
+                @if ($reto->titulo_relato)
+                    <button
+                        type="button"
+                        class="secret-discovery"
+                        data-bs-toggle="modal"
+                        data-bs-target="#secret-story-modal"
+                        aria-label="Descubrir la historia de este lugar"
+                        title="Descubrir la historia de este lugar"
+                    >
+                        <span class="secret-discovery-mark" aria-hidden="true">?</span>
+                    </button>
+                @endif
             </div>
         </section>
 
@@ -138,54 +150,53 @@
     </div>
 </div>
 
-@if (session('secreto_desbloqueado'))
-    @php($secretoDesbloqueado = session('secreto_desbloqueado'))
-    <div
-        class="modal fade secret-modal"
-        id="secret-unlocked-modal"
-        tabindex="-1"
-        aria-labelledby="secret-unlocked-title"
-        aria-hidden="true"
-    >
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content secret-modal-content">
-                <div class="modal-body">
-                    <div class="secret-modal-head">
-                        <span class="secret-modal-badge" aria-hidden="true">?</span>
-                        <div>
-                            <span class="home-kicker">Ecos de Granada</span>
-                            <h2 id="secret-unlocked-title">{{ $secretoDesbloqueado['titulo'] }}</h2>
-                        </div>
+@if ($reto->titulo_relato)
+<div
+    class="modal fade secret-modal"
+    id="secret-story-modal"
+    tabindex="-1"
+    aria-labelledby="secret-story-title"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content secret-modal-content">
+            <div class="modal-body">
+                <div class="secret-modal-head">
+                    <span class="secret-modal-badge" aria-hidden="true">?</span>
+                    <div>
+                        <span class="home-kicker">Ecos de Granada</span>
+                        <h2 id="secret-story-title">{{ $reto->titulo_relato }}</h2>
                     </div>
+                </div>
 
-                    <blockquote class="secret-modal-legend">
-                        {{ $secretoDesbloqueado['leyenda'] }}
-                    </blockquote>
+                <blockquote class="secret-modal-legend">
+                    {{ $reto->leyenda_relato }}
+                </blockquote>
 
-                    <p>{{ $secretoDesbloqueado['contenido'] }}</p>
+                <p>{{ $reto->contenido_relato }}</p>
 
-                    <div class="secret-modal-chronicle">
-                        <span>Cronica</span>
-                        <strong>{{ $secretoDesbloqueado['cierre'] }}</strong>
-                    </div>
+                <div class="secret-modal-chronicle">
+                    <span>Cronica</span>
+                    <strong>{{ $reto->cierre_relato }}</strong>
+                </div>
 
-                    <div class="secret-modal-reward">
-                        <span>Prueba enviada</span>
-                        <strong>+{{ $reto->puntos_recompensa }} pts si se valida</strong>
-                    </div>
+                <div class="secret-modal-reward">
+                    <span>Recompensa del reto</span>
+                    <strong>+{{ $reto->puntos_recompensa }} pts si se valida</strong>
+                </div>
 
-                    <div class="secret-modal-actions">
-                        <button type="button" class="btn btn-primary home-btn" data-bs-dismiss="modal">
-                            Seguir viendo el reto
-                        </button>
-                        <a href="{{ route('vistas.retos') }}" class="btn btn-outline-secondary home-btn">
-                            Ver mas retos
-                        </a>
-                    </div>
+                <div class="secret-modal-actions">
+                    <button type="button" class="btn btn-primary home-btn" data-bs-dismiss="modal">
+                        Volver al reto
+                    </button>
+                    <a href="{{ route('vistas.retos') }}" class="btn btn-outline-secondary home-btn">
+                        Ver mas retos
+                    </a>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endif
 @endsection
 
@@ -193,12 +204,6 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    var modalSecreto = document.getElementById('secret-unlocked-modal');
-
-    if (modalSecreto && typeof bootstrap !== 'undefined') {
-        bootstrap.Modal.getOrCreateInstance(modalSecreto).show();
-    }
-
     var elMapa = document.getElementById('detalle-reto-map');
 
     if (!elMapa || typeof L === 'undefined') {
