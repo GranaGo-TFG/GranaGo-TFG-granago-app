@@ -62,13 +62,16 @@
                         @auth
                             @if (Auth::user()->rol === 'admin')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.retos.index') }}">Proyectos</a>
+                                    <a class="nav-link" href="{{ route('admin.retos.index') }}">Retos</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.validaciones.index') }}">Validaciones</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.usuarios.index') }}">Usuarios</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.productos.index') }}">Tienda</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('vistas.comunidad') }}">Comunidad</a>
@@ -93,6 +96,13 @@
                                     <a class="nav-link" href="{{ route('vistas.planes') }}">Planes</a>
                                 </li>
                             @endif
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('home') }}">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('vistas.retos') }}">Retos</a>
+                            </li>
                         @endauth
                     </ul>
 

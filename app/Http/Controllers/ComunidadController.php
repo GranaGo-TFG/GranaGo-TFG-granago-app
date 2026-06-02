@@ -14,6 +14,8 @@ class ComunidadController extends Controller
 {
     public function index(): View
     {
+        $this->asegurarNoAdmin();
+
         $publicaciones = PublicacionComunidad::query()
             ->with([
                 'user:id,nombre',
@@ -33,6 +35,8 @@ class ComunidadController extends Controller
 
     public function storePublicacion(Request $request): RedirectResponse
     {
+        $this->asegurarNoAdmin();
+
         $contenidoLimpio = trim((string) $request->input('contenido', ''));
 
         $request->merge([
@@ -70,6 +74,8 @@ class ComunidadController extends Controller
 
     public function updatePublicacion(Request $request, PublicacionComunidad $publicacion): RedirectResponse
     {
+        $this->asegurarNoAdmin();
+
         $this->autorizarGestion($request, (int) $publicacion->user_id);
 
         $contenidoLimpio = trim((string) $request->input('contenido', ''));
@@ -130,6 +136,8 @@ class ComunidadController extends Controller
 
     public function destroyPublicacion(Request $request, PublicacionComunidad $publicacion): RedirectResponse
     {
+        $this->asegurarNoAdmin();
+
         $this->autorizarGestion($request, (int) $publicacion->user_id);
 
         $data = $request->validate([
@@ -145,6 +153,8 @@ class ComunidadController extends Controller
 
     public function toggleMeGusta(Request $request, PublicacionComunidad $publicacion): RedirectResponse
     {
+        $this->asegurarNoAdmin();
+
         $data = $request->validate([
             'page' => ['nullable', 'integer', 'min:1'],
         ]);
@@ -172,6 +182,8 @@ class ComunidadController extends Controller
 
     public function storeComentario(Request $request, PublicacionComunidad $publicacion): RedirectResponse
     {
+        $this->asegurarNoAdmin();
+
         $comentarioLimpio = trim((string) $request->input('comentario', ''));
 
         $request->merge([
@@ -199,6 +211,8 @@ class ComunidadController extends Controller
 
     public function destroyComentario(Request $request, ComentarioComunidad $comentario): RedirectResponse
     {
+        $this->asegurarNoAdmin();
+
         $this->autorizarGestion($request, (int) $comentario->user_id);
 
         $data = $request->validate([
@@ -240,5 +254,10 @@ class ComunidadController extends Controller
         }
 
         Storage::disk('public')->delete($rutaImagen);
+    }
+
+    private function asegurarNoAdmin(): void
+    {
+        abort_if(auth()->user()?->rol === 'admin', 403, 'Los administradores no pueden participar en la comunidad.');
     }
 }
