@@ -630,13 +630,17 @@ a,
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 0.35rem;
     min-width: 9rem;
+    max-width: 100%;
     min-height: 2.75rem;
     padding-inline: 1.15rem;
     border-radius: 999px;
     font-weight: 700;
+    line-height: 1.2;
     text-align: center;
     white-space: normal;
+    overflow-wrap: anywhere;
 }
 
 .home-map-card {
@@ -1581,6 +1585,7 @@ a,
 .community-card {
     display: flex;
     flex-direction: column;
+    min-width: 0;
     overflow: hidden;
     border: 1px solid var(--granago-border);
     border-radius: 1.25rem;
@@ -1649,6 +1654,7 @@ a,
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
+    min-width: 0;
 }
 
 .challenge-meta {
@@ -1721,8 +1727,13 @@ a,
 }
 
 .challenge-body .home-small-link {
+    justify-content: center;
+    max-width: 100%;
+    min-height: 2.25rem;
     margin-top: auto;
     align-self: flex-start;
+    overflow-wrap: anywhere;
+    text-align: center;
 }
 
     .profile-grid {
@@ -4769,7 +4780,7 @@ a,
 
 .store-card-footer {
     display: flex;
-    align-items: end;
+    align-items: center;
     justify-content: space-between;
     gap: 0.8rem;
     margin-top: 0.2rem;
@@ -4806,6 +4817,12 @@ a,
     border-color: rgba(30, 41, 59, 0.18);
     background: rgba(255, 255, 255, 0.86);
     color: var(--granago-secondary);
+}
+
+.store-related-card-body .home-btn {
+    justify-self: start;
+    max-width: 100%;
+    margin-top: auto;
 }
 
 .store-card-footer .home-btn:hover,
@@ -4912,6 +4929,7 @@ a,
 .store-purchase-cta {
     display: grid;
     gap: 0.75rem;
+    min-width: 0;
 }
 
 .store-purchase-note {
@@ -5336,6 +5354,16 @@ a,
 
     .store-carousel-copy .home-btn {
         min-height: 2.25rem;
+    }
+
+    .store-card-footer {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .store-card-footer .home-btn,
+    .store-related-card-body .home-btn {
+        width: 100%;
     }
 
     .store-carousel .carousel-control-prev,
