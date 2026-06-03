@@ -51,6 +51,9 @@ class RegisterController extends Controller
             'nombre' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'acepta_politicas' => ['accepted'],
+        ], [
+            'acepta_politicas.accepted' => 'Debes aceptar la politica de privacidad para crear tu cuenta.',
         ]);
     }
 

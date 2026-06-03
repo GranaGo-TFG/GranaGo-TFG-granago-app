@@ -167,9 +167,11 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="site-main py-4">
             @yield('content')
         </main>
+
+        @include('partials.site-footer')
     </div>
 
     @stack('scripts')
