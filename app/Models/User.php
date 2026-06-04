@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['nombre', 'email', 'password', 'rol', 'esta_baneado', 'puntos_totales', 'racha_multiplicador'])]
+#[Fillable(['nombre', 'nickname', 'email', 'password', 'rol', 'esta_baneado', 'puntos_totales', 'racha_multiplicador'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -70,5 +70,19 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Logro::class, 'logro_user')
             ->withPivot('fecha_desbloqueo');
+    }
+
+    public function inventarioProductos(): BelongsToMany
+    {
+        return $this->belongsToMany(Producto::class, 'inventario_producto')
+            ->withPivot(['cantidad', 'ultima_compra_at'])
+            ->withTimestamps();
+    }
+
+    public function getNombrePublicoAttribute(): string
+    {
+        $nickname = trim((string) $this->nickname);
+
+        return $nickname !== '' ? $nickname : (string) $this->nombre;
     }
 }
