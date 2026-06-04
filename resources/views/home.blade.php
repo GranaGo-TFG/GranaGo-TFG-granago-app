@@ -68,7 +68,7 @@
         <section class="home-hero home-hero-featured">
             <div class="home-hero-copy">
                 <span class="home-kicker">GranaGO!</span>
-                <h1>{{ $user ? 'Granada te espera, ' . $user->nombre : 'Granada te espera' }}</h1>
+                <h1>{{ $user ? 'Granada te espera, ' . $user->nombre_publico : 'Granada te espera' }}</h1>
                 <p>
                     Sal a explorar, completa retos fotograficos y suma puntos mientras descubres
                     sitios que normalmente pasan de largo.
