@@ -102,9 +102,9 @@
             </aside>
         </section>
         <br>
-        <section class="pricing-card-grid" aria-label="Planes disponibles">
+        <section class="pricing-card-grid reveal-list" aria-label="Planes disponibles">
             @foreach ($planes as $plan)
-                <article class="pricing-card {{ $plan['destacado'] ? 'is-featured' : '' }}">
+                <article class="pricing-card reveal-item {{ $plan['destacado'] ? 'is-featured' : '' }}">
                     <div class="pricing-card-top">
                         <span class="pricing-badge">{{ $plan['etiqueta'] }}</span>
                         <h2>{{ $plan['nombre'] }}</h2>
@@ -129,8 +129,8 @@
             @endforeach
         </section>
         <br>
-        <section class="pricing-layout">
-            <article class="home-panel pricing-compare">
+        <section class="pricing-layout reveal-list">
+            <article class="home-panel pricing-compare reveal-item">
                 <div class="pricing-section-head">
                     
                     <div>
@@ -159,13 +159,13 @@
             </article>
 
             <aside class="pricing-side-stack">
-                <article class="home-panel pricing-mini-card">
+                <article class="home-panel pricing-mini-card reveal-item">
                     <span class="home-kicker">Ideal para</span>
                     <h2>Usuarios activos</h2>
                     <p class="muted-copy">Si participas varias veces por semana, Aventura suele amortizarse antes por sus ventajas y recompensas.</p>
                 </article>
                 <aside class="pricing-side-stack">
-                    <article class="home-panel pricing-mini-card pricing-mini-card-dark">
+                    <article class="home-panel pricing-mini-card pricing-mini-card-dark reveal-item">
                         <span class="home-kicker">Equipos</span>
                         <h2>Crew para competir juntos</h2>
                         <p>Perfecto para clases, grupos de amigos o asociaciones que quieran tener ranking privado y retos colaborativos.</p>
@@ -182,9 +182,9 @@
                 </div>
             </div>
 
-            <div class="pricing-faq-grid">
+            <div class="pricing-faq-grid reveal-list">
                 @foreach ($faq as $item)
-                    <article class="home-panel pricing-faq-card">
+                    <article class="home-panel pricing-faq-card reveal-item">
                         <h3>{{ $item['pregunta'] }}</h3>
                         <p>{{ $item['respuesta'] }}</p>
                     </article>

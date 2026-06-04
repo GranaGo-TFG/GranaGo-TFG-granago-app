@@ -91,9 +91,9 @@
             </section>
         @endif
 
-        <section class="store-grid" aria-label="Catalogo de productos">
+        <section class="store-grid reveal-list" aria-label="Catalogo de productos">
             @forelse ($productos as $producto)
-                <article class="store-card">
+                <article class="store-card reveal-item">
                     <a href="{{ route($detalleRouteName, $producto) }}" class="store-card-media">
                         @if ($producto->imagen_url)
                             <img src="{{ $producto->imagen_url }}" alt="Imagen del producto {{ $producto->nombre }}" class="store-card-image">

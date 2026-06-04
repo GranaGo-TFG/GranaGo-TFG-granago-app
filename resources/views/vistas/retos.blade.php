@@ -20,7 +20,7 @@
             </div>
         @endif
 
-        <section class="challenge-grid">
+        <section class="challenge-grid reveal-list">
                 @forelse ($retos as $reto)
                 @php
                     $statusClass = match ($reto->estado) {
@@ -30,7 +30,7 @@
                     };
                 @endphp
 
-                <article class="challenge-card">
+                <article class="challenge-card reveal-item">
                     <div class="challenge-card-media">
                         @if ($reto->archivo_multimedia)
                             <img

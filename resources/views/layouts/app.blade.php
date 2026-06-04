@@ -36,7 +36,7 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ auth()->check() ? route('home') : url('/') }}">
                     <img src="{{ asset('images/Logo_fondo_blanco.png') }}" alt="Logo de GranaGO!" class="navbar-brand-logo">
-                    <span>GranaGO!</span>
+                    <span>GranaGO<span class="navbar-brand-bang">!</span></span>
                 </a>
                 <div class="navbar-mobile-actions">
                     <button
