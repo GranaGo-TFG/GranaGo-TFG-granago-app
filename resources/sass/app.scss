@@ -3595,6 +3595,7 @@ a,
     }
 
     .navbar .container {
+        position: relative;
         gap: 0.75rem;
     }
 
@@ -3625,38 +3626,64 @@ a,
     }
 
     .navbar-collapse {
-        width: 100%;
-        margin-top: 0.85rem;
-        padding: 0.75rem;
+        position: absolute;
+        top: calc(100% + 0.65rem);
+        right: 0.75rem;
+        left: auto;
+        z-index: 1130;
+        width: min(15.5rem, calc(100vw - 1.5rem));
+        margin-top: 0;
+        padding: 0.8rem;
         border: 1px solid var(--granago-navbar-border);
-        border-radius: 1rem;
-        background: rgba(15, 23, 42, 0.96);
-        box-shadow: 0 18px 38px rgba(2, 6, 23, 0.22);
+        border-radius: 1.1rem;
+        background:
+            linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94));
+        box-shadow: 0 24px 52px rgba(2, 6, 23, 0.32);
+        backdrop-filter: blur(16px);
+        transform-origin: top center;
+    }
+
+    .navbar-collapse.collapsing {
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-0.45rem) scale(0.98);
+        transition:
+            height 0.24s ease,
+            opacity 0.2s ease,
+            transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .navbar-collapse.show {
-        animation: mobileNavIn 0.24s ease both;
+        animation: mobileNavIn 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
     }
 
     @keyframes mobileNavIn {
         from {
             opacity: 0;
-            transform: translateY(-0.45rem);
+            transform: translateY(-0.45rem) scale(0.98);
         }
 
         to {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
     }
 
     .navbar-collapse .navbar-nav {
-        gap: 0.2rem;
+        gap: 0.25rem;
     }
 
     .navbar-collapse .nav-link,
     .navbar-collapse .dropdown-item {
-        border-radius: 0.75rem;
+        padding: 0.68rem 0.85rem;
+        border-radius: 0.8rem;
+    }
+
+    .navbar-collapse .nav-link:hover,
+    .navbar-collapse .nav-link:focus,
+    .navbar-collapse .dropdown-item:hover,
+    .navbar-collapse .dropdown-item:focus {
+        background: rgba(255, 255, 255, 0.08);
     }
 
     .navbar-collapse .nav-link::after {
