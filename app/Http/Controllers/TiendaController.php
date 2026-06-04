@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Producto;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -63,7 +65,7 @@ class TiendaController extends Controller
             'producto' => $producto,
             'metodosPago' => $this->metodosPago(),
             'maximoCantidad' => max(1, min(5, $producto->stock)),
-            'saldoPuntos' => (int) auth()->user()->puntos_totales,
+            'saldoPuntos' => (int) (Auth::user()?->puntos_totales ?? 0),
         ]);
     }
 
@@ -71,6 +73,8 @@ class TiendaController extends Controller
     {
         // Seguridad en servidor: un producto retirado nunca se procesa para usuarios.
         abort_unless($producto->activo, 404);
+
+        $usuario = $request->user();
 
         $metodosPago = $this->metodosPago();
 
@@ -90,7 +94,6 @@ class TiendaController extends Controller
         if ($data['metodo_pago'] === 'puntos') {
             $precioPuntos = (int) $producto->precio_puntos_valor;
             $totalPuntos = $precioPuntos * $data['cantidad'];
-            $usuario = $request->user();
 
             if ((int) $usuario->puntos_totales < $totalPuntos) {
                 throw ValidationException::withMessages([
@@ -109,9 +112,35 @@ class TiendaController extends Controller
             'precio_puntos' => $producto->precio_puntos ?? $producto->precio_puntos_valor,
         ])->save();
 
+        $this->registrarCompraInventario($usuario, $producto, (int) $data['cantidad']);
+
         return redirect()
             ->route('vistas.tienda.producto', $producto)
             ->with('status', 'Compra realizada correctamente.');
+    }
+
+    private function registrarCompraInventario(User $usuario, Producto $producto, int $cantidad): void
+    {
+        $registroInventario = $usuario->inventarioProductos()
+            ->where('productos.id', $producto->id)
+            ->first();
+
+        if ($registroInventario) {
+            $usuario->inventarioProductos()->updateExistingPivot($producto->id, [
+                'cantidad' => (int) $registroInventario->pivot->cantidad + $cantidad,
+                'ultima_compra_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            return;
+        }
+
+        $usuario->inventarioProductos()->attach($producto->id, [
+            'cantidad' => $cantidad,
+            'ultima_compra_at' => now(),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     private function validateDatosMetodo(Request $request, string $metodoPago): void
