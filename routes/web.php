@@ -5,6 +5,7 @@ use App\Http\Controllers\ComunidadController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LogroController;
+use App\Http\Controllers\PlanesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RetoController;
 use App\Http\Controllers\RetoVistaController;
@@ -39,6 +40,8 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
         Route::get('/tienda/productos/{producto}/pago', [TiendaController::class, 'pago'])->name('tienda.pago');
         Route::post('/tienda/productos/{producto}/pago', [TiendaController::class, 'procesarPago'])->name('tienda.pago.store');
         Route::view('/planes', 'vistas.planes')->name('planes');
+        Route::get('/planes/{plan}/pago', [PlanesController::class, 'pago'])->name('planes.pago');
+        Route::post('/planes/{plan}/pago', [PlanesController::class, 'procesarPago'])->name('planes.pago.store');
         Route::view('/perfil', 'vistas.perfil')->name('perfil');
 
         Route::get('/perfil/editar', [ProfileController::class, 'edit'])->name('editar-perfil');
