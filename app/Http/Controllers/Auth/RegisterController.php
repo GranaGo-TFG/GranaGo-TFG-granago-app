@@ -49,10 +49,13 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'nombre' => ['required', 'string', 'max:100'],
+            'nickname' => ['required', 'string', 'min:3', 'max:30', 'regex:/^[A-Za-z0-9._-]+$/', 'unique:users,nickname'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'acepta_politicas' => ['accepted'],
         ], [
+            'nickname.unique' => 'Este nickname ya esta en uso. Elige otro distinto.',
+            'nickname.regex' => 'El nickname solo puede incluir letras, numeros, guiones, puntos y guion bajo.',
             'acepta_politicas.accepted' => 'Debes aceptar la politica de privacidad para crear tu cuenta.',
         ]);
     }
@@ -66,6 +69,7 @@ class RegisterController extends Controller
     {
         return User::create([
             'nombre' => $data['nombre'],
+            'nickname' => $data['nickname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);

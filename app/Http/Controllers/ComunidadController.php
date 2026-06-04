@@ -7,6 +7,7 @@ use App\Models\PublicacionComunidad;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -18,11 +19,13 @@ class ComunidadController extends Controller
 
         $publicaciones = PublicacionComunidad::query()
             ->with([
-                'user:id,nombre',
+                'user:id,nombre,nickname',
                 'comentarios' => fn ($query) => $query
-                    ->with('user:id,nombre')
+                    ->with('user:id,nombre,nickname')
                     ->orderByDesc('fecha_comentario'),
-                'meGustaUsuarios' => fn ($query) => $query->orderBy('users.nombre'),
+                'meGustaUsuarios' => fn ($query) => $query
+                    ->orderBy('users.nickname')
+                    ->orderBy('users.nombre'),
             ])
             ->withCount('meGustaUsuarios')
             ->orderByDesc('fecha_publicacion')
@@ -258,6 +261,6 @@ class ComunidadController extends Controller
 
     private function asegurarNoAdmin(): void
     {
-        abort_if(auth()->user()?->rol === 'admin', 403, 'Los administradores no pueden participar en la comunidad.');
+        abort_if(Auth::user()?->rol === 'admin', 403, 'Los administradores no pueden participar en la comunidad.');
     }
 }

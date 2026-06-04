@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Producto extends Model
 {
@@ -67,6 +68,13 @@ class Producto extends Model
     public function scopeActivos(Builder $query): Builder
     {
         return $query->where('activo', true);
+    }
+
+    public function usuariosInventario(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'inventario_producto')
+            ->withPivot(['cantidad', 'ultima_compra_at'])
+            ->withTimestamps();
     }
 
     private function multiplicadorPuntosPorCategoria(): int

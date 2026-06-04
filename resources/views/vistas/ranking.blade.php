@@ -3,11 +3,11 @@
 @section('content')
 @php
     $usuariosRanking = \App\Models\User::query()
-        ->select(['id', 'nombre', 'rol', 'puntos_totales'])
+        ->select(['id', 'nombre', 'nickname', 'rol', 'puntos_totales'])
         ->where('rol', '!=', 'admin')
         ->where('esta_baneado', false)
         ->orderByDesc('puntos_totales')
-        ->orderBy('nombre')
+        ->orderByRaw('COALESCE(nickname, nombre)')
         ->get();
     $liderRanking = $usuariosRanking->first();
     $topRanking = $usuariosRanking->take(3);
@@ -45,7 +45,7 @@
                 <article class="ranking-top-card ranking-top-card-{{ $loop->iteration }}">
                     <span>{{ $loop->iteration }}</span>
                     <div>
-                        <strong>{{ $usuario->nombre }}</strong>
+                        <strong>{{ $usuario->nombre_publico }}</strong>
                         <em>{{ $usuario->puntos_totales }} pts</em>
                     </div>
                 </article>
@@ -82,7 +82,7 @@
                         {{ $loop->iteration }}
                     </span>
                     <div>
-                        <strong>Nombre: {{ $usuario->nombre }}</strong>
+                        <strong>Nombre: {{ $usuario->nombre_publico }}</strong>
                         <div class="ranking-progress">
                             <i style="width: {{ max(6, ((int) $usuario->puntos_totales / $puntosMaximos) * 100) }}%"></i>
                         </div>
