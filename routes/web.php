@@ -17,6 +17,9 @@ Route::get('/', [HomeController::class, 'index']);
 
 Route::redirect('/mapa-retos', '/home')->name('retos.mapa');
 Route::get('/api/retos-mapa', [RetoController::class, 'mapaData'])->name('retos.mapa.data');
+Route::view('/privacidad', 'legal.privacidad')->name('legal.privacidad');
+Route::view('/aviso-legal', 'legal.aviso-legal')->name('legal.aviso-legal');
+Route::view('/contacto', 'legal.contacto')->name('legal.contacto');
 
 Auth::routes();
 
