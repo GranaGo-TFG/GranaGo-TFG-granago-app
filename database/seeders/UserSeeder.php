@@ -12,6 +12,7 @@ class UserSeeder extends Seeder
     {
         $adminData = User::factory()->admin()->raw([
             'nombre' => 'Administrador',
+            'nickname' => 'admin_granago',
             'email' => 'admin@granago.app',
             'password' => Hash::make('password'),
         ]);
@@ -20,6 +21,7 @@ class UserSeeder extends Seeder
             ['email' => 'admin@granago.app'],
             [
                 'nombre' => $adminData['nombre'],
+                'nickname' => $adminData['nickname'],
                 'password' => $adminData['password'],
                 'rol' => $adminData['rol'],
                 'puntos_totales' => $adminData['puntos_totales'],
