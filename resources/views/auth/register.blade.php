@@ -44,6 +44,28 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="nickname" class="granago-label form-label">Nickname publico</label>
+                        <div class="input-group granago-input-group">
+                            <span class="input-group-text">@</span>
+                            <input
+                                id="nickname"
+                                type="text"
+                                name="nickname"
+                                class="form-control"
+                                value="{{ old('nickname') }}"
+                                required
+                                maxlength="30"
+                                autocomplete="nickname"
+                                placeholder="Como te vera la comunidad"
+                            >
+                        </div>
+                        <small class="text-secondary d-block mt-1">Solo letras, numeros, guiones, puntos o guion bajo.</small>
+                        <?php if ($errors->has('nickname')): ?>
+                            <div class="granago-error">{{ $errors->first('nickname') }}</div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="mb-3">
                         <label for="email" class="granago-label form-label">Correo electronico</label>
                         <div class="input-group granago-input-group">
                             <span class="input-group-text">

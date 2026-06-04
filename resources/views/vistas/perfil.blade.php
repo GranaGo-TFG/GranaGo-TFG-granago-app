@@ -19,6 +19,11 @@
     $siguienteObjetivo = max(50, (int) ceil(($puntosTotales + 1) / 50) * 50);
     $puntosRestantes = max(0, $siguienteObjetivo - $puntosTotales);
     $porcentajeProgreso = min(100, (int) round(($puntosTotales / $siguienteObjetivo) * 100));
+    $inventario = $user->inventarioProductos()
+        ->orderByPivot('ultima_compra_at', 'desc')
+        ->orderBy('nombre')
+        ->get();
+    $unidadesInventario = $inventario->sum(fn ($producto) => (int) $producto->pivot->cantidad);
 @endphp
 
 <div class="screen-page">
@@ -27,14 +32,15 @@
             <div class="profile-cover"></div>
             <div class="profile-main">
                 <div class="profile-avatar" aria-label="Foto de perfil">
-                    <span>{{ strtoupper(substr($user->nombre, 0, 1)) }}</span>
+                    <span>{{ strtoupper(substr($user->nombre_publico, 0, 1)) }}</span>
                 </div>
 
                 <div class="profile-info">
                     <h1 class="home-kicker">Perfil</h1>
-                    <h2>{{ $user->nombre }}</h2>
+                    <h2>{{ $user->nombre_publico }}</h2>
                     <p>Explorador urbano de Granada. Retos, puntos y logros en un mismo sitio.</p>
                     <div class="profile-tags">
+                        <span>{{ '@' . $user->nickname }}</span>
                         <span>{{ $user->rol }}</span>
                         <span>Granada</span>
                         <span>{{ $user->esta_baneado ? 'Baneado' : 'Activo' }}</span>
@@ -97,6 +103,34 @@
                 </div>
             </article>
 
+            <article class="home-panel profile-card" id="inventario">
+                <span class="home-kicker">Inventario</span>
+                <h2>Tus compras en tienda</h2>
+                <p class="muted-copy">Acumulado actual: {{ $inventario->count() }} productos diferentes y {{ $unidadesInventario }} unidades.</p>
+
+                <div class="profile-achievement-list">
+                    @if ($inventario->isEmpty())
+                        <div class="profile-achievement">
+                            <span>Sin compras registradas</span>
+                            <strong>Cuando compres en tienda, veras aqui tus productos.</strong>
+                        </div>
+                    @endif
+
+                    @foreach ($inventario as $productoInventario)
+                        <div class="profile-achievement is-unlocked">
+                            <span>
+                                @if ($productoInventario->pivot->ultima_compra_at)
+                                    Ultima compra: {{ \Illuminate\Support\Carbon::parse($productoInventario->pivot->ultima_compra_at)->format('d/m/Y H:i') }}
+                                @else
+                                    Compra registrada
+                                @endif
+                            </span>
+                            <strong>{{ $productoInventario->nombre }} · x{{ $productoInventario->pivot->cantidad }}</strong>
+                        </div>
+                    @endforeach
+                </div>
+            </article>
+
             <article class="home-panel profile-card profile-card-wide">
                 <span class="home-kicker">Actividad reciente</span>
                 <div class="profile-timeline">
@@ -120,6 +154,10 @@
                 <span class="home-kicker">Cuenta</span>
                 <dl class="profile-details">
                     <div>
+                        <dt>Nickname</dt>
+                        <dd>{{ $user->nickname }}</dd>
+                    </div>
+                    <div>
                         <dt>Email</dt>
                         <dd>{{ $user->email }}</dd>
                     </div>
@@ -136,6 +174,7 @@
         </section>
 
         <section class="profile-mobile-actions">
+            <a href="#inventario" class="btn btn-outline-secondary home-btn">Ver inventario</a>
             <a href="{{ route('vistas.retos') }}" class="btn btn-primary home-btn">Buscar retos</a>
             <a href="{{ route('vistas.ranking') }}" class="btn btn-outline-secondary home-btn">Ver ranking</a>
         </section>

@@ -82,7 +82,7 @@
                         }
 
                         $inicialUsuario = \Illuminate\Support\Str::upper(
-                            \Illuminate\Support\Str::substr((string) $publicacion->user->nombre, 0, 1)
+                            \Illuminate\Support\Str::substr((string) $publicacion->user->nombre_publico, 0, 1)
                         );
 
                         $usuariosConMeGusta = $publicacion->meGustaUsuarios;
@@ -107,7 +107,7 @@
                             <div class="community-post-author">
                                 <div class="community-avatar" aria-hidden="true">{{ $inicialUsuario }}</div>
                                 <div>
-                                    <strong>{{ $publicacion->user->nombre }}</strong>
+                                    <strong>{{ $publicacion->user->nombre_publico }}</strong>
                                     <time datetime="{{ optional($publicacion->fecha_publicacion)->toIso8601String() }}">
                                         {{ optional($publicacion->fecha_publicacion)->format('d/m/Y H:i') }}
                                     </time>
@@ -199,7 +199,7 @@
 
                         @if ($urlImagen)
                             <figure class="community-post-image">
-                                <img src="{{ $urlImagen }}" alt="Imagen publicada por {{ $publicacion->user->nombre }}">
+                                <img src="{{ $urlImagen }}" alt="Imagen publicada por {{ $publicacion->user->nombre_publico }}">
                             </figure>
                         @endif
 
@@ -256,7 +256,7 @@
 
                                     <ul class="community-modal-list" aria-label="Usuarios que dieron me gusta">
                                         @foreach ($usuariosConMeGusta as $usuarioConMeGusta)
-                                            <li>{{ $usuarioConMeGusta->nombre }}</li>
+                                            <li>{{ $usuarioConMeGusta->nombre_publico }}</li>
                                         @endforeach
                                     </ul>
                                 </article>
@@ -281,7 +281,7 @@
 
                                             <article class="community-modal-comment">
                                                 <div class="community-modal-comment-head">
-                                                    <strong>{{ $comentarioModal->user->nombre }}</strong>
+                                                    <strong>{{ $comentarioModal->user->nombre_publico }}</strong>
 
                                                     @if ($puedeEliminarComentarioModal)
                                                         <form
@@ -317,7 +317,7 @@
                                 <article class="community-comment">
                                     <div class="community-comment-head">
                                         <p>
-                                            <strong>{{ $comentarioReciente->user->nombre }}</strong>
+                                            <strong>{{ $comentarioReciente->user->nombre_publico }}</strong>
                                             <span>{{ $comentarioReciente->contenido }}</span>
                                         </p>
 

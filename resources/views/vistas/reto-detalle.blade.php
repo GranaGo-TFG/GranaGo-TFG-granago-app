@@ -86,7 +86,7 @@
                                 <li class="mb-2"><strong>Zona:</strong> {{ $reto->ubicacion_referencia ?? 'Sin zona definida' }}</li>
                                 <li class="mb-2"><strong>Inicio:</strong> {{ optional($reto->fecha_inicio)->format('d/m/Y H:i') ?? 'Sin fecha' }}</li>
                                 <li class="mb-2"><strong>Fin:</strong> {{ optional($reto->fecha_fin)->format('d/m/Y H:i') ?? 'Sin fecha' }}</li>
-                                <li><strong>Creador:</strong> {{ $reto->creador->nombre ?? 'No disponible' }}</li>
+                                <li><strong>Creador:</strong> {{ $reto->creador->nombre_publico ?? 'No disponible' }}</li>
                             </ul>
                         </div>
 
@@ -128,7 +128,7 @@
                 <div class="d-grid gap-2 mt-2">
                     @forelse ($validacionesRecientes as $validacion)
                         <article class="p-3 border rounded-4 bg-white">
-                            <strong>{{ $validacion->user->nombre ?? 'Usuario' }}</strong>
+                            <strong>{{ $validacion->user->nombre_publico ?? 'Usuario' }}</strong>
                             <p class="mb-0 muted-copy">
                                 Estado: {{ ucfirst($validacion->estado) }}
                                 @if ($validacion->fecha_envio)
