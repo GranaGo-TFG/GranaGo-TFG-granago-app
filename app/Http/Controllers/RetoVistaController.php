@@ -6,6 +6,7 @@ use App\Models\Reto;
 use App\Models\ValidacionReto;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
 class RetoVistaController extends Controller
@@ -13,7 +14,7 @@ class RetoVistaController extends Controller
     public function index(): View
     {
         $retos = Reto::query()
-            ->with('creador:id,nombre')
+            ->with('creador:id,nombre,nickname')
             ->withCount([
                 'validaciones',
                 'validaciones as validaciones_verificadas_count' => fn ($query) => $query->where('estado', 'verificado'),
@@ -65,7 +66,7 @@ class RetoVistaController extends Controller
 
     public function show(Reto $reto): View
     {
-        $reto->load('creador:id,nombre');
+        $reto->load('creador:id,nombre,nickname');
         $reto->loadCount([
             'validaciones',
             'validaciones as validaciones_verificadas_count' => fn ($query) => $query->where('estado', 'verificado'),
@@ -73,7 +74,7 @@ class RetoVistaController extends Controller
         ]);
 
         $validacionesRecientes = ValidacionReto::query()
-            ->with('user:id,nombre')
+            ->with('user:id,nombre,nickname')
             ->where('reto_id', $reto->id)
             ->latest('fecha_envio')
             ->limit(3)
@@ -87,6 +88,6 @@ class RetoVistaController extends Controller
 
     private function autorizarCreacion(): void
     {
-        abort_unless(auth()->user()?->rol === 'creador', 403, 'Solo los usuarios creadores pueden crear retos.');
+        abort_unless(Auth::user()?->rol === 'creador', 403, 'Solo los usuarios creadores pueden crear retos.');
     }
 }
