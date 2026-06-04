@@ -47,6 +47,10 @@ class RetoVistaController extends Controller
             'ubicacion_referencia' => ['nullable', 'string', 'max:120'],
             'latitud' => ['required', 'numeric', 'between:-90,90'],
             'longitud' => ['required', 'numeric', 'between:-180,180'],
+            'titulo_relato' => ['nullable', 'string', 'max:255'],
+            'leyenda_relato' => ['nullable', 'string'],
+            'contenido_relato' => ['nullable', 'string'],
+            'cierre_relato' => ['nullable', 'string'],
         ]);
 
         $data['creador_id'] = (int) $request->user()->id;

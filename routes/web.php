@@ -13,18 +13,21 @@ use App\Http\Controllers\ValidacionRetoController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome');
+Route::get('/', [HomeController::class, 'index']);
 
 Route::redirect('/mapa-retos', '/home')->name('retos.mapa');
 Route::get('/api/retos-mapa', [RetoController::class, 'mapaData'])->name('retos.mapa.data');
+Route::view('/privacidad', 'legal.privacidad')->name('legal.privacidad');
+Route::view('/aviso-legal', 'legal.aviso-legal')->name('legal.aviso-legal');
+Route::view('/contacto', 'legal.contacto')->name('legal.contacto');
 
 Auth::routes();
 
-Route::middleware(['auth', 'not_banned'])->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/vistas/retos', [RetoVistaController::class, 'index'])->name('vistas.retos');
 
+Route::middleware(['auth', 'not_banned'])->group(function () {
     Route::middleware('not_admin')->prefix('vistas')->name('vistas.')->group(function () {
-        Route::get('/retos', [RetoVistaController::class, 'index'])->name('retos');
         Route::get('/retos/crear', [RetoVistaController::class, 'create'])->name('crear-reto');
         Route::post('/retos', [RetoVistaController::class, 'store'])->name('retos.store');
         Route::get('/retos/{reto}', [RetoVistaController::class, 'show'])->name('reto-detalle');

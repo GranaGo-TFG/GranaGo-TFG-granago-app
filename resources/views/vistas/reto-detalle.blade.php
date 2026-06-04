@@ -14,6 +14,7 @@
                 default => 'status-rejected',
             };
             $puedeSubirPrueba = $reto->estado !== 'caducado';
+            $esCreador = Auth::check() && Auth::user()->rol === 'creador';
         @endphp
 
         @if (session('status'))
@@ -40,6 +41,18 @@
                 <span class="status-pill {{ $statusClass }} detail-status-pill">Estado: {{ ucfirst($reto->estado) }}</span>
                 <h1>Descripcion</h1>
                 <p>{{ $reto->descripcion }}</p>
+                @if ($reto->titulo_relato)
+                    <button
+                        type="button"
+                        class="secret-discovery"
+                        data-bs-toggle="modal"
+                        data-bs-target="#secret-story-modal"
+                        aria-label="Descubrir la historia de este lugar"
+                        title="Descubrir la historia de este lugar"
+                    >
+                        <span class="secret-discovery-mark" aria-hidden="true">?</span>
+                    </button>
+                @endif
             </div>
         </section>
 
@@ -77,8 +90,10 @@
                             </ul>
                         </div>
 
-                        @if ($puedeSubirPrueba)
+                        @if ($puedeSubirPrueba && ! $esCreador)
                             <a href="{{ route('vistas.subir-prueba', $reto) }}" class="btn btn-primary home-btn w-100">Subir prueba</a>
+                        @elseif ($esCreador)
+                            <button type="button" class="btn btn-primary home-btn w-100" disabled aria-disabled="true">Los creadores no pueden participar</button>
                         @else
                             <button type="button" class="btn btn-primary home-btn w-100" disabled aria-disabled="true">Subir prueba</button>
                         @endif
@@ -134,6 +149,55 @@
         </section>
     </div>
 </div>
+
+@if ($reto->titulo_relato)
+<div
+    class="modal fade secret-modal"
+    id="secret-story-modal"
+    tabindex="-1"
+    aria-labelledby="secret-story-title"
+    aria-hidden="true"
+>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content secret-modal-content">
+            <div class="modal-body">
+                <div class="secret-modal-head">
+                    <span class="secret-modal-badge" aria-hidden="true">?</span>
+                    <div>
+                        <span class="home-kicker">Ecos de Granada</span>
+                        <h2 id="secret-story-title">{{ $reto->titulo_relato }}</h2>
+                    </div>
+                </div>
+
+                <blockquote class="secret-modal-legend">
+                    {{ $reto->leyenda_relato }}
+                </blockquote>
+
+                <p>{{ $reto->contenido_relato }}</p>
+
+                <div class="secret-modal-chronicle">
+                    <span>Cronica</span>
+                    <strong>{{ $reto->cierre_relato }}</strong>
+                </div>
+
+                <div class="secret-modal-reward">
+                    <span>Recompensa del reto</span>
+                    <strong>+{{ $reto->puntos_recompensa }} pts si se valida</strong>
+                </div>
+
+                <div class="secret-modal-actions">
+                    <button type="button" class="btn btn-primary home-btn" data-bs-dismiss="modal">
+                        Volver al reto
+                    </button>
+                    <a href="{{ route('vistas.retos') }}" class="btn btn-outline-secondary home-btn">
+                        Ver mas retos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endif
 @endsection
 
 @push('scripts')

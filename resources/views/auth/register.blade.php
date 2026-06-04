@@ -75,7 +75,7 @@
                         <?php endif; ?>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <label for="password-confirm" class="granago-label form-label">Confirmar contrasena</label>
                         <div class="input-group granago-input-group">
                             <span class="input-group-text">
@@ -87,6 +87,27 @@
                             <input id="password-confirm" type="password" name="password_confirmation" class="form-control" required autocomplete="new-password" placeholder="Repite tu contrasena">
                         </div>
                     </div>
+
+                    <div class="granago-legal-check mb-4">
+                        <input
+                            id="acepta_politicas"
+                            type="checkbox"
+                            name="acepta_politicas"
+                            value="1"
+                            class="form-check-input"
+                            {{ old('acepta_politicas') ? 'checked' : '' }}
+                            required
+                        >
+                        <label for="acepta_politicas">
+                            Acepto la
+                            <a href="{{ route('legal.privacidad') }}" target="_blank" rel="noopener">politica de privacidad</a>
+                            y el
+                            <a href="{{ route('legal.aviso-legal') }}" target="_blank" rel="noopener">aviso legal</a>.
+                        </label>
+                    </div>
+                    <?php if ($errors->has('acepta_politicas')): ?>
+                        <div class="granago-error mb-3">{{ $errors->first('acepta_politicas') }}</div>
+                    <?php endif; ?>
 
                     <button type="submit" class="btn granago-btn-primary w-100 text-white">Crear mi cuenta</button>
                 </form>

@@ -36,7 +36,7 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ auth()->check() ? route('home') : url('/') }}">
                     <img src="{{ asset('images/Logo_fondo_blanco.png') }}" alt="Logo de GranaGO!" class="navbar-brand-logo">
-                    <span>GranaGO!</span>
+                    <span>GranaGO<span class="navbar-brand-bang">!</span></span>
                 </a>
                 <div class="navbar-mobile-actions">
                     <button
@@ -62,7 +62,7 @@
                         @auth
                             @if (Auth::user()->rol === 'admin')
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('admin.retos.index') }}">Proyectos</a>
+                                    <a class="nav-link" href="{{ route('admin.retos.index') }}">Retos</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.validaciones.index') }}">Validaciones</a>
@@ -96,6 +96,13 @@
                                     <a class="nav-link" href="{{ route('vistas.planes') }}">Planes</a>
                                 </li>
                             @endif
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('home') }}">Inicio</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('vistas.retos') }}">Retos</a>
+                            </li>
                         @endauth
                     </ul>
 
@@ -160,9 +167,11 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="site-main py-4">
             @yield('content')
         </main>
+
+        @include('partials.site-footer')
     </div>
 
     @stack('scripts')

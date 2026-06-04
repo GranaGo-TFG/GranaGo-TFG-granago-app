@@ -25,6 +25,10 @@ class Reto extends Model
         'puntos_recompensa',
         'latitud',
         'longitud',
+        'titulo_relato',
+        'leyenda_relato',
+        'contenido_relato',
+        'cierre_relato',
     ];
 
     protected function casts(): array

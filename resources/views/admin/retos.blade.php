@@ -5,8 +5,8 @@
     <div class="container">
         <div class="screen-head">
             <div>
-                <h1 class="home-kicker">Gestion de proyectos</h1>
-                <p>Cambia el estado de los retos activos, borradores o proyectos ya cerrados.</p>
+                <h1 class="home-kicker">Gestion de retos</h1>
+                <p>Cambia el estado de los retos activos, borradores o retos ya cerrados.</p>
             </div>
         </div>
 
@@ -54,7 +54,7 @@
                     </form>
                 </div>
             @empty
-                <div class="home-panel admin-empty">No hay proyectos registrados todavia.</div>
+                <div class="home-panel admin-empty">No hay retos registrados todavia.</div>
             @endforelse
         </div>
     </div>

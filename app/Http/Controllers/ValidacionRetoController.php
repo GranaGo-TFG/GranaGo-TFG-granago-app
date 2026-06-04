@@ -19,6 +19,7 @@ class ValidacionRetoController extends Controller
     public function create(Reto $reto): View
     {
         abort_if($reto->estado === 'caducado', 403, 'No se pueden subir pruebas a retos caducados.');
+        abort_if(auth()->user()?->rol === 'creador', 403, 'Los creadores no pueden participar en retos.');
 
         return view('vistas.subir-prueba', [
             'reto' => $reto,
@@ -27,6 +28,8 @@ class ValidacionRetoController extends Controller
 
     public function index(): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $validaciones = ValidacionReto::with([
             'user:id,nombre,email',
             'reto:id,nombre,estado',
@@ -37,6 +40,10 @@ class ValidacionRetoController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $this->asegurarAdministrador();
+
+        abort_if($request->user()?->rol === 'creador', 403, 'Los creadores no pueden participar en retos.');
+
         $data = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
             'reto_id' => ['required', 'exists:retos,id'],
@@ -47,7 +54,8 @@ class ValidacionRetoController extends Controller
 
         $this->asegurarQuePuedeEnviar(
             (int) $data['user_id'],
-            (int) $data['reto_id']
+            (int) $data['reto_id'],
+            'user_id'
         );
 
         $data['foto_prueba'] = $request->file('foto_prueba')->store('validaciones', 'public');
@@ -71,6 +79,7 @@ class ValidacionRetoController extends Controller
     public function storeFromView(Request $request, Reto $reto): RedirectResponse
     {
         abort_if($reto->estado === 'caducado', 403, 'No se pueden subir pruebas a retos caducados.');
+        abort_if($request->user()?->rol === 'creador', 403, 'Los creadores no pueden participar en retos.');
 
         $request->validate([
             'foto_prueba' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
@@ -100,6 +109,8 @@ class ValidacionRetoController extends Controller
 
     public function show(ValidacionReto $validaciones_reto): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $validaciones_reto->load([
             'user:id,nombre,email',
             'reto:id,nombre,estado,puntos_recompensa',
@@ -111,6 +122,8 @@ class ValidacionRetoController extends Controller
 
     public function update(Request $request, ValidacionReto $validaciones_reto): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         $data = $request->validate([
             'user_id' => ['sometimes', 'exists:users,id'],
             'reto_id' => ['sometimes', 'exists:retos,id'],
@@ -147,6 +160,8 @@ class ValidacionRetoController extends Controller
 
     public function destroy(ValidacionReto $validaciones_reto): JsonResponse
     {
+        $this->asegurarAdministrador();
+
         if ($validaciones_reto->foto_prueba && ! filter_var($validaciones_reto->foto_prueba, FILTER_VALIDATE_URL)) {
             Storage::disk('public')->delete($validaciones_reto->foto_prueba);
         }
@@ -177,8 +192,16 @@ class ValidacionRetoController extends Controller
         }
     }
 
-    private function asegurarQuePuedeEnviar(int $userId, int $retoId): void
+    private function asegurarQuePuedeEnviar(int $userId, int $retoId, string $campoError = 'foto_prueba'): void
     {
+        $user = User::query()->findOrFail($userId);
+
+        if ($user->rol === 'creador') {
+            throw ValidationException::withMessages([
+                $campoError => 'Los creadores no pueden participar en retos.',
+            ]);
+        }
+
         $yaExiste = ValidacionReto::query()
             ->where('user_id', $userId)
             ->where('reto_id', $retoId)
@@ -190,7 +213,12 @@ class ValidacionRetoController extends Controller
         }
 
         throw ValidationException::withMessages([
-            'foto_prueba' => 'Ya tienes una prueba pendiente o verificada para este reto.',
+            $campoError => 'Ya tienes una prueba pendiente o verificada para este reto.',
         ]);
+    }
+
+    private function asegurarAdministrador(): void
+    {
+        abort_if(auth()->user()?->rol !== 'admin', 403);
     }
 }
