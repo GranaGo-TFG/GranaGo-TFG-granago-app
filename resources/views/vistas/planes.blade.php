@@ -5,6 +5,7 @@
     $planes = [
         [
             'nombre' => 'Explora',
+            'slug' => null,
             'precio' => '0',
             'periodo' => '/siempre',
             'descripcion' => 'Perfecto para descubrir la ciudad a tu ritmo y empezar a sumar puntos.',
@@ -20,6 +21,7 @@
         ],
         [
             'nombre' => 'Aventura',
+            'slug' => 'aventura',
             'precio' => '6,99',
             'periodo' => '/mes',
             'descripcion' => 'Para quienes quieren vivir Granada como un juego continuo con ventajas reales.',
@@ -36,6 +38,7 @@
         ],
         [
             'nombre' => 'Crew',
+            'slug' => 'crew',
             'precio' => '14,99',
             'periodo' => '/mes',
             'descripcion' => 'Pensado para grupos, creadores y equipos que quieren competir juntos.',
@@ -98,7 +101,7 @@
                     <span class="pricing-panel-price">6,99€</span>
                     <small>por mes</small>
                 </div>
-                <a href="#" class="btn btn-primary home-btn">Probar 7 dias</a>
+                <a href="{{ route('vistas.planes.pago', 'aventura') }}" class="btn btn-primary home-btn">Probar 7 dias</a>
             </aside>
         </section>
         <br>
@@ -122,7 +125,10 @@
                         @endforeach
                     </ul>
 
-                    <a href="#" class="btn {{ $plan['destacado'] ? 'btn-primary' : 'btn-outline-secondary' }} home-btn">
+                    <a
+                        href="{{ $plan['slug'] ? route('vistas.planes.pago', $plan['slug']) : '#' }}"
+                        class="btn {{ $plan['destacado'] ? 'btn-primary' : 'btn-outline-secondary' }} home-btn"
+                    >
                         {{ $plan['cta'] }}
                     </a>
                 </article>
