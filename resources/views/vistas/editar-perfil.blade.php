@@ -7,7 +7,7 @@
             <div class="edit-profile-hero-copy">
                 <h1 class="home-kicker">Ajustes de cuenta</h1>
                 <h2>Editar perfil</h2>
-                <p>Actualiza tu nombre, tu correo y la contrasena de acceso sin salir del panel de GranaGO!.</p>
+                <p>Actualiza tu nombre, nickname publico, correo y contrasena sin salir del panel de GranaGO!.</p>
             </div>
             <a href="{{ route('vistas.perfil') }}" class="btn btn-outline-secondary profile-edit-back">
                 <span class="profile-edit-back-icon" aria-hidden="true">&larr;</span>
@@ -25,12 +25,13 @@
             <div class="home-panel edit-profile-card">
                 <div class="edit-profile-card-head">
                     <div class="profile-avatar edit-profile-avatar" aria-label="Inicial del usuario">
-                        <span>{{ strtoupper(substr(Auth::user()->nombre, 0, 1)) }}</span>
+                        <span>{{ strtoupper(substr(Auth::user()->nombre_publico, 0, 1)) }}</span>
                     </div>
 
                     <div class="edit-profile-card-copy">
                         <span class="home-kicker">Tu cuenta</span>
-                        <h2>{{ Auth::user()->nombre }}</h2>
+                        <h2>{{ Auth::user()->nombre_publico }}</h2>
+                        <p class="muted-copy mb-1">Nombre real: {{ Auth::user()->nombre }}</p>
                         <p class="muted-copy">Rol actual: {{ Auth::user()->rol }}</p>
                     </div>
                 </div>
@@ -68,6 +69,24 @@
                             <input id="nombre" type="text" class="form-control @error('nombre') is-invalid @enderror" name="nombre" 
                             value="{{ old('nombre', Auth::user()->nombre) }}" required autocomplete="name">
                             @error('nombre')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="edit-profile-field">
+                            <label for="nickname" class="form-label">Nickname publico</label>
+                            <input
+                                id="nickname"
+                                type="text"
+                                class="form-control @error('nickname') is-invalid @enderror"
+                                name="nickname"
+                                value="{{ old('nickname', Auth::user()->nickname) }}"
+                                required
+                                maxlength="30"
+                                autocomplete="nickname"
+                                placeholder="Como te ve la comunidad"
+                            >
+                            @error('nickname')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
