@@ -75,6 +75,11 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
 
         Route::get('/usuarios', [AdminController::class, 'usuarios'])->name('usuarios.index');
         Route::patch('/usuarios/{user}', [AdminController::class, 'actualizarBaneoUsuario'])->name('usuarios.update');
+
+        Route::get('/logros', [AdminController::class, 'logros'])->name('logros.index');
+        Route::post('/logros', [AdminController::class, 'storeLogro'])->name('logros.store');
+        Route::patch('/logros/{logro}', [AdminController::class, 'updateLogro'])->name('logros.update');
+        Route::delete('/logros/{logro}', [AdminController::class, 'destroyLogro'])->name('logros.destroy');
     });
 
     Route::apiResource('retos', RetoController::class);
