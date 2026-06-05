@@ -15,13 +15,24 @@ use Illuminate\View\View;
 
 class AdminController extends Controller
 {
-    public function retos(): View
+    public function retos(Request $request): View
     {
+        $estadosReto = ['todos', 'borrador', 'publicado', 'caducado'];
+        $estadoSeleccionado = $request->query('estado', 'todos');
+
+        if (! in_array($estadoSeleccionado, $estadosReto, true)) {
+            $estadoSeleccionado = 'todos';
+        }
+
         $retos = Reto::with('creador:id,nombre,email')
+            ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
             ->orderByDesc('id')
             ->get();
 
-        return view('admin.retos', compact('retos'));
+        return view('admin.retos', [
+            'retos' => $retos,
+            'estadoSeleccionado' => $estadoSeleccionado,
+        ]);
     }
 
     public function actualizarEstadoReto(Request $request, Reto $reto): RedirectResponse
@@ -35,14 +46,27 @@ class AdminController extends Controller
         return back()->with('status', 'Estado del reto actualizado.');
     }
 
-    public function validaciones(): View
+    public function validaciones(Request $request): View
     {
+        $estadosValidacion = ['todos', 'pendiente', 'verificado', 'rechazado'];
+        $estadoSeleccionado = $request->query('estado', 'todos');
+
+        if (! in_array($estadoSeleccionado, $estadosValidacion, true)) {
+            $estadoSeleccionado = 'todos';
+        }
+
         $validaciones = ValidacionReto::with([
             'user:id,nombre,email,esta_baneado',
             'reto:id,nombre,estado,puntos_recompensa',
-        ])->orderByDesc('id')->get();
+        ])
+            ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
+            ->orderByDesc('id')
+            ->get();
 
-        return view('admin.validaciones', compact('validaciones'));
+        return view('admin.validaciones', [
+            'validaciones' => $validaciones,
+            'estadoSeleccionado' => $estadoSeleccionado,
+        ]);
     }
 
     public function actualizarEstadoValidacion(Request $request, ValidacionReto $validacion): RedirectResponse
