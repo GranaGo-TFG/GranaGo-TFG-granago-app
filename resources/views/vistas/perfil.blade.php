@@ -8,9 +8,16 @@
     $retosCompletados = $user->validacionesRetos()
         ->where('estado', 'verificado')
         ->count();
+    $logrosTotales = $user->logros()
+        ->get()
+        ->unique('nombre_logro')
+        ->count();
     $logros = $user->logros()
         ->orderByPivot('fecha_desbloqueo', 'desc')
-        ->get();
+        ->get()
+        ->unique('nombre_logro')
+        ->values()
+        ->take(3);
     $validacionesRecientes = $user->validacionesRetos()
         ->with('reto:id,nombre')
         ->orderByDesc('fecha_envio')
@@ -61,7 +68,7 @@
                 <span>Retos completados</span>
             </article>
             <article>
-                <strong>{{ $logros->count() }}</strong>
+                <strong>{{ $logrosTotales }}</strong>
                 <span>Logros</span>
             </article>
             <article>
@@ -85,7 +92,10 @@
             </article>
 
             <article class="home-panel profile-card">
-                <span class="home-kicker">Logros</span>
+                <div class="home-section-head">
+                    <span class="home-kicker">Logros</span>
+                    <a href="{{ route('vistas.logros') }}" class="home-small-link">Ver todos</a>
+                </div>
                 <div class="profile-achievement-list">
                     @if ($logros->isEmpty())
                         <div class="profile-achievement">
@@ -100,6 +110,10 @@
                             <strong>{{ $logro->nombre_logro }}</strong>
                         </div>
                     @endforeach
+
+                    @if ($logrosTotales > $logros->count())
+                        <a href="{{ route('vistas.logros') }}" class="home-small-link">Tienes {{ $logrosTotales - $logros->count() }} logros mas por ver</a>
+                    @endif
                 </div>
             </article>
 
@@ -175,6 +189,7 @@
 
         <section class="profile-mobile-actions">
             <a href="#inventario" class="btn btn-outline-secondary home-btn">Ver inventario</a>
+            <a href="{{ route('vistas.logros') }}" class="btn btn-outline-secondary home-btn">Ver logros</a>
             <a href="{{ route('vistas.retos') }}" class="btn btn-primary home-btn">Buscar retos</a>
             <a href="{{ route('vistas.ranking') }}" class="btn btn-outline-secondary home-btn">Ver ranking</a>
         </section>
