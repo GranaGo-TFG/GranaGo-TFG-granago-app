@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Logro;
 use App\Models\Producto;
 use App\Models\Reto;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class AdminController extends Controller
@@ -85,6 +87,66 @@ class AdminController extends Controller
             ->get();
 
         return view('admin.usuarios', compact('usuarios'));
+    }
+
+    public function logros(): View
+    {
+        $logros = Logro::query()
+            ->withCount('usuarios')
+            ->orderByDesc('id')
+            ->get();
+
+        return view('admin.logros', compact('logros'));
+    }
+
+    public function storeLogro(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'nombre_logro' => ['required', 'string', 'max:100', 'unique:logros,nombre_logro'],
+            'descripcion' => ['required', 'string'],
+            'icono' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $data['icono'] = trim((string) ($data['icono'] ?? ''));
+
+        if ($data['icono'] === '') {
+            $data['icono'] = 'logros/generico.png';
+        }
+
+        Logro::query()->create($data);
+
+        return back()->with('status', 'Logro creado correctamente.');
+    }
+
+    public function updateLogro(Request $request, Logro $logro): RedirectResponse
+    {
+        $data = $request->validate([
+            'nombre_logro' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('logros', 'nombre_logro')->ignore($logro->id),
+            ],
+            'descripcion' => ['required', 'string'],
+            'icono' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $data['icono'] = trim((string) ($data['icono'] ?? ''));
+
+        if ($data['icono'] === '') {
+            $data['icono'] = 'logros/generico.png';
+        }
+
+        $logro->update($data);
+
+        return back()->with('status', 'Logro actualizado correctamente.');
+    }
+
+    public function destroyLogro(Logro $logro): RedirectResponse
+    {
+        $logro->delete();
+
+        return back()->with('status', 'Logro eliminado correctamente.');
     }
 
     public function productos(): View
