@@ -35,6 +35,7 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
         Route::get('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'create'])->name('subir-prueba');
         Route::post('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'storeFromView'])->name('subir-prueba.store');
         Route::view('/ranking', 'vistas.ranking')->name('ranking');
+        Route::view('/logros', 'vistas.logros')->name('logros');
         Route::get('/tienda', [TiendaController::class, 'index'])->name('tienda');
         Route::get('/tienda/productos/{producto}', [TiendaController::class, 'show'])->name('tienda.producto');
         Route::get('/tienda/productos/{producto}/pago', [TiendaController::class, 'pago'])->name('tienda.pago');
@@ -74,6 +75,11 @@ Route::middleware(['auth', 'not_banned'])->group(function () {
 
         Route::get('/usuarios', [AdminController::class, 'usuarios'])->name('usuarios.index');
         Route::patch('/usuarios/{user}', [AdminController::class, 'actualizarBaneoUsuario'])->name('usuarios.update');
+
+        Route::get('/logros', [AdminController::class, 'logros'])->name('logros.index');
+        Route::post('/logros', [AdminController::class, 'storeLogro'])->name('logros.store');
+        Route::patch('/logros/{logro}', [AdminController::class, 'updateLogro'])->name('logros.update');
+        Route::delete('/logros/{logro}', [AdminController::class, 'destroyLogro'])->name('logros.destroy');
     });
 
     Route::apiResource('retos', RetoController::class);
