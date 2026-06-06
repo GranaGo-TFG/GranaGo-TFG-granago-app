@@ -4,7 +4,7 @@
 @php
     $usuariosRanking = \App\Models\User::query()
         ->select(['id', 'nombre', 'nickname', 'rol', 'puntos_totales'])
-        ->where('rol', '!=', 'admin')
+        ->where('rol', 'usuario')
         ->where('esta_baneado', false)
         ->orderByDesc('puntos_totales')
         ->orderByRaw('COALESCE(nickname, nombre)')

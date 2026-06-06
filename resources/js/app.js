@@ -4,6 +4,90 @@ import './mapa-osm';
 window.bootstrap = bootstrap;
 
 document.addEventListener('DOMContentLoaded', function () {
+    var floatingGuide = document.querySelector('[data-floating-guide]');
+
+    if (!floatingGuide) {
+        return;
+    }
+
+    var toggle = floatingGuide.querySelector('.floating-guide-toggle');
+    var card = floatingGuide.querySelector('.floating-guide-card');
+    var answer = floatingGuide.querySelector('[data-floating-guide-answer]');
+    var questionButtons = floatingGuide.querySelectorAll('[data-question]');
+    var close = floatingGuide.querySelector('[data-floating-guide-close]');
+
+    if (!toggle || !card) {
+        return;
+    }
+
+    var answers = {
+        retos: 'Los retos son pruebas por Granada. Entra en uno, lee la descripcion y completa lo que pide antes de que caduque.',
+        pruebas: 'Cuando estes en el detalle de un reto, sube una foto clara del lugar o elemento pedido. La validacion queda pendiente hasta que se revise.',
+        puntos: 'Los puntos se suman cuando una prueba queda validada. El ranking ordena a los usuarios por sus puntos guardados en la base de datos.',
+        planes: 'La app tiene una version gratuita y plantea planes premium para mejorar la experiencia con rutas, retos exclusivos o ventajas para grupos.',
+    };
+    var setOpen = function (isOpen) {
+        floatingGuide.classList.toggle('is-open', isOpen);
+        floatingGuide.classList.toggle('is-docked', !isOpen);
+        toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar asistente' : 'Abrir asistente');
+        card.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
+    };
+
+    floatingGuide.classList.add('is-docked');
+
+    toggle.addEventListener('click', function () {
+        setOpen(!floatingGuide.classList.contains('is-open'));
+    });
+
+    questionButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            var questionKey = button.getAttribute('data-question');
+
+            if (!answer || !answers[questionKey]) {
+                return;
+            }
+
+            questionButtons.forEach(function (item) {
+                item.classList.toggle('is-active', item === button);
+            });
+
+            answer.classList.remove('is-updated');
+            answer.textContent = answers[questionKey];
+            window.requestAnimationFrame(function () {
+                answer.classList.add('is-updated');
+            });
+        });
+    });
+
+    if (close) {
+        close.addEventListener('click', function () {
+            setOpen(false);
+        });
+    }
+
+    document.addEventListener('click', function (event) {
+        if (!floatingGuide.classList.contains('is-open') || floatingGuide.contains(event.target)) {
+            return;
+        }
+
+        setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+            setOpen(false);
+        }
+    });
+
+    if (window.location.pathname === '/home') {
+        window.setTimeout(function () {
+            setOpen(true);
+        }, 650);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
     var navbar = document.querySelector('.navbar');
 
     if (!navbar) {

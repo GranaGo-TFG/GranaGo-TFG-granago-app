@@ -22,6 +22,45 @@
             </div>
         @endif
 
+        @php
+            $filtrosEstado = [
+                'todos' => 'Todos',
+                'borrador' => 'Borradores',
+                'publicado' => 'Publicados',
+                'caducado' => 'Caducados',
+            ];
+        @endphp
+
+        <div class="screen-filters challenge-filter-menu">
+            <div class="dropdown">
+                <button
+                    class="btn btn-outline-secondary challenge-filter-toggle"
+                    type="button"
+                    id="adminRetoFilterDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    <svg class="challenge-filter-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                        <path d="M4 5h16l-6.5 7.4v5.1l-3 1.5v-6.6L4 5Z" />
+                    </svg>
+                    <span>{{ $filtrosEstado[$estadoSeleccionado ?? 'todos'] ?? 'Todos' }}</span>
+                </button>
+
+                <div class="dropdown-menu challenge-filter-dropdown" aria-labelledby="adminRetoFilterDropdown">
+                    <span class="challenge-filter-heading">Estado</span>
+                    @foreach ($filtrosEstado as $estado => $label)
+                        <a
+                            href="{{ route('admin.retos.index', $estado === 'todos' ? [] : ['estado' => $estado]) }}"
+                            class="dropdown-item {{ ($estadoSeleccionado ?? 'todos') === $estado ? 'active' : '' }}"
+                            aria-current="{{ ($estadoSeleccionado ?? 'todos') === $estado ? 'page' : 'false' }}"
+                        >
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
         <div class="admin-list">
             @forelse ($retos as $reto)
                 <div class="home-panel admin-row">
