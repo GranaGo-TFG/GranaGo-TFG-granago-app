@@ -9,20 +9,76 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ValidacionRetoController extends Controller
 {
+    public function foto(ValidacionReto $validacion): BinaryFileResponse|RedirectResponse
+    {
+        $this->asegurarPuedeVerFoto($validacion);
+
+        $rutaFoto = trim((string) $validacion->foto_prueba);
+
+        if ($rutaFoto === '') {
+            abort(404, 'La foto de la validacion no esta disponible.');
+        }
+
+        if (filter_var($rutaFoto, FILTER_VALIDATE_URL)) {
+            return redirect()->away($rutaFoto);
+        }
+
+        $rutaFoto = ltrim($rutaFoto, '/');
+
+        if (str_starts_with($rutaFoto, 'storage/')) {
+            $rutaFoto = substr($rutaFoto, 8);
+        }
+
+        abort_unless(
+            Storage::disk('public')->exists($rutaFoto),
+            404,
+            'No se encontro la foto de la validacion.'
+        );
+
+        return response()->file(Storage::disk('public')->path($rutaFoto));
+    }
+
     public function create(Reto $reto): View
     {
         abort_if($reto->estado === 'caducado', 403, 'No se pueden subir pruebas a retos caducados.');
-        abort_if(auth()->user()?->rol === 'creador', 403, 'Los creadores no pueden participar en retos.');
+        abort_if(Auth::user()?->rol === 'creador', 403, 'Los creadores no pueden participar en retos.');
 
         return view('vistas.subir-prueba', [
             'reto' => $reto,
+        ]);
+    }
+
+    public function misValidaciones(Request $request): View
+    {
+        abort_if($request->user()?->rol !== 'usuario', 403, 'Solo los usuarios pueden consultar sus validaciones.');
+
+        $estadosValidacion = ['todos', 'pendiente', 'verificado', 'rechazado'];
+        $estadoSeleccionado = $request->query('estado', 'todos');
+
+        if (! in_array($estadoSeleccionado, $estadosValidacion, true)) {
+            $estadoSeleccionado = 'todos';
+        }
+
+        $validaciones = ValidacionReto::query()
+            ->with('reto:id,nombre,estado,puntos_recompensa')
+            ->where('user_id', (int) $request->user()->id)
+            ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
+            ->orderByDesc('fecha_envio')
+            ->orderByDesc('id')
+            ->get();
+
+        return view('vistas.validaciones', [
+            'validaciones' => $validaciones,
+            'estadoSeleccionado' => $estadoSeleccionado,
         ]);
     }
 
@@ -219,6 +275,20 @@ class ValidacionRetoController extends Controller
 
     private function asegurarAdministrador(): void
     {
-        abort_if(auth()->user()?->rol !== 'admin', 403);
+        abort_if(Auth::user()?->rol !== 'admin', 403);
+    }
+
+    private function asegurarPuedeVerFoto(ValidacionReto $validacion): void
+    {
+        $user = Auth::user();
+
+        abort_unless($user, 403);
+
+        if ($user->rol === 'admin') {
+            return;
+        }
+
+        abort_if($user->rol !== 'usuario', 403);
+        abort_if((int) $validacion->user_id !== (int) $user->id, 403);
     }
 }
