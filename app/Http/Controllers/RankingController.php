@@ -10,11 +10,11 @@ class RankingController extends Controller
     public function index(): View
     {
         $usuariosRanking = User::query()
-            ->select(['id', 'nombre', 'rol', 'puntos_totales'])
+            ->select(['id', 'nombre', 'nickname', 'rol', 'puntos_totales'])
             ->where('rol', 'usuario')
             ->where('esta_baneado', false)
             ->orderByDesc('puntos_totales')
-            ->orderBy('nombre')
+            ->orderByRaw('COALESCE(nickname, nombre)')
             ->get()
             ->values()
             ->map(function (User $user, int $index) {
