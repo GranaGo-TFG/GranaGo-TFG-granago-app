@@ -27,16 +27,18 @@ class DatabaseSeeder extends Seeder
 
         $logroIds = Logro::query()->pluck('id');
 
-        User::query()->each(function (User $user) use ($logroIds) {
-            $idsAsignados = $logroIds->shuffle()->take(fake()->numberBetween(0, min(3, $logroIds->count())));
+        User::query()
+            ->whereIn('rol', ['creador', 'usuario'])
+            ->each(function (User $user) use ($logroIds) {
+                $idsAsignados = $logroIds->shuffle()->take(fake()->numberBetween(0, min(3, $logroIds->count())));
 
-            foreach ($idsAsignados as $logroId) {
-                $user->logros()->syncWithoutDetaching([
-                    $logroId => [
-                        'fecha_desbloqueo' => fake()->dateTimeBetween('-30 days', 'now'),
-                    ],
-                ]);
-            }
-        });
+                foreach ($idsAsignados as $logroId) {
+                    $user->logros()->syncWithoutDetaching([
+                        $logroId => [
+                            'fecha_desbloqueo' => fake()->dateTimeBetween('-30 days', 'now'),
+                        ],
+                    ]);
+                }
+            });
     }
 }
