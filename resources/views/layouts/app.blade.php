@@ -178,6 +178,56 @@
         </main>
 
         @include('partials.site-footer')
+
+        <div class="floating-guide" data-floating-guide>
+            <div class="floating-guide-card" id="floating-guide-card" aria-hidden="true">
+                <div class="floating-guide-head">
+                    <div class="floating-guide-title">
+                        <span class="floating-guide-icon" aria-hidden="true">
+                            <img src="{{ asset('images/Logo_fondo_blanco.png') }}" alt="">
+                        </span>
+                        <div>
+                            <span class="floating-guide-label">GranaGO</span>
+                            <h2>Ayuda rapida</h2>
+                        </div>
+                    </div>
+                    <button type="button" class="floating-guide-close" data-floating-guide-close aria-label="Cerrar asistente">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="floating-guide-body">
+                    <div class="floating-guide-status">
+                        <span aria-hidden="true"></span>
+                        Preguntas frecuentes
+                    </div>
+
+                    <div class="floating-guide-chat" aria-live="polite">
+                        <p class="floating-guide-message is-bot" data-floating-guide-answer>
+                            Elige una pregunta y te explico lo basico de la app sin salir de esta pagina.
+                        </p>
+                    </div>
+
+                    <div class="floating-guide-questions" data-floating-guide-questions>
+                        <button type="button" data-question="retos">Retos</button>
+                        <button type="button" data-question="pruebas">Subir prueba</button>
+                        <button type="button" data-question="puntos">Puntos</button>
+                        <button type="button" data-question="planes">Planes</button>
+                    </div>
+                </div>
+            </div>
+
+            <button
+                type="button"
+                class="floating-guide-toggle"
+                aria-controls="floating-guide-card"
+                aria-expanded="false"
+                aria-label="Abrir asistente"
+            >
+                <span class="floating-guide-toggle-mark" aria-hidden="true">?</span>
+                <span>Ayuda</span>
+            </button>
+        </div>
     </div>
 
     @stack('scripts')

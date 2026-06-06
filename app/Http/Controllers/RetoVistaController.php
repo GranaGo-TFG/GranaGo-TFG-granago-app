@@ -11,20 +11,50 @@ use Illuminate\View\View;
 
 class RetoVistaController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
+        $estadosVisibles = ['publicado', 'caducado'];
+        $estadoSeleccionado = $request->query('estado', 'todos');
+        $ordenSeleccionado = $request->query('orden', 'recientes');
+        $busqueda = trim((string) $request->query('buscar', ''));
+
+        if (! in_array($estadoSeleccionado, array_merge(['todos'], $estadosVisibles), true)) {
+            $estadoSeleccionado = 'todos';
+        }
+
+        if (! in_array($ordenSeleccionado, ['recientes', 'puntos_desc', 'puntos_asc', 'caducan'], true)) {
+            $ordenSeleccionado = 'recientes';
+        }
+
         $retos = Reto::query()
             ->with('creador:id,nombre,nickname')
             ->withCount([
                 'validaciones',
                 'validaciones as validaciones_verificadas_count' => fn ($query) => $query->where('estado', 'verificado'),
             ])
-            ->where('estado', '!=', 'borrador')
-            ->orderByRaw("CASE estado WHEN 'publicado' THEN 0 WHEN 'borrador' THEN 1 ELSE 2 END")
-            ->orderByDesc('fecha_inicio')
+            ->whereIn('estado', $estadosVisibles)
+            ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
+            ->when($busqueda !== '', function ($query) use ($busqueda) {
+                $query->where(function ($query) use ($busqueda) {
+                    $query->where('nombre', 'like', "%{$busqueda}%")
+                        ->orWhere('descripcion', 'like', "%{$busqueda}%")
+                        ->orWhere('ubicacion_referencia', 'like', "%{$busqueda}%");
+                });
+            })
+            ->when($ordenSeleccionado === 'recientes', fn ($query) => $query
+                ->orderByRaw("CASE estado WHEN 'publicado' THEN 0 ELSE 1 END")
+                ->orderByDesc('fecha_inicio'))
+            ->when($ordenSeleccionado === 'puntos_desc', fn ($query) => $query->orderByDesc('puntos_recompensa'))
+            ->when($ordenSeleccionado === 'puntos_asc', fn ($query) => $query->orderBy('puntos_recompensa'))
+            ->when($ordenSeleccionado === 'caducan', fn ($query) => $query->orderBy('fecha_fin'))
             ->get();
 
-        return view('vistas.retos', compact('retos'));
+        return view('vistas.retos', [
+            'retos' => $retos,
+            'estadoSeleccionado' => $estadoSeleccionado,
+            'ordenSeleccionado' => $ordenSeleccionado,
+            'busqueda' => $busqueda,
+        ]);
     }
 
     public function create(): View
