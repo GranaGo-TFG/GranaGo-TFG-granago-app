@@ -69,7 +69,7 @@
                             $fotoPrueba = $validacion->foto_prueba;
                             $fotoPruebaUrl = filter_var($fotoPrueba, FILTER_VALIDATE_URL)
                                 ? $fotoPrueba
-                                : \Illuminate\Support\Facades\Storage::url($fotoPrueba);
+                                : route('vistas.validaciones.foto', $validacion);
                         @endphp
 
                         <div class="admin-row-top">

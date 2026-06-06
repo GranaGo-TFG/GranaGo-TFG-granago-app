@@ -86,6 +86,15 @@
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('vistas.retos') }}">Retos</a>
                                 </li>
+                                @if (Auth::user()->rol === 'creador')
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('vistas.mis-retos') }}">Mis retos</a>
+                                    </li>
+                                @elseif (Auth::user()->rol === 'usuario')
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="{{ route('vistas.validaciones') }}">Validaciones</a>
+                                    </li>
+                                @endif
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('vistas.ranking') }}">Ranking</a>
                                 </li>

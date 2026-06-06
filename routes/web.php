@@ -28,12 +28,20 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/vistas/retos', [RetoVistaController::class, 'index'])->name('vistas.retos');
 
 Route::middleware(['auth', 'not_banned'])->group(function () {
+    Route::get('/vistas/validaciones/{validacion}/foto', [ValidacionRetoController::class, 'foto'])
+        ->name('vistas.validaciones.foto');
+
     Route::middleware('not_admin')->prefix('vistas')->name('vistas.')->group(function () {
         Route::get('/retos/crear', [RetoVistaController::class, 'create'])->name('crear-reto');
         Route::post('/retos', [RetoVistaController::class, 'store'])->name('retos.store');
+        Route::get('/retos/mis-retos', [RetoVistaController::class, 'misRetos'])->name('mis-retos');
+        Route::get('/retos/{reto}/editar', [RetoVistaController::class, 'edit'])->name('retos.edit');
+        Route::patch('/retos/{reto}', [RetoVistaController::class, 'update'])->name('retos.update');
+        Route::delete('/retos/{reto}', [RetoVistaController::class, 'destroy'])->name('retos.destroy');
         Route::get('/retos/{reto}', [RetoVistaController::class, 'show'])->name('reto-detalle');
         Route::get('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'create'])->name('subir-prueba');
         Route::post('/retos/{reto}/subir-prueba', [ValidacionRetoController::class, 'storeFromView'])->name('subir-prueba.store');
+        Route::get('/validaciones', [ValidacionRetoController::class, 'misValidaciones'])->name('validaciones');
         Route::view('/ranking', 'vistas.ranking')->name('ranking');
         Route::view('/logros', 'vistas.logros')->name('logros');
         Route::get('/tienda', [TiendaController::class, 'index'])->name('tienda');
