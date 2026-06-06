@@ -59,14 +59,14 @@ class RetoVistaController extends Controller
 
     public function create(): View
     {
-        $this->autorizarCreacion();
+        $this->autorizarCreador();
 
         return view('vistas.crear-reto');
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $this->autorizarCreacion();
+        $this->autorizarCreador();
 
         $data = $request->validate([
             'nombre' => ['required', 'string', 'max:100'],
@@ -94,6 +94,82 @@ class RetoVistaController extends Controller
             ->with('status', 'Reto creado correctamente.');
     }
 
+    public function misRetos(Request $request): View
+    {
+        $this->autorizarCreador();
+
+        $creador = $request->user();
+
+        $estadosReto = ['todos', 'borrador', 'publicado', 'caducado'];
+        $estadoSeleccionado = $request->query('estado', 'todos');
+
+        if (! in_array($estadoSeleccionado, $estadosReto, true)) {
+            $estadoSeleccionado = 'todos';
+        }
+
+        $retos = $creador->retosCreados()
+            ->withCount([
+                'validaciones',
+                'validaciones as validaciones_verificadas_count' => fn ($query) => $query->where('estado', 'verificado'),
+            ])
+            ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
+            ->orderByDesc('id')
+            ->get();
+
+        return view('vistas.mis-retos', [
+            'retos' => $retos,
+            'estadoSeleccionado' => $estadoSeleccionado,
+            'creadorId' => (int) $creador->id,
+        ]);
+    }
+
+    public function edit(Reto $reto): View
+    {
+        $this->autorizarRetoPropio($reto);
+
+        return view('vistas.editar-reto', [
+            'reto' => $reto,
+        ]);
+    }
+
+    public function update(Request $request, Reto $reto): RedirectResponse
+    {
+        $this->autorizarRetoPropio($reto);
+
+        $data = $request->validate([
+            'nombre' => ['required', 'string', 'max:100'],
+            'descripcion' => ['required', 'string'],
+            'archivo_multimedia' => ['nullable', 'string', 'max:255'],
+            'fecha_inicio' => ['required', 'date'],
+            'fecha_fin' => ['required', 'date', 'after_or_equal:fecha_inicio'],
+            'puntos_recompensa' => ['required', 'integer', 'min:0'],
+            'ubicacion_referencia' => ['nullable', 'string', 'max:120'],
+            'latitud' => ['required', 'numeric', 'between:-90,90'],
+            'longitud' => ['required', 'numeric', 'between:-180,180'],
+            'titulo_relato' => ['nullable', 'string', 'max:255'],
+            'leyenda_relato' => ['nullable', 'string'],
+            'contenido_relato' => ['nullable', 'string'],
+            'cierre_relato' => ['nullable', 'string'],
+        ]);
+
+        $reto->update($data);
+
+        return redirect()
+            ->route('vistas.mis-retos')
+            ->with('status', 'Reto actualizado correctamente.');
+    }
+
+    public function destroy(Reto $reto): RedirectResponse
+    {
+        $this->autorizarRetoPropio($reto);
+
+        $reto->delete();
+
+        return redirect()
+            ->route('vistas.mis-retos')
+            ->with('status', 'Reto eliminado correctamente.');
+    }
+
     public function show(Reto $reto): View
     {
         $reto->load('creador:id,nombre,nickname');
@@ -116,8 +192,19 @@ class RetoVistaController extends Controller
         ]);
     }
 
-    private function autorizarCreacion(): void
+    private function autorizarCreador(): void
     {
         abort_unless(Auth::user()?->rol === 'creador', 403, 'Solo los usuarios creadores pueden crear retos.');
+    }
+
+    private function autorizarRetoPropio(Reto $reto): void
+    {
+        $this->autorizarCreador();
+
+        abort_unless(
+            (int) $reto->creador_id === (int) Auth::id(),
+            403,
+            'Solo puedes gestionar retos que hayas creado.'
+        );
     }
 }
