@@ -318,12 +318,15 @@ class AdminController extends Controller
         $validacion->loadMissing('reto:id,puntos_recompensa');
 
         $puntosBase = (int) $validacion->reto->puntos_recompensa;
-        $multiplicador = max(0, (float) $user->racha_multiplicador);
+        $multiplicador = $user->multiplicadorRachaVigente();
         $puntosGanados = (int) round($puntosBase * $multiplicador);
 
         if ($puntosGanados > 0) {
             $user->increment('puntos_totales', $puntosGanados);
         }
+
+        $user->registrarRetoCompletado();
+        $user->save();
     }
 
     private function generarSlugUnico(string $nombre, ?int $exceptoProductoId = null): string
