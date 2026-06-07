@@ -5,6 +5,9 @@
     $user = Auth::user();
     $puntosTotales = $user->puntos_totales ?? 0;
     $multiplicador = number_format((float) $user->racha_multiplicador, 2);
+    $rachaUltimoReto = $user->racha_ultimo_reto;
+    $rachaExpiraEn = $rachaUltimoReto ? $rachaUltimoReto->copy()->addDays(3) : null;
+    $rachaActiva = $rachaExpiraEn && now()->lessThanOrEqualTo($rachaExpiraEn);
     $retosCompletados = $user->validacionesRetos()
         ->where('estado', 'verificado')
         ->count();
@@ -74,6 +77,14 @@
             <article>
                 <strong>x{{ $multiplicador }}</strong>
                 <span>Racha</span>
+            </article>
+            <article>
+                <strong
+                    data-rachacountdown
+                    data-streak-reset-at="{{ $rachaExpiraEn?->toIso8601String() }}"
+                >
+                    {{ $rachaActiva ? 'Racha activa hasta dentro de ' . $rachaExpiraEn->diffForHumans(now(), ['parts' => 3, 'short' => true]) : 'Racha reiniciada' }}
+                </strong>
             </article>
         </section>
 
@@ -196,3 +207,52 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var countdown = document.querySelector('[data-rachacountdown]');
+
+        if (!countdown) {
+            return;
+        }
+
+        var resetAt = countdown.getAttribute('data-streak-reset-at');
+
+        if (!resetAt) {
+            countdown.textContent = 'Reiniciada';
+            return;
+        }
+
+        var resetDate = new Date(resetAt);
+
+        var formatRemaining = function (milliseconds) {
+            if (milliseconds <= 0) {
+                return 'Racha reiniciada';
+            }
+
+            var totalSeconds = Math.floor(milliseconds / 1000);
+            var days = Math.floor(totalSeconds / 86400);
+            var hours = Math.floor((totalSeconds % 86400) / 3600);
+            var minutes = Math.floor((totalSeconds % 3600) / 60);
+
+            if (days > 0) {
+                return 'Racha activa hasta dentro de ' + days + 'd ' + hours + 'h';
+            }
+
+            if (hours > 0) {
+                return 'Racha activa hasta dentro de ' + hours + 'h ' + minutes + 'm';
+            }
+
+            return 'Racha activa hasta dentro de ' + minutes + 'm';
+        };
+
+        var updateCountdown = function () {
+            countdown.textContent = formatRemaining(resetDate.getTime() - Date.now());
+        };
+
+        updateCountdown();
+        window.setInterval(updateCountdown, 60000);
+    });
+</script>
+@endpush
