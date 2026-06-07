@@ -2244,6 +2244,20 @@ a,
     font-weight: 600;
 }
 
+.challenge-countdown {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.28rem 0.55rem;
+    border: 1px solid rgba(217, 28, 74, 0.16);
+    border-radius: 999px;
+    background: rgba(217, 28, 74, 0.08);
+    color: var(--granago-primary);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+}
+
 .challenge-body h2,
 .community-card strong {
     display: block;
@@ -2302,6 +2316,14 @@ a,
     flex-wrap: wrap;
     gap: 0.45rem;
     margin: 0.75rem 0;
+}
+
+.challenge-card-capsules {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    align-items: center;
+    margin-top: 0.9rem;
 }
 
 .challenge-body .home-small-link {
@@ -4040,6 +4062,12 @@ a,
 :root[data-theme='dark'] .challenge-form-map-panel h2,
 :root[data-theme='dark'] .admin-row h2 {
     color: #f8fafc;
+}
+
+:root[data-theme='dark'] .challenge-countdown {
+    border-color: rgba(251, 113, 133, 0.24);
+    background: rgba(217, 28, 74, 0.18);
+    color: #fda4af;
 }
 
 :root[data-theme='dark'] .pricing-hero p,

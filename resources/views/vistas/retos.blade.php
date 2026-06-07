@@ -118,6 +118,12 @@
                         'borrador' => 'status-draft',
                         default => 'status-rejected',
                     };
+                    $fechaFinIso = optional($reto->fecha_fin)->toIso8601String();
+                    $tiempoRestante = $reto->estado === 'caducado'
+                        ? 'Caducado'
+                        : ($reto->fecha_fin
+                            ? 'Caduca en ' . $reto->fecha_fin->diffForHumans(now(), ['parts' => 2, 'short' => true])
+                            : 'Sin fecha fin');
                 @endphp
 
                 <article class="challenge-card reveal-item">
@@ -142,7 +148,16 @@
                             <span class="d-block">{{ optional($reto->fecha_fin)->format('d/m/Y') ?? 'Sin fecha fin' }}</span>
                             <span class="d-block">{{ $reto->validaciones_verificadas_count }} validadas</span>
                         </div>
-                        <a href="{{ Auth::check() ? route('vistas.reto-detalle', $reto) : route('login') }}" class="status-pill home-small-link">Ver detalle</a>
+                        <div class="challenge-card-capsules">
+                            <a href="{{ Auth::check() ? route('vistas.reto-detalle', $reto) : route('login') }}" class="status-pill home-small-link">Ver detalle</a>
+                            <strong
+                                class="challenge-countdown"
+                                data-challenge-countdown
+                                data-challenge-end-at="{{ $fechaFinIso }}"
+                            >
+                                {{ $tiempoRestante }}
+                            </strong>
+                        </div>
                     </div>
                 </article>
             @empty
@@ -158,3 +173,61 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var countdowns = document.querySelectorAll('[data-challenge-countdown]');
+
+        if (!countdowns.length) {
+            return;
+        }
+
+        var formatRemaining = function (milliseconds) {
+            if (milliseconds <= 0) {
+                return 'Caducado';
+            }
+
+            var totalSeconds = Math.floor(milliseconds / 1000);
+            var days = Math.floor(totalSeconds / 86400);
+            var hours = Math.floor((totalSeconds % 86400) / 3600);
+            var minutes = Math.floor((totalSeconds % 3600) / 60);
+
+            if (days > 0) {
+                return 'Termina en ' + days + 'd ' + hours + 'h';
+            }
+
+            if (hours > 0) {
+                return 'Termina en ' + hours + 'h ' + minutes + 'm';
+            }
+
+            return 'Termina en ' + minutes + 'm';
+        };
+
+        var updateCountdown = function (element) {
+            var endAt = element.getAttribute('data-challenge-end-at');
+
+            if (!endAt) {
+                element.textContent = 'Sin fecha fin';
+                return;
+            }
+
+            var endDate = new Date(endAt);
+
+            if (Number.isNaN(endDate.getTime())) {
+                element.textContent = 'Sin fecha fin';
+                return;
+            }
+
+            element.textContent = formatRemaining(endDate.getTime() - Date.now());
+        };
+
+        var refreshAll = function () {
+            countdowns.forEach(updateCountdown);
+        };
+
+        refreshAll();
+        window.setInterval(refreshAll, 60000);
+    });
+</script>
+@endpush
