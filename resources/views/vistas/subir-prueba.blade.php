@@ -69,6 +69,26 @@
         object-fit: cover;
         box-shadow: 0 16px 34px rgba(30, 41, 59, 0.14);
     }
+
+    .upload-status-panel {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .upload-status-list {
+        display: grid;
+        gap: 0.85rem;
+    }
+
+    .upload-status-item {
+        display: grid;
+        gap: 0.2rem;
+    }
+
+    .subir-prueba-layout {
+        gap: 4rem !important;
+        align-items: start;
+    }
 </style>
 @endpush
 
@@ -81,8 +101,8 @@
             </div>
         @endif
 
-        <div class="detail-layout">
-            <section class="home-panel detail-main">
+        <div class="detail-layout subir-prueba-layout">
+            <div class="home-panel detail-main" style="margin-bottom: 2.5rem;">
                 <h1 class="home-kicker">Validacion</h1>
                 <h2>Subir prueba del reto</h2>
                 <p class="detail-copy">
@@ -146,19 +166,31 @@
                         </a>
                     </div>
                 </form>
-            </section>
+            </div>
 
-            <aside class="home-panel">
+            <div class="home-panel upload-status-panel" style="margin-top: 2.5rem;">
                 <span class="home-kicker">Estado</span>
                 <h2>Pendiente de revisar</h2>
                 <p class="muted-copy">Cuando la prueba sea aceptada, los puntos del reto se sumaran a tu perfil.</p>
-                <ul class="list-unstyled mb-0 d-grid gap-2">
-                    <li><strong>Reto:</strong> {{ $reto->nombre }}</li>
-                    <li><strong>Zona:</strong> {{ $reto->ubicacion_referencia ?? 'Sin zona definida' }}</li>
-                    <li><strong>Recompensa:</strong> {{ $reto->puntos_recompensa }} puntos</li>
-                    <li><strong>Formato:</strong> 1 imagen por envio</li>
-                </ul>
-            </aside>
+                <div class="upload-status-list">
+                    <div class="upload-status-item">
+                        <strong>Reto</strong>
+                        <span>{{ $reto->nombre }}</span>
+                    </div>
+                    <div class="upload-status-item">
+                        <strong>Zona</strong>
+                        <span>{{ $reto->ubicacion_referencia ?? 'Sin zona definida' }}</span>
+                    </div>
+                    <div class="upload-status-item">
+                        <strong>Recompensa</strong>
+                        <span>{{ $reto->puntos_recompensa }} puntos</span>
+                    </div>
+                    <div class="upload-status-item">
+                        <strong>Formato</strong>
+                        <span>1 imagen por envio</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
