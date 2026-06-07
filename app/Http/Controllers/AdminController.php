@@ -19,6 +19,8 @@ class AdminController extends Controller
 {
     public function retos(Request $request): View
     {
+        Reto::sincronizarCaducados();
+
         $estadosReto = ['todos', 'borrador', 'publicado', 'caducado'];
         $estadoSeleccionado = $request->query('estado', 'todos');
 
@@ -44,7 +46,13 @@ class AdminController extends Controller
             'estado' => ['required', 'in:borrador,publicado,caducado'],
         ]);
 
-        $reto->update($data);
+        $estadoFinal = $reto->fecha_fin && $reto->fecha_fin->isPast()
+            ? 'caducado'
+            : $data['estado'];
+
+        $reto->update([
+            'estado' => $estadoFinal,
+        ]);
 
         return back()->with('status', 'Estado del reto actualizado.');
     }

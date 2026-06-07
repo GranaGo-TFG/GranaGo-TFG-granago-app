@@ -13,6 +13,8 @@ class RetoVistaController extends Controller
 {
     public function index(Request $request): View
     {
+        Reto::sincronizarCaducados();
+
         $estadosVisibles = ['publicado', 'caducado'];
         $estadoSeleccionado = $request->query('estado', 'todos');
         $ordenSeleccionado = $request->query('orden', 'recientes');
@@ -89,6 +91,7 @@ class RetoVistaController extends Controller
         $data['estado'] = 'borrador';
 
         $reto = Reto::create($data);
+        $reto->sincronizarEstadoCaducado();
 
         return redirect()
             ->route('vistas.reto-detalle', $reto)
@@ -98,6 +101,8 @@ class RetoVistaController extends Controller
     public function misRetos(Request $request): View
     {
         $this->autorizarCreador();
+
+        Reto::sincronizarCaducados();
 
         $usuarioAutenticado = $request->user();
 
@@ -174,6 +179,7 @@ class RetoVistaController extends Controller
 
     public function show(Reto $reto): View
     {
+        $reto->sincronizarEstadoCaducado();
         $reto->load('creador:id,nombre,nickname');
         $reto->loadCount([
             'validaciones',

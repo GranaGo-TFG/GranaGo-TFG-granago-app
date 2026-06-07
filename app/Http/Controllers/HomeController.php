@@ -16,6 +16,8 @@ class HomeController extends Controller
             return redirect()->route('admin.retos.index');
         }
 
+        Reto::sincronizarCaducados();
+
         $user = auth()->user();
 
         $retoDestacado = Reto::query()
