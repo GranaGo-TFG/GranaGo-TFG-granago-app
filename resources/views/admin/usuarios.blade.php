@@ -62,6 +62,10 @@
                 <div class="home-panel admin-empty">No hay usuarios disponibles.</div>
             @endforelse
         </div>
+
+        <div class="store-pagination">
+            {{ $usuarios->onEachSide(1)->links('vendor.pagination.store-bootstrap-5') }}
+        </div>
     </div>
 </div>
 @endsection

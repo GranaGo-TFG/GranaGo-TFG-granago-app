@@ -13,9 +13,21 @@ use Illuminate\View\View;
 
 class ComunidadController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $this->asegurarNoAdmin();
+        $filtrosTipo = ['todos', 'texto', 'imagen'];
+        $filtrosOrden = ['recientes', 'mas_gustadas', 'mas_comentadas', 'antiguas'];
+
+        $tipoSeleccionado = $request->query('tipo', 'todos');
+        $ordenSeleccionado = $request->query('orden', 'recientes');
+
+        if (! in_array($tipoSeleccionado, $filtrosTipo, true)) {
+            $tipoSeleccionado = 'todos';
+        }
+
+        if (! in_array($ordenSeleccionado, $filtrosOrden, true)) {
+            $ordenSeleccionado = 'recientes';
+        }
 
         $publicaciones = PublicacionComunidad::query()
             ->with([
@@ -27,12 +39,24 @@ class ComunidadController extends Controller
                     ->orderBy('users.nickname')
                     ->orderBy('users.nombre'),
             ])
-            ->withCount('meGustaUsuarios')
-            ->orderByDesc('fecha_publicacion')
+            ->withCount(['comentarios', 'meGustaUsuarios'])
+            ->when($tipoSeleccionado === 'texto', fn ($query) => $query->whereNull('imagen'))
+            ->when($tipoSeleccionado === 'imagen', fn ($query) => $query->whereNotNull('imagen')->where('imagen', '!=', ''))
+            ->when($ordenSeleccionado === 'mas_gustadas', fn ($query) => $query
+                ->orderByDesc('me_gusta_usuarios_count')
+                ->orderByDesc('fecha_publicacion'))
+            ->when($ordenSeleccionado === 'mas_comentadas', fn ($query) => $query
+                ->orderByDesc('comentarios_count')
+                ->orderByDesc('fecha_publicacion'))
+            ->when($ordenSeleccionado === 'antiguas', fn ($query) => $query->orderBy('fecha_publicacion'))
+            ->when($ordenSeleccionado === 'recientes', fn ($query) => $query->orderByDesc('fecha_publicacion'))
             ->paginate(8);
 
         return view('vistas.comunidad', [
             'publicaciones' => $publicaciones,
+            'tipoSeleccionado' => $tipoSeleccionado,
+            'ordenSeleccionado' => $ordenSeleccionado,
+            'esAdmin' => (Auth::user()?->rol === 'admin'),
         ]);
     }
 
@@ -77,7 +101,7 @@ class ComunidadController extends Controller
 
     public function updatePublicacion(Request $request, PublicacionComunidad $publicacion): RedirectResponse
     {
-        $this->asegurarNoAdmin();
+        abort_if($request->user()->rol === 'admin', 403, 'Los administradores solo pueden borrar publicaciones.');
 
         $this->autorizarGestion($request, (int) $publicacion->user_id);
 
@@ -139,8 +163,6 @@ class ComunidadController extends Controller
 
     public function destroyPublicacion(Request $request, PublicacionComunidad $publicacion): RedirectResponse
     {
-        $this->asegurarNoAdmin();
-
         $this->autorizarGestion($request, (int) $publicacion->user_id);
 
         $data = $request->validate([
@@ -214,8 +236,6 @@ class ComunidadController extends Controller
 
     public function destroyComentario(Request $request, ComentarioComunidad $comentario): RedirectResponse
     {
-        $this->asegurarNoAdmin();
-
         $this->autorizarGestion($request, (int) $comentario->user_id);
 
         $data = $request->validate([

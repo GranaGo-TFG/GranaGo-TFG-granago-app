@@ -26,6 +26,7 @@ class UserSeeder extends Seeder
                 'rol' => $adminData['rol'],
                 'puntos_totales' => $adminData['puntos_totales'],
                 'racha_multiplicador' => $adminData['racha_multiplicador'],
+                'racha_ultimo_reto' => $adminData['racha_ultimo_reto'] ?? null,
                 'esta_baneado' => false,
             ]
         );

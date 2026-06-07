@@ -19,6 +19,8 @@ class AdminController extends Controller
 {
     public function retos(Request $request): View
     {
+        Reto::sincronizarCaducados();
+
         $estadosReto = ['todos', 'borrador', 'publicado', 'caducado'];
         $estadoSeleccionado = $request->query('estado', 'todos');
 
@@ -29,7 +31,8 @@ class AdminController extends Controller
         $retos = Reto::with('creador:id,nombre,email')
             ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
             ->orderByDesc('id')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('admin.retos', [
             'retos' => $retos,
@@ -43,7 +46,13 @@ class AdminController extends Controller
             'estado' => ['required', 'in:borrador,publicado,caducado'],
         ]);
 
-        $reto->update($data);
+        $estadoFinal = $reto->fecha_fin && $reto->fecha_fin->isPast()
+            ? 'caducado'
+            : $data['estado'];
+
+        $reto->update([
+            'estado' => $estadoFinal,
+        ]);
 
         return back()->with('status', 'Estado del reto actualizado.');
     }
@@ -63,7 +72,8 @@ class AdminController extends Controller
         ])
             ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
             ->orderByDesc('id')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('admin.validaciones', [
             'validaciones' => $validaciones,
@@ -108,7 +118,8 @@ class AdminController extends Controller
         $usuarios = User::query()
             ->orderByRaw("CASE WHEN rol = 'admin' THEN 0 ELSE 1 END")
             ->orderBy('nombre')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('admin.usuarios', compact('usuarios'));
     }
@@ -118,7 +129,8 @@ class AdminController extends Controller
         $logros = Logro::query()
             ->withCount('usuarios')
             ->orderByDesc('id')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('admin.logros', compact('logros'));
     }
@@ -314,12 +326,15 @@ class AdminController extends Controller
         $validacion->loadMissing('reto:id,puntos_recompensa');
 
         $puntosBase = (int) $validacion->reto->puntos_recompensa;
-        $multiplicador = max(0, (float) $user->racha_multiplicador);
+        $multiplicador = $user->multiplicadorRachaVigente();
         $puntosGanados = (int) round($puntosBase * $multiplicador);
 
         if ($puntosGanados > 0) {
             $user->increment('puntos_totales', $puntosGanados);
         }
+
+        $user->registrarRetoCompletado();
+        $user->save();
     }
 
     private function generarSlugUnico(string $nombre, ?int $exceptoProductoId = null): string

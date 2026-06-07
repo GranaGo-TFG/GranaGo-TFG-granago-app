@@ -13,6 +13,8 @@ class RetoVistaController extends Controller
 {
     public function index(Request $request): View
     {
+        Reto::sincronizarCaducados();
+
         $estadosVisibles = ['publicado', 'caducado'];
         $estadoSeleccionado = $request->query('estado', 'todos');
         $ordenSeleccionado = $request->query('orden', 'recientes');
@@ -47,7 +49,8 @@ class RetoVistaController extends Controller
             ->when($ordenSeleccionado === 'puntos_desc', fn ($query) => $query->orderByDesc('puntos_recompensa'))
             ->when($ordenSeleccionado === 'puntos_asc', fn ($query) => $query->orderBy('puntos_recompensa'))
             ->when($ordenSeleccionado === 'caducan', fn ($query) => $query->orderBy('fecha_fin'))
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('vistas.retos', [
             'retos' => $retos,
@@ -88,6 +91,7 @@ class RetoVistaController extends Controller
         $data['estado'] = 'borrador';
 
         $reto = Reto::create($data);
+        $reto->sincronizarEstadoCaducado();
 
         return redirect()
             ->route('vistas.reto-detalle', $reto)
@@ -98,7 +102,9 @@ class RetoVistaController extends Controller
     {
         $this->autorizarCreador();
 
-        $creador = $request->user();
+        Reto::sincronizarCaducados();
+
+        $usuarioAutenticado = $request->user();
 
         $estadosReto = ['todos', 'borrador', 'publicado', 'caducado'];
         $estadoSeleccionado = $request->query('estado', 'todos');
@@ -107,19 +113,20 @@ class RetoVistaController extends Controller
             $estadoSeleccionado = 'todos';
         }
 
-        $retos = $creador->retosCreados()
+        $retos = Reto::query()
+            ->where('creador_id', (int) $usuarioAutenticado->id)
             ->withCount([
                 'validaciones',
                 'validaciones as validaciones_verificadas_count' => fn ($query) => $query->where('estado', 'verificado'),
             ])
             ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
             ->orderByDesc('id')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('vistas.mis-retos', [
             'retos' => $retos,
             'estadoSeleccionado' => $estadoSeleccionado,
-            'creadorId' => (int) $creador->id,
         ]);
     }
 
@@ -172,6 +179,7 @@ class RetoVistaController extends Controller
 
     public function show(Reto $reto): View
     {
+        $reto->sincronizarEstadoCaducado();
         $reto->load('creador:id,nombre,nickname');
         $reto->loadCount([
             'validaciones',

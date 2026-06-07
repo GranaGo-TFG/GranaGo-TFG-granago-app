@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['nombre', 'nickname', 'email', 'password', 'rol', 'esta_baneado', 'puntos_totales', 'racha_multiplicador'])]
+#[Fillable(['nombre', 'nickname', 'email', 'password', 'rol', 'esta_baneado', 'puntos_totales', 'racha_multiplicador', 'racha_ultimo_reto'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -32,6 +32,7 @@ class User extends Authenticatable
             'esta_baneado' => 'boolean',
             'puntos_totales' => 'integer',
             'racha_multiplicador' => 'decimal:2',
+            'racha_ultimo_reto' => 'datetime',
         ];
     }
 
@@ -84,5 +85,38 @@ class User extends Authenticatable
         $nickname = trim((string) $this->nickname);
 
         return $nickname !== '' ? $nickname : (string) $this->nombre;
+    }
+
+    public function getRachaMultiplicadorAttribute($value): float
+    {
+        return $this->multiplicadorRachaVigente();
+    }
+
+    public function multiplicadorRachaVigente(): float
+    {
+        $ultimoReto = $this->racha_ultimo_reto;
+
+        if (! $ultimoReto) {
+            return 1.00;
+        }
+
+        if (now()->greaterThan($ultimoReto->copy()->addDays(3))) {
+            return 1.00;
+        }
+
+        return max(1.00, round((float) $this->getRawOriginal('racha_multiplicador'), 2));
+    }
+
+    public function registrarRetoCompletado(): float
+    {
+        $multiplicadorActual = $this->multiplicadorRachaVigente();
+        $nuevoMultiplicador = round($multiplicadorActual + 0.25, 2);
+
+        $this->forceFill([
+            'racha_multiplicador' => $nuevoMultiplicador,
+            'racha_ultimo_reto' => now(),
+        ]);
+
+        return $nuevoMultiplicador;
     }
 }

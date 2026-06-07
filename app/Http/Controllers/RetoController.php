@@ -14,6 +14,8 @@ class RetoController extends Controller
 {
     public function indexView(): View
     {
+        Reto::sincronizarCaducados();
+
         $retos = Reto::query()
             ->where('estado', '!=', 'borrador')
             ->orderByDesc('fecha_inicio')
@@ -51,10 +53,12 @@ class RetoController extends Controller
             'puntos_recompensa' => ['required', 'integer', 'min:0'],
         ]);
 
-        Reto::create([
+        $reto = Reto::create([
             ...$data,
             'creador_id' => Auth::id(),
         ]);
+
+        $reto->sincronizarEstadoCaducado();
 
         return redirect()
             ->route('vistas.retos')
@@ -65,6 +69,8 @@ class RetoController extends Controller
     {
         $this->asegurarAdministrador();
 
+        Reto::sincronizarCaducados();
+
         $retos = Reto::with('creador:id,nombre,email')
             ->orderByDesc('id')
             ->get();
@@ -74,6 +80,8 @@ class RetoController extends Controller
 
     public function mapaData(Request $request): JsonResponse
     {
+        Reto::sincronizarCaducados();
+
         $filtros = $request->validate([
             'latMin' => ['nullable', 'numeric', 'between:-90,90'],
             'latMax' => ['nullable', 'numeric', 'between:-90,90'],
@@ -150,6 +158,7 @@ class RetoController extends Controller
         ]);
 
         $reto = Reto::create($data);
+        $reto->sincronizarEstadoCaducado();
 
         return response()->json($reto, 201);
     }
@@ -193,7 +202,12 @@ class RetoController extends Controller
             ], 422);
         }
 
+        if ($reto->fecha_fin && $reto->fecha_fin->isPast()) {
+            $data['estado'] = 'caducado';
+        }
+
         $reto->update($data);
+        $reto->sincronizarEstadoCaducado();
 
         return response()->json($reto->fresh());
     }

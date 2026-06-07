@@ -51,4 +51,37 @@ class Reto extends Model
     {
         return $this->hasMany(ValidacionReto::class);
     }
+
+    public static function sincronizarCaducados(): int
+    {
+        return static::query()
+            ->whereIn('estado', ['borrador', 'publicado'])
+            ->whereNotNull('fecha_fin')
+            ->where('fecha_fin', '<', now())
+            ->update(['estado' => 'caducado']);
+    }
+
+    protected static function booted(): void
+    {
+        static::retrieved(function (self $reto): void {
+            $reto->sincronizarEstadoCaducado();
+        });
+    }
+
+    public function sincronizarEstadoCaducado(): bool
+    {
+        if ($this->estado === 'caducado') {
+            return false;
+        }
+
+        if (! $this->fecha_fin || $this->fecha_fin->greaterThanOrEqualTo(now())) {
+            return false;
+        }
+
+        $this->forceFill([
+            'estado' => 'caducado',
+        ]);
+
+        return $this->saveQuietly();
+    }
 }

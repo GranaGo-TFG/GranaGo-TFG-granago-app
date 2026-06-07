@@ -28,49 +28,116 @@
             </div>
         @endif
 
-        <section class="community-layout">
-            <article class="community-composer">
-                <h3>Crear publicacion</h3>
-                <form
-                    action="{{ route('vistas.comunidad.publicaciones.store') }}"
-                    method="POST"
-                    enctype="multipart/form-data"
-                    class="community-composer-form"
+        @php
+            $usuarioAutenticado = auth()->user();
+            $esAdmin = $esAdmin ?? ($usuarioAutenticado->rol === 'admin');
+            $filtrosOrden = [
+                'recientes' => 'Mas recientes',
+                'mas_gustadas' => 'Mas gustadas',
+                'mas_comentadas' => 'Mas comentadas',
+                'antiguas' => 'Mas antiguas',
+            ];
+            $filtrosTipo = [
+                'todos' => 'Todo el contenido',
+                'texto' => 'Solo texto',
+                'imagen' => 'Solo imagen',
+            ];
+        @endphp
+
+        <div class="screen-filters challenge-filter-menu">
+            <div class="dropdown">
+                <button
+                    class="btn btn-outline-secondary challenge-filter-toggle"
+                    type="button"
+                    id="communityFilterDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
                 >
-                    @csrf
+                    <svg class="challenge-filter-icon" aria-hidden="true" viewBox="0 0 24 24" focusable="false">
+                        <path d="M4 5h16l-6.5 7.4v5.1l-3 1.5v-6.6L4 5Z" />
+                    </svg>
+                    <span>{{ $filtrosOrden[$ordenSeleccionado ?? 'recientes'] ?? 'Mas recientes' }}</span>
+                </button>
 
-                    <label for="community-content" class="form-label">Que quieres compartir</label>
-                    <textarea
-                        id="community-content"
-                        name="contenido"
-                        rows="5"
-                        class="form-control"
-                        placeholder="Escribe una historia, una recomendacion o lo que quieras mostrar..."
-                    >{{ old('contenido') }}</textarea>
+                <div class="dropdown-menu challenge-filter-dropdown" aria-labelledby="communityFilterDropdown">
+                    <span class="challenge-filter-heading">Ordenar</span>
+                    @foreach ($filtrosOrden as $orden => $label)
+                        @php
+                            $paramsOrden = array_filter([
+                                'orden' => $orden,
+                                'tipo' => ($tipoSeleccionado ?? 'todos') !== 'todos' ? $tipoSeleccionado : null,
+                            ]);
+                        @endphp
+                        <a
+                            href="{{ route('vistas.comunidad', $paramsOrden) }}"
+                            class="dropdown-item {{ ($ordenSeleccionado ?? 'recientes') === $orden ? 'active' : '' }}"
+                            aria-current="{{ ($ordenSeleccionado ?? 'recientes') === $orden ? 'page' : 'false' }}"
+                        >
+                            {{ $label }}
+                        </a>
+                    @endforeach
 
-                    <div class="community-composer-actions">
-                        <label for="community-image" class="community-file-label">
-                            <span>Anadir foto (opcional)</span>
-                            <input
-                                id="community-image"
-                                type="file"
-                                name="imagen"
-                                accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                                class="form-control"
-                            >
-                        </label>
-                        <button type="submit" class="btn btn-primary home-btn">Publicar</button>
-                    </div>
+                    <span class="challenge-filter-heading">Contenido</span>
+                    @foreach ($filtrosTipo as $tipo => $label)
+                        @php
+                            $paramsTipo = array_filter([
+                                'orden' => $ordenSeleccionado ?? 'recientes',
+                                'tipo' => $tipo === 'todos' ? null : $tipo,
+                            ]);
+                        @endphp
+                        <a
+                            href="{{ route('vistas.comunidad', $paramsTipo) }}"
+                            class="dropdown-item {{ ($tipoSeleccionado ?? 'todos') === $tipo ? 'active' : '' }}"
+                            aria-current="{{ ($tipoSeleccionado ?? 'todos') === $tipo ? 'page' : 'false' }}"
+                        >
+                            {{ $label }}
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
 
-                    <p class="community-composer-note">Puedes publicar solo texto, solo foto o ambos.</p>
-                </form>
-            </article>
+        <section class="community-layout {{ $esAdmin ? 'is-admin' : '' }}">
+            @unless ($esAdmin)
+                <article class="community-composer">
+                    <h3>Crear publicacion</h3>
+                    <form
+                        action="{{ route('vistas.comunidad.publicaciones.store') }}"
+                        method="POST"
+                        enctype="multipart/form-data"
+                        class="community-composer-form"
+                    >
+                        @csrf
+
+                        <label for="community-content" class="form-label">Que quieres compartir</label>
+                        <textarea
+                            id="community-content"
+                            name="contenido"
+                            rows="5"
+                            class="form-control"
+                            placeholder="Escribe una historia, una recomendacion o lo que quieras mostrar..."
+                        >{{ old('contenido') }}</textarea>
+
+                        <div class="community-composer-actions">
+                            <label for="community-image" class="community-file-label">
+                                <span>Anadir foto (opcional)</span>
+                                <input
+                                    id="community-image"
+                                    type="file"
+                                    name="imagen"
+                                    accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                    class="form-control"
+                                >
+                            </label>
+                            <button type="submit" class="btn btn-primary home-btn">Publicar</button>
+                        </div>
+
+                        <p class="community-composer-note">Puedes publicar solo texto, solo foto o ambos.</p>
+                    </form>
+                </article>
+            @endunless
 
             <div class="community-feed">
-                @php
-                    $usuarioAutenticado = auth()->user();
-                @endphp
-
                 @forelse ($publicaciones as $publicacion)
                     @php
                         $urlImagen = null;
@@ -89,10 +156,10 @@
                         $leGustaAlUsuario = $usuariosConMeGusta->contains('id', (int) $usuarioAutenticado->id);
                         $totalMeGusta = (int) $publicacion->me_gusta_usuarios_count;
                         $comentariosPublicacion = $publicacion->comentarios;
-                        $totalComentarios = $comentariosPublicacion->count();
+                        $totalComentarios = (int) $publicacion->comentarios_count;
                         $comentarioReciente = $comentariosPublicacion->first();
-                        $puedeGestionarPublicacion =
-                            $usuarioAutenticado->rol === 'admin' || (int) $usuarioAutenticado->id === (int) $publicacion->user_id;
+                        $puedeGestionarPublicacion = (int) $usuarioAutenticado->id === (int) $publicacion->user_id;
+                        $puedeBorrarPublicacion = $esAdmin || $puedeGestionarPublicacion;
 
                         $contenidoEdicion = old('publicacion_id') == (string) $publicacion->id
                             ? old('contenido')
@@ -114,7 +181,7 @@
                                 </div>
                             </div>
 
-                            @if ($puedeGestionarPublicacion)
+                            @if ($puedeBorrarPublicacion)
                                 <details class="community-post-menu">
                                     <summary aria-label="Opciones de publicacion">
                                         <span class="community-post-menu-dots" aria-hidden="true">
@@ -125,69 +192,82 @@
                                     </summary>
 
                                     <div class="community-post-menu-panel">
-                                        <details class="community-menu-edit">
-                                            <summary class="community-menu-item">Editar publicacion</summary>
+                                        @if ($esAdmin)
+                                            <form
+                                                action="{{ route('vistas.comunidad.publicaciones.destroy', $publicacion) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Se eliminara esta publicacion y sus comentarios. Quieres continuar?');"
+                                            >
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="page" value="{{ $publicaciones->currentPage() }}">
+                                                <button type="submit" class="community-menu-item community-menu-item-danger">Eliminar publicacion</button>
+                                            </form>
+                                        @else
+                                            <details class="community-menu-edit">
+                                                <summary class="community-menu-item">Editar publicacion</summary>
 
-                                            <div class="community-menu-edit-panel">
-                                                <form
-                                                    action="{{ route('vistas.comunidad.publicaciones.update', $publicacion) }}"
-                                                    method="POST"
-                                                    enctype="multipart/form-data"
-                                                    class="community-edit-form"
-                                                >
-                                                    @csrf
-                                                    @method('PATCH')
-                                                    <input type="hidden" name="page" value="{{ $publicaciones->currentPage() }}">
-                                                    <input type="hidden" name="publicacion_id" value="{{ $publicacion->id }}">
-
-                                                    <label for="editar-contenido-{{ $publicacion->id }}" class="form-label">Texto</label>
-                                                    <textarea
-                                                        id="editar-contenido-{{ $publicacion->id }}"
-                                                        name="contenido"
-                                                        rows="4"
-                                                        class="form-control"
-                                                        placeholder="Actualiza el texto de tu publicacion"
-                                                    >{{ $contenidoEdicion }}</textarea>
-
-                                                    <label for="editar-imagen-{{ $publicacion->id }}" class="form-label">Reemplazar imagen (opcional)</label>
-                                                    <input
-                                                        id="editar-imagen-{{ $publicacion->id }}"
-                                                        type="file"
-                                                        name="imagen"
-                                                        accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                                                        class="form-control"
+                                                <div class="community-menu-edit-panel">
+                                                    <form
+                                                        action="{{ route('vistas.comunidad.publicaciones.update', $publicacion) }}"
+                                                        method="POST"
+                                                        enctype="multipart/form-data"
+                                                        class="community-edit-form"
                                                     >
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="page" value="{{ $publicaciones->currentPage() }}">
+                                                        <input type="hidden" name="publicacion_id" value="{{ $publicacion->id }}">
 
-                                                    @if ($publicacion->imagen)
-                                                        <div class="form-check community-remove-image-check">
-                                                            <input
-                                                                class="form-check-input"
-                                                                type="checkbox"
-                                                                name="eliminar_imagen"
-                                                                value="1"
-                                                                id="eliminar-imagen-{{ $publicacion->id }}"
-                                                            >
-                                                            <label class="form-check-label" for="eliminar-imagen-{{ $publicacion->id }}">
-                                                                Eliminar imagen actual
-                                                            </label>
-                                                        </div>
-                                                    @endif
+                                                        <label for="editar-contenido-{{ $publicacion->id }}" class="form-label">Texto</label>
+                                                        <textarea
+                                                            id="editar-contenido-{{ $publicacion->id }}"
+                                                            name="contenido"
+                                                            rows="4"
+                                                            class="form-control"
+                                                            placeholder="Actualiza el texto de tu publicacion"
+                                                        >{{ $contenidoEdicion }}</textarea>
 
-                                                    <button type="submit" class="btn btn-outline-primary home-btn">Guardar cambios</button>
-                                                </form>
-                                            </div>
-                                        </details>
+                                                        <label for="editar-imagen-{{ $publicacion->id }}" class="form-label">Reemplazar imagen (opcional)</label>
+                                                        <input
+                                                            id="editar-imagen-{{ $publicacion->id }}"
+                                                            type="file"
+                                                            name="imagen"
+                                                            accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                                                            class="form-control"
+                                                        >
 
-                                        <form
-                                            action="{{ route('vistas.comunidad.publicaciones.destroy', $publicacion) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Se eliminara esta publicacion y sus comentarios. Quieres continuar?');"
-                                        >
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="hidden" name="page" value="{{ $publicaciones->currentPage() }}">
-                                            <button type="submit" class="community-menu-item community-menu-item-danger">Eliminar publicacion</button>
-                                        </form>
+                                                        @if ($publicacion->imagen)
+                                                            <div class="form-check community-remove-image-check">
+                                                                <input
+                                                                    class="form-check-input"
+                                                                    type="checkbox"
+                                                                    name="eliminar_imagen"
+                                                                    value="1"
+                                                                    id="eliminar-imagen-{{ $publicacion->id }}"
+                                                                >
+                                                                <label class="form-check-label" for="eliminar-imagen-{{ $publicacion->id }}">
+                                                                    Eliminar imagen actual
+                                                                </label>
+                                                            </div>
+                                                        @endif
+
+                                                        <button type="submit" class="btn btn-outline-primary home-btn">Guardar cambios</button>
+                                                    </form>
+                                                </div>
+                                            </details>
+
+                                            <form
+                                                action="{{ route('vistas.comunidad.publicaciones.destroy', $publicacion) }}"
+                                                method="POST"
+                                                onsubmit="return confirm('Se eliminara esta publicacion y sus comentarios. Quieres continuar?');"
+                                            >
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="hidden" name="page" value="{{ $publicaciones->currentPage() }}">
+                                                <button type="submit" class="community-menu-item community-menu-item-danger">Eliminar publicacion</button>
+                                            </form>
+                                        @endif
                                     </div>
                                 </details>
                             @endif
@@ -204,22 +284,29 @@
                         @endif
 
                         <div class="community-post-actions">
-                            <form
-                                action="{{ route('vistas.comunidad.publicaciones.toggle-like', $publicacion) }}"
-                                method="POST"
-                                class="community-like-form"
-                            >
-                                @csrf
-                                <input type="hidden" name="page" value="{{ $publicaciones->currentPage() }}">
-                                <button
-                                    type="submit"
-                                    class="btn btn-sm community-like-btn {{ $leGustaAlUsuario ? 'is-active' : '' }}"
+                            @if ($esAdmin)
+                                <div class="community-admin-stats-inline">
+                                    <span>{{ $totalMeGusta }} me gusta</span>
+                                    <span>{{ $totalComentarios }} comentarios</span>
+                                </div>
+                            @else
+                                <form
+                                    action="{{ route('vistas.comunidad.publicaciones.toggle-like', $publicacion) }}"
+                                    method="POST"
+                                    class="community-like-form"
                                 >
-                                    <span aria-hidden="true">❤</span>
-                                    <span>{{ $leGustaAlUsuario ? 'Te gusta' : 'Me gusta' }}</span>
-                                </button>
-                                <span class="community-like-counter">{{ $totalMeGusta }} me gusta</span>
-                            </form>
+                                    @csrf
+                                    <input type="hidden" name="page" value="{{ $publicaciones->currentPage() }}">
+                                    <button
+                                        type="submit"
+                                        class="btn btn-sm community-like-btn {{ $leGustaAlUsuario ? 'is-active' : '' }}"
+                                    >
+                                        <span aria-hidden="true">&#9829;</span>
+                                        <span>{{ $leGustaAlUsuario ? 'Te gusta' : 'Me gusta' }}</span>
+                                    </button>
+                                    <span class="community-like-counter">{{ $totalMeGusta }} me gusta</span>
+                                </form>
+                            @endif
                         </div>
 
                         @if ($totalMeGusta > 1 || $totalComentarios > 1)
@@ -343,24 +430,26 @@
                             @endif
                         </section>
 
-                        <form
-                            action="{{ route('vistas.comunidad.comentarios.store', $publicacion) }}"
-                            method="POST"
-                            class="community-comment-form"
-                        >
-                            @csrf
-                            <input type="hidden" name="page" value="{{ $publicaciones->currentPage() }}">
-                            <label for="comentario-{{ $publicacion->id }}" class="visually-hidden">Escribe un comentario</label>
-                            <textarea
-                                id="comentario-{{ $publicacion->id }}"
-                                name="comentario"
-                                rows="2"
-                                class="form-control"
-                                placeholder="Escribe un comentario..."
-                                required
-                            ></textarea>
-                            <button type="submit" class="btn btn-outline-primary home-btn">Comentar</button>
-                        </form>
+                        @unless ($esAdmin)
+                            <form
+                                action="{{ route('vistas.comunidad.comentarios.store', $publicacion) }}"
+                                method="POST"
+                                class="community-comment-form"
+                            >
+                                @csrf
+                                <input type="hidden" name="page" value="{{ $publicaciones->currentPage() }}">
+                                <label for="comentario-{{ $publicacion->id }}" class="visually-hidden">Escribe un comentario</label>
+                                <textarea
+                                    id="comentario-{{ $publicacion->id }}"
+                                    name="comentario"
+                                    rows="2"
+                                    class="form-control"
+                                    placeholder="Escribe un comentario..."
+                                    required
+                                ></textarea>
+                                <button type="submit" class="btn btn-outline-primary home-btn">Comentar</button>
+                            </form>
+                        @endunless
                     </article>
                 @empty
                     <article class="home-panel community-empty-state">

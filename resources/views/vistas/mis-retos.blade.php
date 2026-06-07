@@ -65,8 +65,6 @@
 
         <div class="admin-list">
             @forelse ($retos as $reto)
-                @continue((int) $reto->creador_id !== (int) ($creadorId ?? Auth::id()))
-
                 <div class="home-panel admin-row">
                     <div class="admin-row-main">
                         <div class="admin-row-top">
@@ -106,6 +104,10 @@
             @empty
                 <div class="home-panel admin-empty">Aun no has creado retos. Pulsa en "Crear reto" para empezar.</div>
             @endforelse
+        </div>
+
+        <div class="store-pagination">
+            {{ $retos->onEachSide(1)->links('vendor.pagination.store-bootstrap-5') }}
         </div>
     </div>
 </div>

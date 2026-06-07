@@ -32,7 +32,8 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'rol' => fake()->randomElement(['creador', 'usuario']),
             'puntos_totales' => fake()->numberBetween(0, 5000),
-            'racha_multiplicador' => fake()->randomFloat(2, 1, 5),
+            'racha_multiplicador' => 1.00,
+            'racha_ultimo_reto' => null,
             'remember_token' => Str::random(10),
         ];
     }
@@ -52,7 +53,8 @@ class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'rol' => 'admin',
             'puntos_totales' => fake()->numberBetween(1000, 5000),
-            'racha_multiplicador' => fake()->randomFloat(2, 1.5, 5),
+            'racha_multiplicador' => 1.00,
+            'racha_ultimo_reto' => null,
         ]);
     }
 

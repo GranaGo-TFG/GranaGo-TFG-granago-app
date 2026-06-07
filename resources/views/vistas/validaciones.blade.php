@@ -93,7 +93,7 @@
                                 src="{{ $fotoPruebaUrl }}"
                                 alt="Prueba enviada para {{ $validacion->reto->nombre ?? 'el reto' }}"
                                 class="mt-3 rounded-4 border"
-                                style="width:min(100%, 16rem); aspect-ratio:1; object-fit:cover;"
+                                style="width:min(100%, 16rem); max-height:16rem; object-fit:contain; background:#fff;"
                             >
                         @endif
                     </div>
