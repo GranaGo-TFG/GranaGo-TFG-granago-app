@@ -111,7 +111,7 @@
         </div>
 
         <section class="challenge-grid reveal-list">
-                @forelse ($retos as $reto)
+            @forelse ($retos as $reto)
                 @php
                     $statusClass = match ($reto->estado) {
                         'publicado' => 'status-open',
@@ -151,6 +151,10 @@
                 </div>
             @endforelse
         </section>
+
+        <div class="store-pagination">
+            {{ $retos->onEachSide(1)->links('vendor.pagination.store-bootstrap-5') }}
+        </div>
     </div>
 </div>
 @endsection

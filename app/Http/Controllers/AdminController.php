@@ -29,7 +29,8 @@ class AdminController extends Controller
         $retos = Reto::with('creador:id,nombre,email')
             ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
             ->orderByDesc('id')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('admin.retos', [
             'retos' => $retos,
@@ -63,7 +64,8 @@ class AdminController extends Controller
         ])
             ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
             ->orderByDesc('id')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('admin.validaciones', [
             'validaciones' => $validaciones,
@@ -108,7 +110,8 @@ class AdminController extends Controller
         $usuarios = User::query()
             ->orderByRaw("CASE WHEN rol = 'admin' THEN 0 ELSE 1 END")
             ->orderBy('nombre')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('admin.usuarios', compact('usuarios'));
     }
@@ -118,7 +121,8 @@ class AdminController extends Controller
         $logros = Logro::query()
             ->withCount('usuarios')
             ->orderByDesc('id')
-            ->get();
+            ->paginate(12)
+            ->withQueryString();
 
         return view('admin.logros', compact('logros'));
     }

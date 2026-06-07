@@ -59,7 +59,9 @@ class ValidacionRetoController extends Controller
 
     public function misValidaciones(Request $request): View
     {
-        abort_if($request->user()?->rol !== 'usuario', 403, 'Solo los usuarios pueden consultar sus validaciones.');
+        $usuarioAutenticado = $request->user();
+
+        abort_if($usuarioAutenticado?->rol !== 'usuario', 403, 'Solo los usuarios pueden consultar sus validaciones.');
 
         $estadosValidacion = ['todos', 'pendiente', 'verificado', 'rechazado'];
         $estadoSeleccionado = $request->query('estado', 'todos');
@@ -70,7 +72,7 @@ class ValidacionRetoController extends Controller
 
         $validaciones = ValidacionReto::query()
             ->with('reto:id,nombre,estado,puntos_recompensa')
-            ->where('user_id', (int) $request->user()->id)
+            ->where('user_id', (int) $usuarioAutenticado->id)
             ->when($estadoSeleccionado !== 'todos', fn ($query) => $query->where('estado', $estadoSeleccionado))
             ->orderByDesc('fecha_envio')
             ->orderByDesc('id')

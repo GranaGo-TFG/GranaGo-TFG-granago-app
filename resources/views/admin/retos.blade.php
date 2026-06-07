@@ -96,6 +96,10 @@
                 <div class="home-panel admin-empty">No hay retos registrados todavia.</div>
             @endforelse
         </div>
+
+        <div class="store-pagination">
+            {{ $retos->onEachSide(1)->links('vendor.pagination.store-bootstrap-5') }}
+        </div>
     </div>
 </div>
 @endsection
